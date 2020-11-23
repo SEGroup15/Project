@@ -4,13 +4,30 @@
  * and open the template in the editor.
  */
 package MaintenanceManagement;
+import javax.swing.*;
 
 /**
  *
  * @author AngeloPC
  */
+
 public class PlannerRecordGUI extends javax.swing.JFrame {
 
+    private String[] activity = new String[11];
+    private String typeOfActivity;
+    private String activityID;
+    private String factorySite;
+    private String areaOrDepartment;
+    private String activityTypology;
+    private String activityDescription;
+    private int interventionTime;
+    private String isInterruptible;
+    private String materials;
+    private int weeks;
+    private String workspaceNotes;
+    
+    
+    
     /**
      * Creates new form PlannerGUI
      */
@@ -29,6 +46,7 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
 
         SelectionGroup = new javax.swing.ButtonGroup();
         InterruptibleActivityGroup = new javax.swing.ButtonGroup();
+        TypeOfActivityGroup = new javax.swing.ButtonGroup();
         CreateButton = new javax.swing.JRadioButton();
         ModifyButton = new javax.swing.JRadioButton();
         DeleteButton = new javax.swing.JRadioButton();
@@ -46,7 +64,6 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
         ActivityIDTextField = new javax.swing.JTextField();
         FactorySiteTextField = new javax.swing.JTextField();
         AreaDepartmentTextField = new javax.swing.JTextField();
-        ActivityTypeTextField = new javax.swing.JTextField();
         ActivityDescriptionTextField = new javax.swing.JTextField();
         EstimatedTimeTextField = new javax.swing.JTextField();
         YesButton = new javax.swing.JRadioButton();
@@ -54,8 +71,13 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
         MaterialsTextField = new javax.swing.JTextField();
         WeekComboBox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jButton1 = new javax.swing.JButton();
+        WorkspaceNotes = new javax.swing.JTextArea();
+        ExecuteButton = new javax.swing.JButton();
+        jLabel11 = new javax.swing.JLabel();
+        PlannedActivityButton = new javax.swing.JRadioButton();
+        UnplannedActivityButton = new javax.swing.JRadioButton();
+        ExtraActivityButton = new javax.swing.JRadioButton();
+        ActivityTypologyComboBox = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Planner GUI");
@@ -79,6 +101,11 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
 
         SelectionGroup.add(DeleteButton);
         DeleteButton.setText("Delete");
+        DeleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                DeleteButtonActionPerformed(evt);
+            }
+        });
 
         jLabel1.setText("Type of action:");
 
@@ -88,7 +115,7 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
 
         jLabel3.setText("Area or Department:");
 
-        jLabel4.setText("Type of activity:");
+        jLabel4.setText("Typology of maintenance activity:");
 
         jLabel5.setText("Activity description:");
 
@@ -110,9 +137,19 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
 
         InterruptibleActivityGroup.add(YesButton);
         YesButton.setText("Yes");
+        YesButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                YesButtonActionPerformed(evt);
+            }
+        });
 
         InterruptibleActivityGroup.add(NoButton);
         NoButton.setText("No");
+        NoButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                NoButtonActionPerformed(evt);
+            }
+        });
 
         WeekComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52" }));
         WeekComboBox.addActionListener(new java.awt.event.ActionListener() {
@@ -121,16 +158,49 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
             }
         });
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        WorkspaceNotes.setColumns(20);
+        WorkspaceNotes.setRows(5);
+        jScrollPane1.setViewportView(WorkspaceNotes);
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jButton1.setText("Execute");
-        jButton1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        ExecuteButton.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        ExecuteButton.setText("Execute");
+        ExecuteButton.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        ExecuteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                ExecuteButtonActionPerformed(evt);
+            }
+        });
+
+        jLabel11.setText("Type of activity:");
+
+        TypeOfActivityGroup.add(PlannedActivityButton);
+        PlannedActivityButton.setText("Planned");
+        PlannedActivityButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                PlannedActivityButtonActionPerformed(evt);
+            }
+        });
+
+        TypeOfActivityGroup.add(UnplannedActivityButton);
+        UnplannedActivityButton.setText("Unplanned");
+        UnplannedActivityButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                UnplannedActivityButtonActionPerformed(evt);
+            }
+        });
+
+        TypeOfActivityGroup.add(ExtraActivityButton);
+        ExtraActivityButton.setText("Extra");
+        ExtraActivityButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ExtraActivityButtonActionPerformed(evt);
+            }
+        });
+
+        ActivityTypologyComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electrical", "Electronic", "Hydraulic", "Mechanical" }));
+        ActivityTypologyComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ActivityTypologyComboBoxActionPerformed(evt);
             }
         });
 
@@ -141,6 +211,41 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(71, 71, 71)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(ActivityLabel)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel6)
+                                .addComponent(jLabel7)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(jLabel9)
+                                    .addGap(4, 4, 4)
+                                    .addComponent(WeekComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel10)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(4, 4, 4)
+                                    .addComponent(YesButton)
+                                    .addGap(10, 10, 10)
+                                    .addComponent(NoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel8)
+                                .addComponent(ActivityIDTextField)
+                                .addComponent(FactorySiteTextField)
+                                .addComponent(AreaDepartmentTextField)
+                                .addComponent(ActivityDescriptionTextField)
+                                .addComponent(EstimatedTimeTextField)
+                                .addComponent(MaterialsTextField)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addComponent(ExecuteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(22, 22, 22)
+                                .addComponent(ActivityTypologyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(23, 23, 23)
                         .addComponent(jLabel1)
                         .addGap(6, 6, 6)
@@ -150,38 +255,18 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(DeleteButton))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(66, 66, 66)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(ActivityLabel)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel7)
+                        .addGap(58, 58, 58)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel9)
-                                .addGap(4, 4, 4)
-                                .addComponent(WeekComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel10)
+                                .addGap(73, 73, 73)
+                                .addComponent(jLabel11))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(4, 4, 4)
-                                .addComponent(YesButton)
-                                .addGap(10, 10, 10)
-                                .addComponent(NoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel8)
-                            .addComponent(ActivityIDTextField)
-                            .addComponent(FactorySiteTextField)
-                            .addComponent(AreaDepartmentTextField)
-                            .addComponent(ActivityTypeTextField)
-                            .addComponent(ActivityDescriptionTextField)
-                            .addComponent(EstimatedTimeTextField)
-                            .addComponent(MaterialsTextField)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 203, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(121, 121, 121)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(39, 39, 39))
+                                .addComponent(PlannedActivityButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(UnplannedActivityButton)
+                                .addGap(18, 18, 18)
+                                .addComponent(ExtraActivityButton)))))
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -194,6 +279,13 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
                     .addComponent(ModifyButton)
                     .addComponent(DeleteButton))
                 .addGap(18, 18, 18)
+                .addComponent(jLabel11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 5, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(PlannedActivityButton)
+                    .addComponent(UnplannedActivityButton)
+                    .addComponent(ExtraActivityButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(ActivityLabel)
                 .addGap(6, 6, 6)
                 .addComponent(ActivityIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -207,9 +299,9 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
                 .addComponent(AreaDepartmentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(6, 6, 6)
                 .addComponent(jLabel4)
-                .addGap(6, 6, 6)
-                .addComponent(ActivityTypeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(6, 6, 6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(ActivityTypologyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel5)
                 .addGap(6, 6, 6)
                 .addComponent(ActivityDescriptionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -236,8 +328,8 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
                 .addGap(6, 6, 6)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(11, 11, 11)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(ExecuteButton)
+                .addGap(32, 32, 32))
         );
 
         pack();
@@ -259,10 +351,80 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_EstimatedTimeTextFieldActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void ExecuteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExecuteButtonActionPerformed
+        if (!(CreateButton.isSelected()) && !(ModifyButton.isSelected()) && !(DeleteButton.isSelected())){
+            JOptionPane.showMessageDialog(null, "A type of action must be selected!", "Error!", 0);
+        }
+        
+        if (CreateButton.isSelected()){
+            if (ActivityIDTextField.getText().isEmpty() || FactorySiteTextField.getText().isEmpty() || AreaDepartmentTextField.getText().isEmpty() || ActivityDescriptionTextField.getText().isEmpty() || EstimatedTimeTextField.getText().isEmpty() || (!(PlannedActivityButton.isSelected()) && !(UnplannedActivityButton.isSelected()) && !(ExtraActivityButton.isSelected())) || (!(YesButton.isSelected()) && !(NoButton.isSelected()))){
+                JOptionPane.showMessageDialog(null, "Some fields have not been filled in!", "Error!", 0);
+            }
+            else if (!isNumeric(EstimatedTimeTextField.getText())){
+                JOptionPane.showMessageDialog(null, "Estimated time must be a number!", "Error!", 0);
+            }
+            else{
+                activityID = ActivityIDTextField.getText();
+                factorySite = FactorySiteTextField.getText();
+                areaOrDepartment = AreaDepartmentTextField.getText();
+                activityTypology = ActivityTypologyComboBox.getItemAt(ActivityTypologyComboBox.getSelectedIndex());
+                activityDescription = ActivityDescriptionTextField.getText();
+                interventionTime = Integer.parseInt(EstimatedTimeTextField.getText());
+                materials = MaterialsTextField.getText();
+                weeks = WeekComboBox.getSelectedIndex() + 1;
+                workspaceNotes = WorkspaceNotes.getText();
+                JOptionPane.showMessageDialog(null, "Activity Information:\n" + "Type of activity:  " + typeOfActivity + "\n" + "Activity ID:  " +  activityID + "\n" + "Factory site:  " + factorySite + "\n" + "Area/Department:  " + areaOrDepartment + "\n" + "Typology of activity:  " + activityTypology + "\n" + "Activity description:  " + activityDescription + "\n" + "Estimated intervention time:  " + interventionTime + "\n" + "Is it an interruptible activity?  " + isInterruptible + "\n" + "Materials to be used:  " +  materials + "\n" + "Weeks to carry out the activity:  " + weeks + "\n" + "Workspace notes:  " + workspaceNotes, "Error",1);
+                }
+            
+        }
+        
+        
+        
+        
+        
+        
+        
+        
+    }//GEN-LAST:event_ExecuteButtonActionPerformed
 
+    private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_DeleteButtonActionPerformed
+
+    private void PlannedActivityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlannedActivityButtonActionPerformed
+        typeOfActivity = "Planned";
+    }//GEN-LAST:event_PlannedActivityButtonActionPerformed
+
+    private void UnplannedActivityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UnplannedActivityButtonActionPerformed
+        typeOfActivity = "Unplanned";
+    }//GEN-LAST:event_UnplannedActivityButtonActionPerformed
+
+    private void ExtraActivityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExtraActivityButtonActionPerformed
+        typeOfActivity = "Extra";
+    }//GEN-LAST:event_ExtraActivityButtonActionPerformed
+
+    private void YesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_YesButtonActionPerformed
+        isInterruptible = "Yes";
+    }//GEN-LAST:event_YesButtonActionPerformed
+
+    private void NoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NoButtonActionPerformed
+        isInterruptible = "No";
+    }//GEN-LAST:event_NoButtonActionPerformed
+
+    private void ActivityTypologyComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActivityTypologyComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ActivityTypologyComboBoxActionPerformed
+
+    public static boolean isNumeric(String str) { 
+  try {  
+    Double.parseDouble(str);  
+    return true;
+  } catch(NumberFormatException e){  
+    return false;  
+  }  
+}
+    
+    
     /**
      * @param args the command line arguments
      */
@@ -293,7 +455,7 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PlannerGUI().setVisible(true);
+                new PlannerRecordGUI().setVisible(true);
             }
         });
     }
@@ -302,22 +464,28 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
     private javax.swing.JTextField ActivityDescriptionTextField;
     private javax.swing.JTextField ActivityIDTextField;
     private javax.swing.JLabel ActivityLabel;
-    private javax.swing.JTextField ActivityTypeTextField;
+    private javax.swing.JComboBox<String> ActivityTypologyComboBox;
     private javax.swing.JTextField AreaDepartmentTextField;
     private javax.swing.JRadioButton CreateButton;
     private javax.swing.JRadioButton DeleteButton;
     private javax.swing.JTextField EstimatedTimeTextField;
+    private javax.swing.JButton ExecuteButton;
+    private javax.swing.JRadioButton ExtraActivityButton;
     private javax.swing.JTextField FactorySiteTextField;
     private javax.swing.ButtonGroup InterruptibleActivityGroup;
     private javax.swing.JTextField MaterialsTextField;
     private javax.swing.JRadioButton ModifyButton;
     private javax.swing.JRadioButton NoButton;
+    private javax.swing.JRadioButton PlannedActivityButton;
     private javax.swing.ButtonGroup SelectionGroup;
+    private javax.swing.ButtonGroup TypeOfActivityGroup;
+    private javax.swing.JRadioButton UnplannedActivityButton;
     private javax.swing.JComboBox<String> WeekComboBox;
+    private javax.swing.JTextArea WorkspaceNotes;
     private javax.swing.JRadioButton YesButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -327,6 +495,5 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }
