@@ -5,6 +5,17 @@
  */
 package MaintenanceManagement;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.sql.SQLException;
+
 /**
  *
  * @author giuse
@@ -27,26 +38,167 @@ public class PlannerGUI extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        frameManageMaintenance = new javax.swing.JFrame();
+        jLabel1 = new javax.swing.JLabel();
+        frameSelectedMaintenance = new javax.swing.JFrame();
+        jLabel2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        scheduledMaintenanceList = new javax.swing.JTable();
+        LabelWeekNumber = new javax.swing.JTextField();
+        buttonManageMaintenance = new javax.swing.JButton();
+        comboBoxWeek = new javax.swing.JComboBox<>();
+
+        frameManageMaintenance.setMinimumSize(new java.awt.Dimension(800, 500));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        jLabel1.setText("Angelo e Sabatino");
+
+        javax.swing.GroupLayout frameManageMaintenanceLayout = new javax.swing.GroupLayout(frameManageMaintenance.getContentPane());
+        frameManageMaintenance.getContentPane().setLayout(frameManageMaintenanceLayout);
+        frameManageMaintenanceLayout.setHorizontalGroup(
+            frameManageMaintenanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameManageMaintenanceLayout.createSequentialGroup()
+                .addContainerGap(283, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(208, 208, 208))
+        );
+        frameManageMaintenanceLayout.setVerticalGroup(
+            frameManageMaintenanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(frameManageMaintenanceLayout.createSequentialGroup()
+                .addGap(118, 118, 118)
+                .addComponent(jLabel1)
+                .addContainerGap(338, Short.MAX_VALUE))
+        );
+
+        this.setVisible(false);
+
+        frameSelectedMaintenance.setMinimumSize(new java.awt.Dimension(800, 500));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        jLabel2.setText("Ivan");
+
+        javax.swing.GroupLayout frameSelectedMaintenanceLayout = new javax.swing.GroupLayout(frameSelectedMaintenance.getContentPane());
+        frameSelectedMaintenance.getContentPane().setLayout(frameSelectedMaintenanceLayout);
+        frameSelectedMaintenanceLayout.setHorizontalGroup(
+            frameSelectedMaintenanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameSelectedMaintenanceLayout.createSequentialGroup()
+                .addContainerGap(401, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(352, 352, 352))
+        );
+        frameSelectedMaintenanceLayout.setVerticalGroup(
+            frameSelectedMaintenanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(frameSelectedMaintenanceLayout.createSequentialGroup()
+                .addGap(200, 200, 200)
+                .addComponent(jLabel2)
+                .addContainerGap(271, Short.MAX_VALUE))
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("PlannerGUI");
+        setMinimumSize(new java.awt.Dimension(800, 500));
+
+        scheduledMaintenanceList.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "ID", "AREA", "TYPE", "Estimated intervention time [min]"
+            }
+        ));
+        scheduledMaintenanceList.setMaximumSize(new java.awt.Dimension(800, 400));
+        scheduledMaintenanceList.setMinimumSize(new java.awt.Dimension(800, 400));
+        scheduledMaintenanceList.setPreferredSize(new java.awt.Dimension(800, 400));
+        scheduledMaintenanceList.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                scheduledMaintenanceListMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(scheduledMaintenanceList);
+        if (scheduledMaintenanceList.getColumnModel().getColumnCount() > 0) {
+            scheduledMaintenanceList.getColumnModel().getColumn(0).setHeaderValue("ID");
+            scheduledMaintenanceList.getColumnModel().getColumn(1).setHeaderValue("AREA");
+            scheduledMaintenanceList.getColumnModel().getColumn(2).setHeaderValue("TYPE");
+            scheduledMaintenanceList.getColumnModel().getColumn(3).setHeaderValue("Estimated intervention time [min]");
+        }
+
+        LabelWeekNumber.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        LabelWeekNumber.setText("               WEEK N°");
+        LabelWeekNumber.setFocusable(false);
+        LabelWeekNumber.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                LabelWeekNumberActionPerformed(evt);
+            }
+        });
+
+        buttonManageMaintenance.setText("Manage Maintenance ");
+        buttonManageMaintenance.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonManageMaintenanceActionPerformed(evt);
+            }
+        });
+
+        comboBoxWeek.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52" }));
+        comboBoxWeek.setSelectedItem(2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(LabelWeekNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(comboBoxWeek, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(buttonManageMaintenance, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(LabelWeekNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(comboBoxWeek, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(buttonManageMaintenance)
+                .addContainerGap(58, Short.MAX_VALUE))
         );
+
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.set(LocalDate.now().getYear(),LocalDate.now().getMonthValue()-1,LocalDate.now().getDayOfMonth());
+        this.comboBoxWeek.getModel().setSelectedItem(calendar.get(Calendar.WEEK_OF_YEAR));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void LabelWeekNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LabelWeekNumberActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_LabelWeekNumberActionPerformed
+
+    private void buttonManageMaintenanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonManageMaintenanceActionPerformed
+        this.frameManageMaintenance.setVisible(true);
+        
+    }//GEN-LAST:event_buttonManageMaintenanceActionPerformed
+
+    private void scheduledMaintenanceListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduledMaintenanceListMouseClicked
+        this.frameSelectedMaintenance.setVisible(true);
+        
+    }//GEN-LAST:event_scheduledMaintenanceListMouseClicked
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws SQLException {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -71,6 +223,15 @@ public class PlannerGUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        
+        String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
+        String pwd = "tlZzxfA1WKpHPYzim2E_PENlR6oDlZ52";
+        String user = "litqgeus";
+        Connection conn = null;
+        conn = DriverManager.getConnection(url,user,pwd);
+        Statement st = conn.createStatement();
+        //st.execute("insert into pollo(id) values (2)");
+        
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new PlannerGUI().setVisible(true);
@@ -79,5 +240,14 @@ public class PlannerGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField LabelWeekNumber;
+    private javax.swing.JButton buttonManageMaintenance;
+    private javax.swing.JComboBox<String> comboBoxWeek;
+    private javax.swing.JFrame frameManageMaintenance;
+    private javax.swing.JFrame frameSelectedMaintenance;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable scheduledMaintenanceList;
     // End of variables declaration//GEN-END:variables
 }
