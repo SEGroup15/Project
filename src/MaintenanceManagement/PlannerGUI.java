@@ -179,7 +179,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 334, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(buttonManageMaintenance)
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         Calendar calendar = Calendar.getInstance(Locale.getDefault());
@@ -195,7 +195,7 @@ public class PlannerGUI extends javax.swing.JFrame {
 
     private void buttonManageMaintenanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonManageMaintenanceActionPerformed
         this.frameManageMaintenance.setVisible(true);
-        
+        new PlannerRecordGUI().setVisible(true);
     }//GEN-LAST:event_buttonManageMaintenanceActionPerformed
 
     private void scheduledMaintenanceListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduledMaintenanceListMouseClicked
