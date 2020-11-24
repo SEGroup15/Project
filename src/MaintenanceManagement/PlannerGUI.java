@@ -108,7 +108,15 @@ public class PlannerGUI extends javax.swing.JFrame {
             new String [] {
                 "ID", "AREA", "TYPE", "Estimated intervention time [min]"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         scheduledMaintenanceList.setMaximumSize(new java.awt.Dimension(800, 400));
         scheduledMaintenanceList.setMinimumSize(new java.awt.Dimension(800, 400));
         scheduledMaintenanceList.setPreferredSize(new java.awt.Dimension(800, 400));
