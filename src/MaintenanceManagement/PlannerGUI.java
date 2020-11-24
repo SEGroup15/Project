@@ -40,8 +40,6 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         frameManageMaintenance = new javax.swing.JFrame();
         jLabel1 = new javax.swing.JLabel();
-        frameSelectedMaintenance = new javax.swing.JFrame();
-        jLabel2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         scheduledMaintenanceList = new javax.swing.JTable();
         LabelWeekNumber = new javax.swing.JTextField();
@@ -71,28 +69,6 @@ public class PlannerGUI extends javax.swing.JFrame {
         );
 
         this.setVisible(false);
-
-        frameSelectedMaintenance.setMinimumSize(new java.awt.Dimension(800, 500));
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        jLabel2.setText("Ivan");
-
-        javax.swing.GroupLayout frameSelectedMaintenanceLayout = new javax.swing.GroupLayout(frameSelectedMaintenance.getContentPane());
-        frameSelectedMaintenance.getContentPane().setLayout(frameSelectedMaintenanceLayout);
-        frameSelectedMaintenanceLayout.setHorizontalGroup(
-            frameSelectedMaintenanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, frameSelectedMaintenanceLayout.createSequentialGroup()
-                .addContainerGap(401, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(352, 352, 352))
-        );
-        frameSelectedMaintenanceLayout.setVerticalGroup(
-            frameSelectedMaintenanceLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(frameSelectedMaintenanceLayout.createSequentialGroup()
-                .addGap(200, 200, 200)
-                .addComponent(jLabel2)
-                .addContainerGap(271, Short.MAX_VALUE))
-        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PlannerGUI");
@@ -199,7 +175,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonManageMaintenanceActionPerformed
 
     private void scheduledMaintenanceListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduledMaintenanceListMouseClicked
-        this.frameSelectedMaintenance.setVisible(true);
+        new PlannerVerificationGUI().setVisible(true);
         
     }//GEN-LAST:event_scheduledMaintenanceListMouseClicked
 
@@ -232,13 +208,13 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         /* Create and display the form */
         
-        String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
+        /**String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
         String pwd = "tlZzxfA1WKpHPYzim2E_PENlR6oDlZ52";
         String user = "litqgeus";
         Connection conn = null;
         conn = DriverManager.getConnection(url,user,pwd);
         Statement st = conn.createStatement();
-        //st.execute("insert into pollo(id) values (2)");
+        //st.execute("insert into pollo(id) values (2)");**/
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -252,9 +228,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     private javax.swing.JButton buttonManageMaintenance;
     private javax.swing.JComboBox<String> comboBoxWeek;
     private javax.swing.JFrame frameManageMaintenance;
-    private javax.swing.JFrame frameSelectedMaintenance;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable scheduledMaintenanceList;
     // End of variables declaration//GEN-END:variables
