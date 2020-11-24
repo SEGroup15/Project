@@ -208,13 +208,13 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         /* Create and display the form */
         
-        /**String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
+        String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
         String pwd = "tlZzxfA1WKpHPYzim2E_PENlR6oDlZ52";
         String user = "litqgeus";
         Connection conn = null;
         conn = DriverManager.getConnection(url,user,pwd);
         Statement st = conn.createStatement();
-        //st.execute("insert into pollo(id) values (2)");**/
+        //st.execute("insert into pollo(id) values (2)");
         
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
