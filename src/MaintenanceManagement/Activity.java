@@ -34,6 +34,47 @@ public class Activity {
         this.week = week;
         this.materials = materials;
         this.workspaceNotes = workspaceNotes;
+        
+    }
+
+    public int getActivityId() {
+        return activityId;
+    }
+
+    public String getFactorySite() {
+        return factorySite;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public String getTypology() {
+        return typology;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public int getEstimatedTime() {
+        return estimatedTime;
+    }
+
+    public boolean isInterruptible() {
+        return interruptible;
+    }
+
+    public String getMaterials() {
+        return materials;
+    }
+
+    public int getWeek() {
+        return week;
+    }
+
+    public String getWorkspaceNotes() {
+        return workspaceNotes;
     }
     
 }

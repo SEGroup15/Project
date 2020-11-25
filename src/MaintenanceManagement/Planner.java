@@ -21,15 +21,19 @@ public class Planner extends User {
         this.conn=conn;
     }
     
+    public Activity createActivity(int activityId, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, String materials, int week, String workspaceNotes) {
+        Activity act = new Activity(activityId,factorySite,area,typology,description,estimatedTime,interruptible,materials,week,workspaceNotes);
+    return act;
+    }
     
-    public boolean addActivity(int activityId, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, String materials, int week, String workspaceNotes) throws SQLException {
+    public boolean addActivity(Activity a) throws SQLException {
         Statement op= conn.createStatement();
         
-        String material = (materials==null) ? null : "'"+materials+"'";
-        String workspaceNote = (workspaceNotes==null) ? null : "'"+workspaceNotes+"'";
+        String material = (a.getMaterials()==null) ? null : "'"+a.getMaterials()+"'";
+        String workspaceNote = (a.getWorkspaceNotes()==null) ? null : "'"+a.getWorkspaceNotes()+"'";
         
-        String insert="insert into activity values ("+activityId+",'"+factorySite+"','"+area+"','"+typology+"','"+description+"',"+estimatedTime+",'"
-            +interruptible+"',"+material+","+ week+","+ workspaceNote +")";
+        String insert="insert into activity values ("+a.getActivityId()+",'"+a.getFactorySite()+"','"+a.getArea()+"','"+a.getTypology()+"','"+a.getDescription()+"',"+a.getEstimatedTime()+",'"
+            +a.isInterruptible()+"',"+ material+","+ a.getWeek()+","+ workspaceNote +")";
         op.executeUpdate(insert);
         
         return true;
