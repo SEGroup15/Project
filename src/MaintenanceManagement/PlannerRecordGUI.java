@@ -4,7 +4,14 @@
  * and open the template in the editor.
  */
 package MaintenanceManagement;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.Statement;
 import javax.swing.*;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -30,8 +37,10 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
     /**
      * Creates new form PlannerGUI
      */
-    public PlannerRecordGUI() {
+    public PlannerRecordGUI() throws SQLException{
         initComponents();
+        
+
     }
 
     /**
@@ -353,6 +362,14 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_EstimatedTimeTextFieldActionPerformed
 
     private void ExecuteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExecuteButtonActionPerformed
+        boolean interruptible;
+        if (isInterruptible == "Yes"){
+            interruptible= true;
+        }
+        else{
+            interruptible= false;
+        }
+        
         if (!(CreateButton.isSelected()) && !(ModifyButton.isSelected()) && !(DeleteButton.isSelected())){
             JOptionPane.showMessageDialog(null, "A type of action must be selected!", "Error!", 0);
         }
@@ -363,6 +380,9 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
             }
             else if (!isNumeric(EstimatedTimeTextField.getText())){
                 JOptionPane.showMessageDialog(null, "Estimated time must be a number!", "Error!", 0);
+            }
+            else if (!isNumeric(ActivityIDTextField.getText())){
+                JOptionPane.showMessageDialog(null, "Activity ID must be a number!", "Error!", 0);
             }
             else{
                 activityID = ActivityIDTextField.getText();
@@ -375,12 +395,63 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
                 weeks = WeekComboBox.getSelectedIndex() + 1;
                 workspaceNotes = WorkspaceNotes.getText();
                 JOptionPane.showMessageDialog(null,"Type of activity:  " + typeOfActivity + "\n" + "Activity ID:  " +  activityID + "\n" + "Factory site:  " + factorySite + "\n" + "Area/Department:  " + areaOrDepartment + "\n" + "Typology of activity:  " + activityTypology + "\n" + "Activity description:  " + activityDescription + "\n" + "Estimated intervention time:  " + interventionTime + "\n" + "Is it an interruptible activity?  " + isInterruptible + "\n" + "Materials to be used:  " +  materials + "\n" + "Weeks to carry out the activity:  " + weeks + "\n" + "Workspace notes:  " + workspaceNotes, "Activity Information:",1);
+                
+                try{
+                String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
+                String pwd = "tlZzxfA1WKpHPYzim2E_PENlR6oDlZ52";
+                String user = "litqgeus";
+                Connection conn = null;
+                conn = DriverManager.getConnection(url,user,pwd);
+                Statement st = conn.createStatement();
+                String query = "("+Integer.parseInt(activityID)+",'"+factorySite+"','"+areaOrDepartment+"','"+activityTypology.toLowerCase()+"','"+activityDescription+"',"+interventionTime+", "+interruptible+", '"+materials+"',"+weeks+",'"+workspaceNotes+"')";
+                st.execute("insert into activity(activityid, factorysite, area, typology, description, estimatedtime, interruptible, materials, week, workspacenotes) values"+query);
+                conn.close();
+                }
+                catch (java.sql.SQLException e){
+                    System.out.println(e.getMessage());
+                }
+                              
+                
                 }
             
         }
         
         
+        if (ModifyButton.isSelected()){
+              try{
+                String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
+                String pwd = "tlZzxfA1WKpHPYzim2E_PENlR6oDlZ52";
+                String user = "litqgeus";
+                Connection conn = null;
+                conn = DriverManager.getConnection(url,user,pwd);
+                Statement st = conn.createStatement();
+                int ID = Integer.parseInt(ActivityIDTextField.getText());
+                String NewWorkspaceNote = WorkspaceNotes.getText();
+                st.execute("update activity set workspacenotes= '"+ NewWorkspaceNote + "' where activityid=" + ID);
+                conn.close();
+                }
+                catch (java.sql.SQLException e){
+                    System.out.println(e.getMessage());
+                }
+        }
         
+        
+        if (DeleteButton.isSelected()){
+               try{
+                String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
+                String pwd = "tlZzxfA1WKpHPYzim2E_PENlR6oDlZ52";
+                String user = "litqgeus";
+                Connection conn = null;
+                conn = DriverManager.getConnection(url,user,pwd);
+                Statement st = conn.createStatement();
+                int ID = Integer.parseInt(ActivityIDTextField.getText());
+                st.execute("delete from activity where activityid=" + ID);
+                conn.close();
+                }
+                catch (java.sql.SQLException e){
+                    System.out.println(e.getMessage());
+                }
+        }
         
         
         
@@ -429,7 +500,7 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[]) throws SQLException{
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -452,11 +523,17 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(PlannerGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        
+
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        java.awt.EventQueue.invokeLater(new Runnable(){
             public void run() {
-                new PlannerRecordGUI().setVisible(true);
+                try {
+                    new PlannerRecordGUI().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PlannerRecordGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
