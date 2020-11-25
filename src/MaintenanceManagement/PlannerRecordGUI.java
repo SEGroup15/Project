@@ -19,9 +19,10 @@ import java.util.logging.Logger;
  */
 
 public class PlannerRecordGUI extends javax.swing.JFrame {
-
+    
+    private final Planner planner;
     private String typeOfActivity;
-    private String activityID;
+    private int activityID;
     private String factorySite;
     private String areaOrDepartment;
     private String activityTypology;
@@ -31,14 +32,22 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
     private String materials;
     private int weeks;
     private String workspaceNotes;
-    
+    private String username;
+    private String password;
+    private String role;
+    private final Connection conn;
+    private static final String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
+    private static final String pwd = "tlZzxfA1WKpHPYzim2E_PENlR6oDlZ52";
+    private static final String user = "litqgeus";
     
     
     /**
      * Creates new form PlannerGUI
      */
-    public PlannerRecordGUI() throws SQLException{
+    public PlannerRecordGUI(){
         initComponents();
+        conn=PlannerRecordGUI.startConnection();
+        planner = new Planner(username, password, role, conn);
         
 
     }
@@ -346,11 +355,36 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void CreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateButtonActionPerformed
-        // TODO add your handling code here:
+    PlannedActivityButton.setEnabled(true);
+    UnplannedActivityButton.setEnabled(true);
+    ExtraActivityButton.setEnabled(true);
+    FactorySiteTextField.setEnabled(true);
+    AreaDepartmentTextField.setEnabled(true);
+    ActivityTypologyComboBox.setEnabled(true);
+    ActivityDescriptionTextField.setEnabled(true);
+    EstimatedTimeTextField.setEnabled(true);
+    YesButton.setEnabled(true);
+    NoButton.setEnabled(true);
+    MaterialsTextField.setEnabled(true);
+    WeekComboBox.setEnabled(true);
+    WorkspaceNotes.setEnabled(true);
+    
     }//GEN-LAST:event_CreateButtonActionPerformed
 
     private void ModifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModifyButtonActionPerformed
-        // TODO add your handling code here:
+    PlannedActivityButton.setEnabled(false);
+    UnplannedActivityButton.setEnabled(false);
+    ExtraActivityButton.setEnabled(false);
+    FactorySiteTextField.setEnabled(false);
+    AreaDepartmentTextField.setEnabled(false);
+    ActivityTypologyComboBox.setEnabled(false);
+    ActivityDescriptionTextField.setEnabled(false);
+    EstimatedTimeTextField.setEnabled(false);
+    YesButton.setEnabled(false);
+    NoButton.setEnabled(false);
+    MaterialsTextField.setEnabled(false);
+    WeekComboBox.setEnabled(false);
+    WorkspaceNotes.setEnabled(true);
     }//GEN-LAST:event_ModifyButtonActionPerformed
 
     private void WeekComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WeekComboBoxActionPerformed
@@ -385,72 +419,70 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Activity ID must be a number!", "Error!", 0);
             }
             else{
-                activityID = ActivityIDTextField.getText();
+                activityID = Integer.parseInt(ActivityIDTextField.getText());
                 factorySite = FactorySiteTextField.getText();
                 areaOrDepartment = AreaDepartmentTextField.getText();
-                activityTypology = ActivityTypologyComboBox.getItemAt(ActivityTypologyComboBox.getSelectedIndex());
+                activityTypology = (ActivityTypologyComboBox.getItemAt(ActivityTypologyComboBox.getSelectedIndex())).toLowerCase();
                 activityDescription = ActivityDescriptionTextField.getText();
                 interventionTime = Integer.parseInt(EstimatedTimeTextField.getText());
                 materials = MaterialsTextField.getText();
                 weeks = WeekComboBox.getSelectedIndex() + 1;
                 workspaceNotes = WorkspaceNotes.getText();
-                JOptionPane.showMessageDialog(null,"Type of activity:  " + typeOfActivity + "\n" + "Activity ID:  " +  activityID + "\n" + "Factory site:  " + factorySite + "\n" + "Area/Department:  " + areaOrDepartment + "\n" + "Typology of activity:  " + activityTypology + "\n" + "Activity description:  " + activityDescription + "\n" + "Estimated intervention time:  " + interventionTime + "\n" + "Is it an interruptible activity?  " + isInterruptible + "\n" + "Materials to be used:  " +  materials + "\n" + "Weeks to carry out the activity:  " + weeks + "\n" + "Workspace notes:  " + workspaceNotes, "Activity Information:",1);
+                
                 
                 try{
-                String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
-                String pwd = "tlZzxfA1WKpHPYzim2E_PENlR6oDlZ52";
-                String user = "litqgeus";
-                Connection conn = null;
-                conn = DriverManager.getConnection(url,user,pwd);
-                Statement st = conn.createStatement();
-                String query = "("+Integer.parseInt(activityID)+",'"+factorySite+"','"+areaOrDepartment+"','"+activityTypology.toLowerCase()+"','"+activityDescription+"',"+interventionTime+", "+interruptible+", '"+materials+"',"+weeks+",'"+workspaceNotes+"')";
-                st.execute("insert into activity(activityid, factorysite, area, typology, description, estimatedtime, interruptible, materials, week, workspacenotes) values"+query);
-                conn.close();
+                planner.addActivity(activityID, factorySite, areaOrDepartment, activityTypology, activityDescription, interventionTime, interruptible, materials, weeks, workspaceNotes);
                 }
                 catch (java.sql.SQLException e){
                     System.out.println(e.getMessage());
                 }
-                              
-                
+                    ActivityIDTextField.setText(null);
+                    FactorySiteTextField.setText(null);
+                    AreaDepartmentTextField.setText(null);
+                    ActivityDescriptionTextField.setText(null);
+                    EstimatedTimeTextField.setText(null);
+                    MaterialsTextField.setText(null);
+                    WorkspaceNotes.setText(null);
+                    JOptionPane.showMessageDialog(null,"Type of activity:  " + typeOfActivity + "\n" + "Activity ID:  " +  activityID + "\n" + "Factory site:  " + factorySite + "\n" + "Area/Department:  " + areaOrDepartment + "\n" + "Typology of activity:  " + activityTypology + "\n" + "Activity description:  " + activityDescription + "\n" + "Estimated intervention time:  " + interventionTime + "\n" + "Is it an interruptible activity?  " + isInterruptible + "\n" + "Materials to be used:  " +  materials + "\n" + "Weeks to carry out the activity:  " + weeks + "\n" + "Workspace notes:  " + workspaceNotes, "Activity Information:",1);
                 }
-            
-        }
+           }
         
         
         if (ModifyButton.isSelected()){
+            if (ActivityIDTextField.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "No activity ID was specified", "Error!", 0);
+            }
+            else{
               try{
-                String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
-                String pwd = "tlZzxfA1WKpHPYzim2E_PENlR6oDlZ52";
-                String user = "litqgeus";
-                Connection conn = null;
-                conn = DriverManager.getConnection(url,user,pwd);
-                Statement st = conn.createStatement();
-                int ID = Integer.parseInt(ActivityIDTextField.getText());
-                String NewWorkspaceNote = WorkspaceNotes.getText();
-                st.execute("update activity set workspacenotes= '"+ NewWorkspaceNote + "' where activityid=" + ID);
-                conn.close();
+                activityID = Integer.parseInt(ActivityIDTextField.getText());
+                workspaceNotes = WorkspaceNotes.getText();
+                planner.modifyActivity(activityID, workspaceNotes);
+                JOptionPane.showMessageDialog(null, "The workspace notes have been modified","Modify",1);
+                ActivityIDTextField.setText(null);
+                WorkspaceNotes.setText(null);
                 }
                 catch (java.sql.SQLException e){
                     System.out.println(e.getMessage());
                 }
+        }
         }
         
         
         if (DeleteButton.isSelected()){
+            if (ActivityIDTextField.getText().isEmpty()){
+                JOptionPane.showMessageDialog(null, "No activity ID was specified", "Error!", 0);
+            }
+            else{
                try{
-                String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
-                String pwd = "tlZzxfA1WKpHPYzim2E_PENlR6oDlZ52";
-                String user = "litqgeus";
-                Connection conn = null;
-                conn = DriverManager.getConnection(url,user,pwd);
-                Statement st = conn.createStatement();
-                int ID = Integer.parseInt(ActivityIDTextField.getText());
-                st.execute("delete from activity where activityid=" + ID);
-                conn.close();
+                activityID = Integer.parseInt(ActivityIDTextField.getText());   
+                planner.deleteActivity(activityID);
+                JOptionPane.showMessageDialog(null, "The activity has been deleted","Delete",1);
+                ActivityIDTextField.setText(null);
                 }
                 catch (java.sql.SQLException e){
                     System.out.println(e.getMessage());
                 }
+        }
         }
         
         
@@ -460,7 +492,18 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_ExecuteButtonActionPerformed
 
     private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
-        // TODO add your handling code here:
+    PlannedActivityButton.setEnabled(false);
+    UnplannedActivityButton.setEnabled(false);
+    ExtraActivityButton.setEnabled(false);
+    FactorySiteTextField.setEnabled(false);
+    AreaDepartmentTextField.setEnabled(false);
+    ActivityTypologyComboBox.setEnabled(false);
+    ActivityDescriptionTextField.setEnabled(false);
+    EstimatedTimeTextField.setEnabled(false);
+    YesButton.setEnabled(false);
+    NoButton.setEnabled(false);
+    MaterialsTextField.setEnabled(false);
+    WorkspaceNotes.setEnabled(false);
     }//GEN-LAST:event_DeleteButtonActionPerformed
 
     private void PlannedActivityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlannedActivityButtonActionPerformed
@@ -496,6 +539,17 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
   }  
 }
     
+    public static Connection startConnection(){
+        Connection conn = null;
+        try {
+            conn=DriverManager.getConnection(url, user, pwd);
+        }
+        catch(SQLException ex){
+            
+        }
+        return conn;
+    }
+    
     
     /**
      * @param args the command line arguments
@@ -529,11 +583,7 @@ public class PlannerRecordGUI extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable(){
             public void run() {
-                try {
                     new PlannerRecordGUI().setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(PlannerRecordGUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
         });
     }
