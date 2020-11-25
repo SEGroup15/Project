@@ -9,11 +9,11 @@ import java.util.*;
 import java.sql.*;
 
 
-
 /**
  *
  * @author saby_
  */
+
 public class Planner extends User {
     private Connection conn;
     public Planner(String username, String password, String role, Connection conn) {
@@ -21,19 +21,19 @@ public class Planner extends User {
         this.conn=conn;
     }
     
-    public Activity createActivity(int activityId, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, String materials, int week, String workspaceNotes) {
-        Activity act = new Activity(activityId,factorySite,area,typology,description,estimatedTime,interruptible,materials,week,workspaceNotes);
+    public Activity createActivity(int activityId, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, String materials, int week, String workspaceNotes, Procedure procedura) {
+        Activity act = new Activity(activityId,factorySite,area,typology,description,estimatedTime,interruptible,materials,week,workspaceNotes,procedura);
     return act;
     }
     
     public boolean addActivity(Activity a) throws SQLException {
         Statement op= conn.createStatement();
         
-        String material = (a.getMaterials()==null) ? null : "'"+a.getMaterials()+"'";
-        String workspaceNote = (a.getWorkspaceNotes()==null) ? null : "'"+a.getWorkspaceNotes()+"'";
+        String material = (a.getMaterials()==null || a.getMaterials() == "") ? null : "'"+a.getMaterials()+"'";
+        String workspaceNote = (a.getWorkspaceNotes()==null || a.getWorkspaceNotes() == "") ? null : "'"+a.getWorkspaceNotes()+"'";
         
         String insert="insert into activity values ("+a.getActivityId()+",'"+a.getFactorySite()+"','"+a.getArea()+"','"+a.getTypology()+"','"+a.getDescription()+"',"+a.getEstimatedTime()+",'"
-            +a.isInterruptible()+"',"+ material+","+ a.getWeek()+","+ workspaceNote +")";
+            +a.isInterruptible()+"',"+ material+","+ a.getWeek()+","+ workspaceNote +",'"+a.getProcedure().getNome()+"')";
         op.executeUpdate(insert);
         
         return true;

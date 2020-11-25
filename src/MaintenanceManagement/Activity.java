@@ -22,8 +22,9 @@ public class Activity {
     private final String materials;
     private final int week;
     private String workspaceNotes;
+    private final Procedure procedure;
 
-    public Activity(int activityId, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, String materials, int week, String workspaceNotes) {
+    public Activity(int activityId, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, String materials, int week, String workspaceNotes,Procedure procedure) {
         this.activityId = activityId;
         this.factorySite = factorySite;
         this.area = area;
@@ -34,6 +35,7 @@ public class Activity {
         this.week = week;
         this.materials = materials;
         this.workspaceNotes = workspaceNotes;
+        this.procedure=procedure;
         
     }
 
@@ -68,6 +70,11 @@ public class Activity {
     public String getMaterials() {
         return materials;
     }
+
+    public Procedure getProcedure() {
+        return procedure;
+    }
+
 
     public int getWeek() {
         return week;

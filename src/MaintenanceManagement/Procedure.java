@@ -10,5 +10,15 @@ package MaintenanceManagement;
  * @author saby_
  */
 public class Procedure {
+    private String nome;
+    
+    public Procedure(String nome) { 
+    this.nome=nome;
+    }
     //da implementare
+
+    public String getNome() {
+        return nome;
+    }
+    
 }
