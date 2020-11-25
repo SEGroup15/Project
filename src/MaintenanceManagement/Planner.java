@@ -47,6 +47,12 @@ public class Planner extends User {
         String modify = "update activity set workspaceNotes='"+workspaceNotes+"' where activityId="+ idActivity;
         return true; 
     }
+    
+    public ResultSet getActivities(String week) throws SQLException{
+        Statement op= conn.createStatement();
+        ResultSet rst = op.executeQuery("select * from activity where week = " + week);
+        return rst;
+    }
 }
     
     

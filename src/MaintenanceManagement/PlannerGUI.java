@@ -15,6 +15,9 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -25,8 +28,17 @@ public class PlannerGUI extends javax.swing.JFrame {
     /**
      * Creates new form PlannerGUI
      */
-    public PlannerGUI() {
+    private final Connection conn;
+    private final Planner Planner;
+    private static final String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
+    private static final String pwd = "tlZzxfA1WKpHPYzim2E_PENlR6oDlZ52";
+    private static final String user = "litqgeus";
+    
+    public PlannerGUI(){
         initComponents();
+        conn = PlannerGUI.startConnection();
+        Planner= new Planner("admin","admin","Planner",conn);    
+        setList(true);
     }
 
     /**
@@ -127,6 +139,11 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         comboBoxWeek.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40", "41", "42", "43", "44", "45", "46", "47", "48", "49", "50", "51", "52" }));
         comboBoxWeek.setSelectedItem(2);
+        comboBoxWeek.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboBoxWeekActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -158,10 +175,6 @@ public class PlannerGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        calendar.set(LocalDate.now().getYear(),LocalDate.now().getMonthValue()-1,LocalDate.now().getDayOfMonth());
-        this.comboBoxWeek.getModel().setSelectedItem(calendar.get(Calendar.WEEK_OF_YEAR));
-
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
@@ -170,7 +183,6 @@ public class PlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_LabelWeekNumberActionPerformed
 
     private void buttonManageMaintenanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonManageMaintenanceActionPerformed
-        this.frameManageMaintenance.setVisible(true);
         new PlannerRecordGUI().setVisible(true);
     }//GEN-LAST:event_buttonManageMaintenanceActionPerformed
 
@@ -179,10 +191,46 @@ public class PlannerGUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_scheduledMaintenanceListMouseClicked
 
+    private void comboBoxWeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxWeekActionPerformed
+        setList(false);
+    }//GEN-LAST:event_comboBoxWeekActionPerformed
+    
+    
+    private void setList(boolean initialize){
+        if (initialize==true) {
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.set(LocalDate.now().getYear(),LocalDate.now().getMonthValue()-1,LocalDate.now().getDayOfMonth());
+        this.comboBoxWeek.getModel().setSelectedItem(calendar.get(Calendar.WEEK_OF_YEAR));
+        };
+        String[] nomi = {"ID","AREA","TYPE","Estimated intervention time[min]"};
+        ResultSet rst = null;
+        try {
+            rst = Planner.getActivities(this.comboBoxWeek.getSelectedItem().toString());
+        } catch (SQLException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        DefaultTableModel tab = (DefaultTableModel) this.scheduledMaintenanceList.getModel();
+        tab.setRowCount(0);
+        tab.setColumnIdentifiers(nomi);
+        Object[] row = new Object[4];
+        try{
+            while(rst.next()){
+                row[0]=rst.getString("activityid");
+                row[1]=rst.getString("factorysite") + " - " + rst.getString("area");
+                row[2]=rst.getString("typology");
+                row[3]=rst.getString("estimatedtime");
+                tab.addRow(row);
+            }
+        }catch(SQLException ex){
+            
+        }
+             
+    }
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) throws SQLException {
+    public static void main(String args[]){
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -207,20 +255,23 @@ public class PlannerGUI extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        
-        String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
-        String pwd = "tlZzxfA1WKpHPYzim2E_PENlR6oDlZ52";
-        String user = "litqgeus";
-        Connection conn = null;
-        conn = DriverManager.getConnection(url,user,pwd);
-        Statement st = conn.createStatement();
-        //st.execute("insert into pollo(id) values (2)");
-        
+               
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new PlannerGUI().setVisible(true);
             }
         });
+    }
+    
+    public static Connection startConnection(){
+        Connection conn = null;
+        try {
+            conn=DriverManager.getConnection(url, user, pwd);
+        }
+        catch(SQLException ex){
+            
+        }
+        return conn;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
