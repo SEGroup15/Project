@@ -188,6 +188,9 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="ExtraActivityButton">
           <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="ActivityType"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Extra"/>
           </Properties>
           <Events>
@@ -198,6 +201,9 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="YesButton">
           <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="InterruptibileActivity"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Yes"/>
           </Properties>
           <Events>
@@ -206,6 +212,9 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="NoButton">
           <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="InterruptibileActivity"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="No"/>
           </Properties>
           <Events>
@@ -216,6 +225,9 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="CreateButton">
           <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="ActionType"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Create"/>
           </Properties>
           <Events>
@@ -234,6 +246,9 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="UnplannedActivityButton">
           <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="ActivityType"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Unplanned"/>
           </Properties>
           <Events>
@@ -292,6 +307,9 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="PlannedActivityButton">
           <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="ActivityType"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Planned"/>
           </Properties>
           <Events>
@@ -414,6 +432,9 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="DeleteButton">
           <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="ActionType"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Delete"/>
           </Properties>
           <Events>
@@ -427,6 +448,9 @@
         </Component>
         <Component class="javax.swing.JRadioButton" name="ModifyButton">
           <Properties>
+            <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+              <ComponentRef name="ActionType"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Modify"/>
           </Properties>
           <Events>
@@ -435,6 +459,12 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.ButtonGroup" name="ActionType">
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="ActivityType">
+    </Component>
+    <Component class="javax.swing.ButtonGroup" name="InterruptibileActivity">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>

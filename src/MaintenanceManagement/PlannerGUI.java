@@ -100,6 +100,9 @@ public class PlannerGUI extends javax.swing.JFrame {
         DeleteButton = new javax.swing.JRadioButton();
         jLabel13 = new javax.swing.JLabel();
         ModifyButton = new javax.swing.JRadioButton();
+        ActionType = new javax.swing.ButtonGroup();
+        ActivityType = new javax.swing.ButtonGroup();
+        InterruptibileActivity = new javax.swing.ButtonGroup();
         jScrollPane1 = new javax.swing.JScrollPane();
         scheduledMaintenanceList = new javax.swing.JTable();
         LabelWeekNumber = new javax.swing.JTextField();
@@ -111,6 +114,7 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         jLabel9.setText("Week:");
 
+        ActivityType.add(ExtraActivityButton);
         ExtraActivityButton.setText("Extra");
         ExtraActivityButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -118,6 +122,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
 
+        InterruptibileActivity.add(YesButton);
         YesButton.setText("Yes");
         YesButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -125,6 +130,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
 
+        InterruptibileActivity.add(NoButton);
         NoButton.setText("No");
         NoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -132,6 +138,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
 
+        ActionType.add(CreateButton);
         CreateButton.setText("Create");
         CreateButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -147,6 +154,7 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         jLabel3.setText("Area or Department:");
 
+        ActivityType.add(UnplannedActivityButton);
         UnplannedActivityButton.setText("Unplanned");
         UnplannedActivityButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -173,6 +181,7 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         jLabel11.setText("Type of activity:");
 
+        ActivityType.add(PlannedActivityButton);
         PlannedActivityButton.setText("Planned");
         PlannedActivityButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -206,6 +215,7 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         ActivityLabel.setText("Activity ID:");
 
+        ActionType.add(DeleteButton);
         DeleteButton.setText("Delete");
         DeleteButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -215,6 +225,7 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         jLabel13.setText("Type of action:");
 
+        ActionType.add(ModifyButton);
         ModifyButton.setText("Modify");
         ModifyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -737,9 +748,11 @@ public class PlannerGUI extends javax.swing.JFrame {
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup ActionType;
     private javax.swing.JTextField ActivityDescriptionTextField;
     private javax.swing.JTextField ActivityIDTextField;
     private javax.swing.JLabel ActivityLabel;
+    private javax.swing.ButtonGroup ActivityType;
     private javax.swing.JComboBox<String> ActivityTypologyComboBox;
     private javax.swing.JTextField AreaDepartmentTextField;
     private javax.swing.JRadioButton CreateButton;
@@ -748,6 +761,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     private javax.swing.JButton ExecuteButton;
     private javax.swing.JRadioButton ExtraActivityButton;
     private javax.swing.JTextField FactorySiteTextField;
+    private javax.swing.ButtonGroup InterruptibileActivity;
     private javax.swing.JTextField LabelWeekNumber;
     private javax.swing.JTextField MaterialsTextField;
     private javax.swing.JRadioButton ModifyButton;
