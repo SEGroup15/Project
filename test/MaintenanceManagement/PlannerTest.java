@@ -24,17 +24,17 @@ Connection conn;
 String url="jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
 String pwd = "tlZzxfA1WKpHPYzim2E_PENlR6oDlZ52";
 String user = "litqgeus";
-Procedure procedure;
+Procedure procedure = new Procedure("pr1");
 
 @Before
 public void setUp() throws SQLException{
 // apertura connessione usando driver di postgresql
 conn = DriverManager.getConnection(url, user, pwd);
 planner = new Planner("PLANNER","TEST","planner",conn);
-procedure= new Procedure("nome");}
+}
 
 @After
-public void end() throws SQLException {
+public void tearDown() throws SQLException {
 conn.close();
 }
     /**
@@ -42,25 +42,26 @@ conn.close();
      */
     @Test
     public void testAddActivity() throws SQLException {
-        boolean bool = planner.addActivity(new Activity(7, "aa", "bb", "electrical", "dd", 60, true, "", 1, "qq",procedure));
+        boolean bool = planner.addActivity(new Activity(1, "aa", "bb", "electrical", "dd", 60, true, "", 1, "qq",procedure));
         assertTrue(bool);
     }
     
     @Test
     public void testAddActivityWithoutMaterials() throws SQLException {
-        boolean bool = planner.addActivity(new Activity(14, "site", "area", "hydraulic", "description", 60, true, null, 2, "wsnotes",procedure));
+        boolean bool = planner.addActivity(new Activity(2, "site", "area", "hydraulic", "description", 60, true, null, 2, "wsnotes",procedure));
         assertTrue(bool);
     }
     
         @Test
     public void testAddActivityWithoutNotes() throws SQLException {
-        boolean bool = planner.addActivity(new Activity(15, "site", "area", "hydraulic", "description", 60, true,"materials", 2, null,procedure));
+        boolean bool = planner.addActivity(new Activity(3, "site", "area", "hydraulic", "description", 60, true,"materials", 2, null,procedure));
         assertTrue(bool);
     }
     
      @Test(expected=SQLException.class)
     public void testAddActivitySameId() throws SQLException {
-        planner.addActivity(new Activity(3, "aa", "bb", "electrical", "dd", 60 ,true , null, 3, "qq",procedure));
+        planner.addActivity(new Activity(4, "aa", "bb", "electrical", "dd", 60 ,true , null, 3, "qq",procedure));
+        planner.addActivity(new Activity(4, "aa", "bb", "electrical", "dd", 60 ,true , null, 3, "qq",procedure));
     }
     
      @Test(expected=SQLException.class)
@@ -105,12 +106,14 @@ conn.close();
      */
     @Test
     public void testDeleteActivityExists() throws SQLException {
-        boolean bool1=planner.deleteActivity(7);
-        boolean bool2=planner.deleteActivity(14);
-        boolean bool3=planner.deleteActivity(15);
+        boolean bool1=planner.deleteActivity(1);
+        boolean bool2=planner.deleteActivity(2);
+        boolean bool3=planner.deleteActivity(3);
+        boolean bool4=planner.deleteActivity(4);
         assertTrue(bool1);
         assertTrue(bool2);
         assertTrue(bool3);
+        assertTrue(bool4);
     }
     /**
      * Tests of modifyActivity method, of class Planner.

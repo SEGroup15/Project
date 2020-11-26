@@ -9,6 +9,12 @@ package MaintenanceManagement;
  *
  * @author saby_
  */
-public class Mantainer {
+public class Mantainer extends User {
+    
+
+    public Mantainer(String name, String username, String password, String role) {
+        super(username, password, role);
+    }
+    
     
 }
