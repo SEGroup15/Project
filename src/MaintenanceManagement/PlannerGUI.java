@@ -103,6 +103,9 @@ public class PlannerGUI extends javax.swing.JFrame {
         buttonManageMaintenance = new javax.swing.JButton();
         comboBoxWeek = new javax.swing.JComboBox<>();
 
+        PlannerRecordGUI.setMaximumSize(new java.awt.Dimension(958, 500));
+        PlannerRecordGUI.setMinimumSize(new java.awt.Dimension(958, 500));
+
         jLabel9.setText("Week:");
 
         ExtraActivityButton.setText("Extra");
@@ -553,6 +556,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                     Procedure p = new Procedure("procedura");
                     Activity a = Planner.createActivity(activityID, factorySite, areaOrDepartment, activityTypology, activityDescription, interventionTime, interruptible, materials, weeks, workspaceNotes,p);
                     Planner.addActivity(a);
+                    setList(false);
                 }
                 catch (java.sql.SQLException e){
                     System.out.println(e.getMessage());
