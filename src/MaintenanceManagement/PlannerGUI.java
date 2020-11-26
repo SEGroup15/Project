@@ -584,6 +584,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                     JOptionPane.showMessageDialog(null, "The workspace notes have been modified","Modify",1);
                     ActivityIDTextField.setText(null);
                     WorkspaceNotes.setText(null);
+                    setList(false);
                 }
                 catch (java.sql.SQLException e){
                     System.out.println(e.getMessage());
@@ -601,6 +602,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                     Planner.deleteActivity(activityID);
                     JOptionPane.showMessageDialog(null, "The activity has been deleted","Delete",1);
                     ActivityIDTextField.setText(null);
+                    setList(false);
                 }
                 catch (java.sql.SQLException e){
                     System.out.println(e.getMessage());
