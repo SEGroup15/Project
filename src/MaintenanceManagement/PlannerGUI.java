@@ -15,9 +15,6 @@ import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.SQLException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.temporal.WeekFields;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -649,9 +646,9 @@ public class PlannerGUI extends javax.swing.JFrame {
     
     private void setList(boolean initialize){
         if (initialize==true) {
-        LocalDate date = LocalDate.now();
-        WeekFields weekFields = WeekFields.of(Locale.getDefault());
-        this.comboBoxWeek.getModel().setSelectedItem(date.get(weekFields.weekOfWeekBasedYear()));
+        Calendar calendar = Calendar.getInstance(Locale.getDefault());
+        calendar.set(LocalDate.now().getYear(),LocalDate.now().getMonthValue()-1,LocalDate.now().getDayOfMonth());
+        this.comboBoxWeek.getModel().setSelectedItem(calendar.get(Calendar.WEEK_OF_YEAR));
         };
         String[] nomi = {"ID","AREA","TYPE","Estimated intervention time[min]"};
         ResultSet rst = null;
@@ -679,7 +676,7 @@ public class PlannerGUI extends javax.swing.JFrame {
              
     }
     
-    private static boolean isNumeric(String str) { 
+    public static boolean isNumeric(String str) { 
   try {  
     Double.parseDouble(str);  
     return true;
@@ -687,16 +684,6 @@ public class PlannerGUI extends javax.swing.JFrame {
     return false;  
   }  
 }  
-    private static Connection startConnection(){
-        Connection conn = null;
-        try {
-            conn=DriverManager.getConnection(url, user, pwd);
-        }
-        catch(SQLException ex){
-            
-        }
-        return conn;
-    }
     
     /**
      * @param args the command line arguments
@@ -734,7 +721,16 @@ public class PlannerGUI extends javax.swing.JFrame {
         });
     }
     
-    
+    public static Connection startConnection(){
+        Connection conn = null;
+        try {
+            conn=DriverManager.getConnection(url, user, pwd);
+        }
+        catch(SQLException ex){
+            
+        }
+        return conn;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField ActivityDescriptionTextField;
