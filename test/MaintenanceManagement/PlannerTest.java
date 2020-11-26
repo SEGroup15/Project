@@ -42,19 +42,19 @@ conn.close();
      */
     @Test
     public void testAddActivity() throws SQLException {
-        boolean bool = planner.addActivity(new Activity(1, "aa", "bb", "electrical", "dd", 60, true, "", 1, "qq",procedure));
+        boolean bool = planner.addActivity(new Activity(7, "aa", "bb", "electrical", "dd", 60, true, "", 1, "qq",procedure));
         assertTrue(bool);
     }
     
     @Test
     public void testAddActivityWithoutMaterials() throws SQLException {
-        boolean bool = planner.addActivity(new Activity(2, "site", "area", "hydraulic", "description", 60, true, null, 2, "wsnotes",procedure));
+        boolean bool = planner.addActivity(new Activity(14, "site", "area", "hydraulic", "description", 60, true, null, 2, "wsnotes",procedure));
         assertTrue(bool);
     }
     
         @Test
     public void testAddActivityWithoutNotes() throws SQLException {
-        boolean bool = planner.addActivity(new Activity(3, "site", "area", "hydraulic", "description", 60, true,"materials", 2, null,procedure));
+        boolean bool = planner.addActivity(new Activity(15, "site", "area", "hydraulic", "description", 60, true,"materials", 2, null,procedure));
         assertTrue(bool);
     }
     
@@ -105,8 +105,12 @@ conn.close();
      */
     @Test
     public void testDeleteActivityExists() throws SQLException {
-        boolean bool=planner.deleteActivity(1);
-        assertTrue(bool);
+        boolean bool1=planner.deleteActivity(7);
+        boolean bool2=planner.deleteActivity(14);
+        boolean bool3=planner.deleteActivity(15);
+        assertTrue(bool1);
+        assertTrue(bool2);
+        assertTrue(bool3);
     }
     /**
      * Tests of modifyActivity method, of class Planner.
@@ -115,6 +119,19 @@ conn.close();
     public void testModifyActivity() throws SQLException {
         boolean bool = planner.modifyActivity(99, "ciao");
         assertTrue(bool);
+    }
+    
+    @Test
+    public void testGetActivities() throws SQLException {
+        ResultSet rst= null;
+        rst = planner.getActivities("1");
+        assertNotNull(rst);
+    }
+    
+    @Test (expected=SQLException.class)
+    public void testGetActivitiesWrongTypeWeek() throws SQLException {
+        ResultSet rst= null;
+        rst = planner.getActivities("a");
     }
     
 
