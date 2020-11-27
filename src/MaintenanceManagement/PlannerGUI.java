@@ -40,16 +40,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     
     /* PlannerRecordGUI attributes */
     private String typeOfActivity;
-    private int activityID;
-    private String factorySite;
-    private String areaOrDepartment;
-    private String activityTypology;
-    private String activityDescription;
-    private int interventionTime;
     private String isInterruptible;
-    private String materials;
-    private int weeks;
-    private String workspaceNotes;
 
     
     public PlannerGUI(){
@@ -552,37 +543,41 @@ public class PlannerGUI extends javax.swing.JFrame {
             else if (!isNumeric(EstimatedTimeTextField.getText())){
                 JOptionPane.showMessageDialog(null, "Estimated time must be a number!", "Error!", 0);
             }
-            else if (!isNumeric(ActivityIDTextField.getText())){
+            else if (!isNumeric(ActivityIDTextField.getText()) || Integer.parseInt(ActivityIDTextField.getText()) < 1){
                 JOptionPane.showMessageDialog(null, "Activity ID must be a number!", "Error!", 0);
             }
             else{
-                activityID = Integer.parseInt(ActivityIDTextField.getText());
-                factorySite = FactorySiteTextField.getText();
-                areaOrDepartment = AreaDepartmentTextField.getText();
-                activityTypology = (ActivityTypologyComboBox.getItemAt(ActivityTypologyComboBox.getSelectedIndex())).toLowerCase();
-                activityDescription = ActivityDescriptionTextField.getText();
-                interventionTime = Integer.parseInt(EstimatedTimeTextField.getText());
-                materials = MaterialsTextField.getText();
-                weeks = WeekComboBox.getSelectedIndex() + 1;
-                workspaceNotes = WorkspaceNotes.getText();
+                int activityID = Integer.parseInt(ActivityIDTextField.getText());
+                String factorySite = FactorySiteTextField.getText();
+                String areaOrDepartment = AreaDepartmentTextField.getText();
+                String activityTypology = (ActivityTypologyComboBox.getItemAt(ActivityTypologyComboBox.getSelectedIndex())).toLowerCase();
+                String activityDescription = ActivityDescriptionTextField.getText();
+                int interventionTime = Integer.parseInt(EstimatedTimeTextField.getText());
+                String materials = MaterialsTextField.getText();
+                int weeks = WeekComboBox.getSelectedIndex() + 1;
+                String workspaceNotes = WorkspaceNotes.getText();
 
                 try{
-                    Procedure p = new Procedure("procedura");
+                    Procedure p = new Procedure("pr1");
                     Activity a = Planner.createActivity(activityID, factorySite, areaOrDepartment, activityTypology, activityDescription, interventionTime, interruptible, materials, weeks, workspaceNotes,p);
                     Planner.addActivity(a);
                     setList(false);
+                    JOptionPane.showMessageDialog(null,"Type of activity:  " + typeOfActivity + "\n" + "Activity ID:  " +  activityID + "\n" + "Factory site:  " + factorySite + "\n" + "Area/Department:  " + areaOrDepartment + "\n" + "Typology of activity:  " + activityTypology + "\n" + "Activity description:  " + activityDescription + "\n" + "Estimated intervention time:  " + interventionTime + "\n" + "Is it an interruptible activity?  " + isInterruptible + "\n" + "Materials to be used:  " +  materials + "\n" + "Weeks to carry out the activity:  " + weeks + "\n" + "Workspace notes:  " + workspaceNotes, "Activity Information:",1);
+                    ActivityIDTextField.setText(null);
+                    FactorySiteTextField.setText(null);
+                    AreaDepartmentTextField.setText(null);
+                    ActivityDescriptionTextField.setText(null);
+                    EstimatedTimeTextField.setText(null);
+                    MaterialsTextField.setText(null);
+                    WorkspaceNotes.setText(null);    
                 }
-                catch (java.sql.SQLException e){
+                catch (SQLException e){
                     System.out.println(e.getMessage());
+                    JOptionPane.showMessageDialog(null, "An activity with the same ID already exists!", "Error",0);
+                    ActivityIDTextField.setText(null);
                 }
-                ActivityIDTextField.setText(null);
-                FactorySiteTextField.setText(null);
-                AreaDepartmentTextField.setText(null);
-                ActivityDescriptionTextField.setText(null);
-                EstimatedTimeTextField.setText(null);
-                MaterialsTextField.setText(null);
-                WorkspaceNotes.setText(null);
-                JOptionPane.showMessageDialog(null,"Type of activity:  " + typeOfActivity + "\n" + "Activity ID:  " +  activityID + "\n" + "Factory site:  " + factorySite + "\n" + "Area/Department:  " + areaOrDepartment + "\n" + "Typology of activity:  " + activityTypology + "\n" + "Activity description:  " + activityDescription + "\n" + "Estimated intervention time:  " + interventionTime + "\n" + "Is it an interruptible activity?  " + isInterruptible + "\n" + "Materials to be used:  " +  materials + "\n" + "Weeks to carry out the activity:  " + weeks + "\n" + "Workspace notes:  " + workspaceNotes, "Activity Information:",1);
+
+                
             }
         }
 
@@ -592,8 +587,8 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
             else{
                 try{
-                    activityID = Integer.parseInt(ActivityIDTextField.getText());
-                    workspaceNotes = WorkspaceNotes.getText();
+                    int activityID = Integer.parseInt(ActivityIDTextField.getText());
+                    String workspaceNotes = WorkspaceNotes.getText();
                     Planner.modifyActivity(activityID, workspaceNotes);
                     JOptionPane.showMessageDialog(null, "The workspace notes have been modified","Modify",1);
                     ActivityIDTextField.setText(null);
@@ -612,7 +607,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
             else{
                 try{
-                    activityID = Integer.parseInt(ActivityIDTextField.getText());
+                    int activityID = Integer.parseInt(ActivityIDTextField.getText());
                     Planner.deleteActivity(activityID);
                     JOptionPane.showMessageDialog(null, "The activity has been deleted","Delete",1);
                     ActivityIDTextField.setText(null);
@@ -638,6 +633,7 @@ public class PlannerGUI extends javax.swing.JFrame {
         YesButton.setEnabled(false);
         NoButton.setEnabled(false);
         MaterialsTextField.setEnabled(false);
+        WeekComboBox.setEnabled(false);
         WorkspaceNotes.setEnabled(false);
     }//GEN-LAST:event_DeleteButtonActionPerformed
 
