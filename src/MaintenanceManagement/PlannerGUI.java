@@ -5,6 +5,9 @@
  */
 package MaintenanceManagement;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
@@ -37,7 +40,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     private static final String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
     private static final String pwd = "tlZzxfA1WKpHPYzim2E_PENlR6oDlZ52";
     private static final String user = "litqgeus";
-    
+    private static DefaultTableModel tab;
     /* PlannerRecordGUI attributes */
     private String typeOfActivity;
     private String isInterruptible;
@@ -46,7 +49,8 @@ public class PlannerGUI extends javax.swing.JFrame {
     public PlannerGUI(){
         initComponents();
         conn = PlannerGUI.startConnection();
-        Planner= new Planner("admin","admin","Planner",conn);    
+        Planner= new Planner("admin","admin","Planner",conn);
+        tab = (DefaultTableModel) this.scheduledMaintenanceList.getModel();
         setList(true);
          }
 
@@ -94,13 +98,29 @@ public class PlannerGUI extends javax.swing.JFrame {
         ActionType = new javax.swing.ButtonGroup();
         ActivityType = new javax.swing.ButtonGroup();
         InterruptibileActivity = new javax.swing.ButtonGroup();
+        PlannerVerificationGUI = new javax.swing.JFrame();
+        jPanel1 = new javax.swing.JPanel();
+        LabelWeek = new javax.swing.JLabel();
+        LabelNWeek = new javax.swing.JLabel();
+        Labelact = new javax.swing.JLabel();
+        ActivitytoaLabel = new javax.swing.JLabel();
+        WorkspaceLabel = new javax.swing.JLabel();
+        InterventionLabel = new javax.swing.JLabel();
+        LabelSkill = new javax.swing.JLabel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        SkillsTextArea = new javax.swing.JTextArea();
+        ForwardButton = new javax.swing.JButton();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        WorkspaceNotesArea = new javax.swing.JTextArea();
+        InterventionTextLabel = new javax.swing.JLabel();
+        LabelOpen = new javax.swing.JLabel();
+        OpenButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         scheduledMaintenanceList = new javax.swing.JTable();
         LabelWeekNumber = new javax.swing.JTextField();
         buttonManageMaintenance = new javax.swing.JButton();
         comboBoxWeek = new javax.swing.JComboBox<>();
 
-        PlannerRecordGUI.setMaximumSize(new java.awt.Dimension(958, 500));
         PlannerRecordGUI.setMinimumSize(new java.awt.Dimension(958, 500));
 
         jLabel9.setText("Week:");
@@ -361,6 +381,162 @@ public class PlannerGUI extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        PlannerVerificationGUI.setMinimumSize(new java.awt.Dimension(750, 400));
+
+        jPanel1.setBackground(new java.awt.Color(255, 153, 0));
+
+        LabelWeek.setBackground(new java.awt.Color(255, 255, 255));
+        LabelWeek.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        LabelWeek.setText("     Week n°");
+        LabelWeek.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        LabelWeek.setOpaque(true);
+
+        LabelNWeek.setBackground(new java.awt.Color(102, 102, 102));
+        LabelNWeek.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        LabelNWeek.setForeground(new java.awt.Color(255, 255, 255));
+        LabelNWeek.setOpaque(true);
+
+        Labelact.setBackground(new java.awt.Color(255, 255, 255));
+        Labelact.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        Labelact.setText("<html>  Activity to\n  assign");
+        Labelact.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        Labelact.setOpaque(true);
+
+        ActivitytoaLabel.setBackground(new java.awt.Color(102, 102, 102));
+        ActivitytoaLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        ActivitytoaLabel.setForeground(new java.awt.Color(255, 255, 255));
+        ActivitytoaLabel.setOpaque(true);
+
+        WorkspaceLabel.setBackground(new java.awt.Color(255, 204, 102));
+        WorkspaceLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        WorkspaceLabel.setText("     Workspace Notes");
+        WorkspaceLabel.setOpaque(true);
+
+        InterventionLabel.setBackground(new java.awt.Color(255, 204, 102));
+        InterventionLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        InterventionLabel.setText("       Intervention Description");
+        InterventionLabel.setOpaque(true);
+
+        LabelSkill.setBackground(new java.awt.Color(255, 204, 102));
+        LabelSkill.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        LabelSkill.setText("            Skills needed");
+        LabelSkill.setOpaque(true);
+
+        SkillsTextArea.setColumns(20);
+        SkillsTextArea.setRows(5);
+        jScrollPane3.setViewportView(SkillsTextArea);
+
+        ForwardButton.setBackground(new java.awt.Color(102, 102, 102));
+        ForwardButton.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        ForwardButton.setForeground(new java.awt.Color(255, 255, 255));
+        ForwardButton.setText("  FORWARD");
+        ForwardButton.setBorderPainted(false);
+
+        WorkspaceNotesArea.setColumns(20);
+        WorkspaceNotesArea.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
+        WorkspaceNotesArea.setRows(5);
+        jScrollPane5.setViewportView(WorkspaceNotesArea);
+
+        InterventionTextLabel.setBackground(new java.awt.Color(255, 255, 255));
+        InterventionTextLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        InterventionTextLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
+        InterventionTextLabel.setOpaque(true);
+
+        LabelOpen.setBackground(new java.awt.Color(255, 255, 255));
+        LabelOpen.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        LabelOpen.setText("<html>Standard\nMaintenance\nProcedure File\n(SMP)");
+        LabelOpen.setOpaque(true);
+
+        OpenButton.setBackground(new java.awt.Color(255, 102, 0));
+        OpenButton.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        OpenButton.setText("  PDF");
+        OpenButton.setBorderPainted(false);
+        OpenButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OpenButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(LabelWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(44, 44, 44)
+                        .addComponent(LabelNWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(Labelact, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(ActivitytoaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(WorkspaceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
+                            .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addComponent(InterventionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                                .addComponent(InterventionTextLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(OpenButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(LabelOpen, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jScrollPane3)
+                                .addComponent(LabelSkill, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addComponent(ForwardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(31, 31, 31)))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ActivitytoaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(LabelWeek, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
+                        .addComponent(LabelNWeek, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(Labelact, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(WorkspaceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
+                    .addComponent(InterventionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(LabelSkill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(ForwardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(InterventionTextLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(OpenButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(LabelOpen, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE))))
+                .addContainerGap(33, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout PlannerVerificationGUILayout = new javax.swing.GroupLayout(PlannerVerificationGUI.getContentPane());
+        PlannerVerificationGUI.getContentPane().setLayout(PlannerVerificationGUILayout);
+        PlannerVerificationGUILayout.setHorizontalGroup(
+            PlannerVerificationGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        PlannerVerificationGUILayout.setVerticalGroup(
+            PlannerVerificationGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("PlannerGUI");
         setMinimumSize(new java.awt.Dimension(800, 500));
@@ -466,7 +642,14 @@ public class PlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonManageMaintenanceActionPerformed
 
     private void scheduledMaintenanceListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduledMaintenanceListMouseClicked
-        new PlannerVerificationGUI().setVisible(true);
+        String activityid = (String) tab.getValueAt(scheduledMaintenanceList.getSelectedRow(), 0);
+        try {
+            queryVerification(activityid);
+            querySkill(activityid);
+        } catch (SQLException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        PlannerVerificationGUI.setVisible(true);
         
     }//GEN-LAST:event_scheduledMaintenanceListMouseClicked
 
@@ -652,6 +835,16 @@ public class PlannerGUI extends javax.swing.JFrame {
         WeekComboBox.setEnabled(false);
         WorkspaceNotes.setEnabled(true);
     }//GEN-LAST:event_ModifyButtonActionPerformed
+
+    private void OpenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenButtonActionPerformed
+        try {
+            java.awt.Desktop.getDesktop().browse(new URI("https://www.usbr.gov/power/data/fist/fist4_1a/4-1A.pdf"));
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_OpenButtonActionPerformed
     
     
     private void setList(boolean initialize){
@@ -668,7 +861,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        DefaultTableModel tab = (DefaultTableModel) this.scheduledMaintenanceList.getModel();
+        
         tab.setRowCount(0);
         tab.setColumnIdentifiers(nomi);
         Object[] row = new Object[4];
@@ -703,6 +896,41 @@ public class PlannerGUI extends javax.swing.JFrame {
             
         }
         return conn;
+    }
+     private void queryVerification(String activityid) throws SQLException {
+        Statement op = conn.createStatement();
+        ResultSet rst = op.executeQuery("select * from activity where activityId= " + activityid);
+        while (rst.next()) {
+            String activityto = "";
+            String area = "";
+            String typology = "";
+            String esttime = "";
+            String workspacenotes = "";
+            String nweek = "";
+            String description = "";
+            area = rst.getString("area");
+            typology = rst.getString("typology");
+            description = rst.getString("description");
+            esttime = rst.getString("estimatedtime");
+            nweek = rst.getString("week");
+            workspacenotes = rst.getString("workspaceNotes");
+            WorkspaceNotesArea.setText(workspacenotes);
+            activityto = activityid + "-" + area + "-" + typology + "-" + esttime;
+            LabelNWeek.setText(nweek);
+            ActivitytoaLabel.setText(activityto);
+            InterventionTextLabel.setText(description);
+        }
+
+    }
+
+    private void querySkill(String activityid) throws SQLException {
+        Statement o = conn.createStatement();
+        ResultSet rst = o.executeQuery("select competence from proceduraComp where procedura=(select procedura from activity where activityId=" + activityid + ")");
+        String skill = "";
+        while (rst.next()) {
+            skill = skill + "·" + rst.getString("competence") + "\n";
+            SkillsTextArea.setText(skill);
+        }
     }
     
     /**
@@ -750,6 +978,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     private javax.swing.JLabel ActivityLabel;
     private javax.swing.ButtonGroup ActivityType;
     private javax.swing.JComboBox<String> ActivityTypologyComboBox;
+    private javax.swing.JLabel ActivitytoaLabel;
     private javax.swing.JTextField AreaDepartmentTextField;
     private javax.swing.JRadioButton CreateButton;
     private javax.swing.JRadioButton DeleteButton;
@@ -757,16 +986,29 @@ public class PlannerGUI extends javax.swing.JFrame {
     private javax.swing.JButton ExecuteButton;
     private javax.swing.JRadioButton ExtraActivityButton;
     private javax.swing.JTextField FactorySiteTextField;
+    private javax.swing.JButton ForwardButton;
     private javax.swing.ButtonGroup InterruptibileActivity;
+    private javax.swing.JLabel InterventionLabel;
+    private javax.swing.JLabel InterventionTextLabel;
+    private javax.swing.JLabel LabelNWeek;
+    private javax.swing.JLabel LabelOpen;
+    private javax.swing.JLabel LabelSkill;
+    private javax.swing.JLabel LabelWeek;
     private javax.swing.JTextField LabelWeekNumber;
+    private javax.swing.JLabel Labelact;
     private javax.swing.JTextField MaterialsTextField;
     private javax.swing.JRadioButton ModifyButton;
     private javax.swing.JRadioButton NoButton;
+    private javax.swing.JButton OpenButton;
     private javax.swing.JRadioButton PlannedActivityButton;
     private javax.swing.JFrame PlannerRecordGUI;
+    private javax.swing.JFrame PlannerVerificationGUI;
+    private javax.swing.JTextArea SkillsTextArea;
     private javax.swing.JRadioButton UnplannedActivityButton;
     private javax.swing.JComboBox<String> WeekComboBox;
+    private javax.swing.JLabel WorkspaceLabel;
     private javax.swing.JTextArea WorkspaceNotes;
+    private javax.swing.JTextArea WorkspaceNotesArea;
     private javax.swing.JRadioButton YesButton;
     private javax.swing.JButton buttonManageMaintenance;
     private javax.swing.JComboBox<String> comboBoxWeek;
@@ -781,8 +1023,11 @@ public class PlannerGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable scheduledMaintenanceList;
     // End of variables declaration//GEN-END:variables
 }
