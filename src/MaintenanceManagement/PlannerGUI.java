@@ -431,6 +431,7 @@ public class PlannerGUI extends javax.swing.JFrame {
         LabelSkill.setText("            Skills needed");
         LabelSkill.setOpaque(true);
 
+        SkillsTextArea.setEditable(false);
         SkillsTextArea.setColumns(20);
         SkillsTextArea.setRows(5);
         jScrollPane3.setViewportView(SkillsTextArea);
@@ -440,6 +441,11 @@ public class PlannerGUI extends javax.swing.JFrame {
         ForwardButton.setForeground(new java.awt.Color(255, 255, 255));
         ForwardButton.setText("  FORWARD");
         ForwardButton.setBorderPainted(false);
+        ForwardButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ForwardButtonActionPerformed(evt);
+            }
+        });
 
         WorkspaceNotesArea.setColumns(20);
         WorkspaceNotesArea.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
@@ -651,15 +657,16 @@ public class PlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonManageMaintenanceActionPerformed
 
     private void scheduledMaintenanceListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduledMaintenanceListMouseClicked
-        String activityid = (String) tab.getValueAt(scheduledMaintenanceList.getSelectedRow(), 0);
-        try {
+        try{
+            String activityid = (String) tab.getValueAt(scheduledMaintenanceList.getSelectedRow(), 0);
             queryVerification(activityid);
             querySkill(activityid);
+            PlannerVerificationGUI.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        PlannerVerificationGUI.setVisible(true);
-        
+        }catch(java.lang.ArrayIndexOutOfBoundsException e){
+             JOptionPane.showMessageDialog(null, "There isn't any activity in this week!", "Error!", 0);
+        } 
     }//GEN-LAST:event_scheduledMaintenanceListMouseClicked
 
     private void comboBoxWeekActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxWeekActionPerformed
@@ -750,7 +757,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                 workspaceNotes = WorkspaceNotes.getText();
 
                 try{
-                    Procedure p = new Procedure("procedura");
+                    Procedure p = new Procedure("pr3");
                     Activity a = Planner.createActivity(activityID, factorySite, areaOrDepartment, activityTypology, activityDescription, interventionTime, interruptible, materials, weeks, workspaceNotes,p);
                     Planner.addActivity(a);
                     setList(false);
@@ -849,6 +856,10 @@ public class PlannerGUI extends javax.swing.JFrame {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_OpenButtonActionPerformed
+
+    private void ForwardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForwardButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ForwardButtonActionPerformed
     
     
     private void setList(boolean initialize){
