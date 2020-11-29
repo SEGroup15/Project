@@ -49,7 +49,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     private String isInterruptible;
 
     
-    public PlannerGUI(){
+    public PlannerGUI(){       
         initComponents();
         conn = PlannerGUI.startConnection();
         Planner= new Planner("admin","admin","Planner",conn);

@@ -7,7 +7,7 @@ package MaintenanceManagement;
 
 import java.util.*;
 import java.sql.*;
-
+import java.lang.Error;
 
 /**
  *
@@ -57,6 +57,75 @@ public class Planner extends User {
         Statement op= conn.createStatement();
         ResultSet rst = op.executeQuery("select * from activity where week = " + week);
         return rst;
+    }
+    
+    public Activity getActivity(int id) throws SQLException {
+    Statement op = conn.createStatement();
+    ResultSet rst= op.executeQuery ("select * from activity where activityId = "+id);
+    rst.next();
+    return createActivity(id,rst.getString("factorySite"),rst.getString("area"),rst.getString("typology"),rst.getString("description"),rst.getInt("estimatedTime"),rst.getBoolean("interruptible"),rst.getString("materials"),rst.getInt("week"),rst.getString("workspaceNotes"),new Procedure(rst.getString("procedura")));
+    }
+    
+    
+    public int[] getArray(String maintainer,int week, int day) throws SQLException {
+    int[] vector= new int[7];
+    
+    for(int i=0;i<7;i++) {
+    vector[i]=60;
+    }
+    Statement op = conn.createStatement();
+    ResultSet rst = op.executeQuery("select fascia,minuti from calendar where(maintainer='"+maintainer+"' and week= "+week+" and day= "+day+")");
+    while(rst.next()) {
+        vector[rst.getInt("fascia")-1]-=rst.getInt("minuti");
+    }
+    return vector;
+    }
+
+    public void manageArray(int[] array, String maintainer, int day, int position, Activity attività) throws SQLException, InsertException {
+        Statement op = conn.createStatement();
+        int time = attività.getEstimatedTime();
+        
+        int x=1;
+        boolean y=true;
+        int xtime=time-array[position-1];
+        while (xtime>0){
+            xtime-=60;
+            x+=1; }
+        if (x==1) {
+        op.executeUpdate("insert into calendar values ('"+maintainer+"',"+attività.getActivityId()+","+attività.getWeek()+","+ position +","+ day+","+time+")");
+        deleteActivity(attività.getActivityId());
+        return;}
+        System.out.println(x);
+        
+        for(int i=1;i<x;i++) {
+            if (position<7)
+            y = (array[position+i-1]==60) ? true : false;
+            if (y==false || (position-1+x)>7) 
+                    throw new InsertException();
+            if (position==7)
+                y = (array[position+i-1]==60) ? true : false;
+            
+            
+             }
+        
+        for(int i=0;i<x;i++) {
+            
+            if(i+1==x) {
+                System.out.println("HEHE");
+            op.executeUpdate("insert into calendar values ('"+maintainer+"',"+attività.getActivityId()+","+attività.getWeek()+","+ position +","+ day+","+time+")");
+            deleteActivity(attività.getActivityId());
+            return;}
+ 
+            op.executeUpdate("insert into calendar values ('"+maintainer+"',"+attività.getActivityId()+","+attività.getWeek()+","+ position +","+ day+","+array[position-1]+")");
+            array[position-1]-=time;
+            if (array[position-1]<0) {
+                time=-array[position-1];
+                array[position-1]=0;}
+            position=position+1;
+        
+        }
+
+        
     }
 }
     
