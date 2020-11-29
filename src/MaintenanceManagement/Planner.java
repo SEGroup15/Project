@@ -49,6 +49,7 @@ public class Planner extends User {
     public boolean modifyActivity(int idActivity, String workspaceNotes) throws SQLException {
         Statement op= conn.createStatement();
         String modify = "update activity set workspaceNotes='"+workspaceNotes+"' where activityId="+ idActivity;
+        op.executeUpdate(modify);
         return true; 
     }
     
