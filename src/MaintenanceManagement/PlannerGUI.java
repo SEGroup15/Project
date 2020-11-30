@@ -27,6 +27,7 @@ import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
+import javax.swing.text.Utilities;
 
 /**
  *
@@ -144,7 +145,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                 component.setForeground(Color.BLACK);
 
                 if (value != null && firstTable==true){
-                    if (columnIndex > 1){
+                    if (columnIndex > 1 ){
                         if ((Integer)value == 0){
                             component.setBackground(Color.RED);
                         }
@@ -1145,6 +1146,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_ForwardButtonActionPerformed
 
     private void MainteinerAvailabilityTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MainteinerAvailabilityTableMouseClicked
+        int k=0;
         String stringa = ActivitytoaLabel.getText();
         String[] arrSplit = stringa.split("-");
         Integer activityID = Integer.valueOf(arrSplit[0]);
@@ -1175,9 +1177,25 @@ public class PlannerGUI extends javax.swing.JFrame {
             row[7]=vec[5];
             row[8]=vec[6];       
             maintainertab.addRow(row);
+            backButton.setVisible(true);
+            firstTable=false;
         }
-        backButton.setVisible(true);
-        firstTable=false;
+        else if (JOptionPane.showConfirmDialog(null, "Wrong Selection!", "Wrong", JOptionPane.OK_CANCEL_OPTION)>=0){
+            SwingUtilities.invokeLater(new Runnable(){
+            @Override
+            public void run() {
+                try {
+                    firstTable=true;
+                    wrongSelectionFunction();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (InsertException ex) {
+                    Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }    
+           });
+        }
+                 
         
     }
         else{
@@ -1212,9 +1230,25 @@ public class PlannerGUI extends javax.swing.JFrame {
                 PlannerVerificationGUI.setVisible(false);
             } catch (SQLException ex) {
                 Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                
             } catch (InsertException ex) {
                 JOptionPane.showMessageDialog(null,"Unable to assign activity.","Error",JOptionPane.ERROR_MESSAGE); }
- 
+            
+            catch (ArrayIndexOutOfBoundsException ex) {
+                if (JOptionPane.showConfirmDialog(null, "Wrong Selection!", "Wrong", JOptionPane.OK_CANCEL_OPTION)>=0){
+                SwingUtilities.invokeLater(new Runnable(){
+                    @Override
+                            public void run() {
+                        try {            
+                            wrongSelectionFunction();
+                        } catch (SQLException ex1) {
+                            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex1);
+                        } catch (InsertException ex1) {
+                            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex1);
+                        }
+            }    
+           });
+        }}
             }}
     }//GEN-LAST:event_MainteinerAvailabilityTableMouseClicked
 
@@ -1251,7 +1285,41 @@ public class PlannerGUI extends javax.swing.JFrame {
     private void LabelWeekNumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LabelWeekNumberActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_LabelWeekNumberActionPerformed
-    
+    private void wrongSelectionFunction() throws SQLException, InsertException{
+        String stringa = ActivitytoaLabel.getText();
+        String[] arrSplit = stringa.split("-");
+        Integer activityID = Integer.valueOf(arrSplit[0]);
+        if (firstTable==true){
+        try {
+            setMaintainerList(activityID);
+        } catch (SQLException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
+        else{
+        int indexRow = MainteinerAvailabilityTable.getSelectedRow();
+        int indexCol = MainteinerAvailabilityTable.getSelectedColumn();
+        String maintainer = (String) MainteinerAvailabilityTable.getValueAt(indexRow,0);
+        String skills = (String) MainteinerAvailabilityTable.getValueAt(indexRow,1);
+        int fascia = indexCol-1;
+        int[] vec =null;
+        vec = Planner.getArray(maintainer, Planner.getActivity(activityID), daySelected);
+        String[] nomi = {"Maintainer","Skills","8:00-9:00","9:00-10:00","10:00-11:00","11:00-12:00","14:00-15:00","15:00-16:00","16:00-17:00"};
+            maintainertab.setRowCount(0);
+            maintainertab.setColumnIdentifiers(nomi);
+            Object[] row = new Object[9];
+            row[0]=maintainer;
+            row[1]=skills;
+            row[2]=vec[0];
+            row[3]=vec[1];
+            row[4]=vec[2];
+            row[5]=vec[3];
+            row[6]=vec[4];
+            row[7]=vec[5];
+            row[8]=vec[6];       
+            maintainertab.addRow(row);
+        
+    }}    
     
     private void setList(boolean initialize){
         if (initialize==true) {
