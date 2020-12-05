@@ -18,7 +18,7 @@ public class Activity {
     private final String area;
     private final String typology;
     private final String description;
-    private final int estimatedTime;
+    private int estimatedTime;
     private final boolean interruptible;
     private final String materials;
     private final int week;
@@ -84,4 +84,9 @@ public class Activity {
         return workspaceNotes;
     }
 
+    public void setEstimatedTime(int estimatedTime) {
+        this.estimatedTime = estimatedTime;
+    }
+    
+    
 }

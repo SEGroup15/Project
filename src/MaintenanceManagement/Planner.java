@@ -53,7 +53,7 @@ public class Planner extends User {
 
     public ResultSet getActivities(String week) throws SQLException {
         Statement op = conn.createStatement();
-        ResultSet rst = op.executeQuery("select * from activity A where (week = " + week + " and A.activityId not in (select idattivita from calendar))");
+        ResultSet rst = op.executeQuery("select * from activity A where (week = " + week + " and A.estimatedTime!=0)");
         return rst;
     }
 
@@ -80,46 +80,16 @@ public class Planner extends User {
         return vector;
     }
 
-    public void manageAvailability(int[] array, String maintainer, int day, int position, Activity attività) throws SQLException, InsertException {
+    public void manageAvailability(int[] array, String maintainer, int day, int fascia, Activity attività) throws SQLException, InsertException {
+        if (array[fascia-1] == 0)
+            throw new InsertException();
         Statement op = conn.createStatement();
-        int time = attività.getEstimatedTime();
-        int x = 1;
-        boolean y = true;
-        int xtime = time - array[position - 1];
-        while (xtime > 0) {
-            xtime -= 60;
-            x += 1;
+        int estimated = attività.getEstimatedTime();
+        int available = array[fascia-1];
+        int time = (estimated<=available) ? estimated : available;
+        op.executeUpdate("insert into calendar values ('" + maintainer + "'," + attività.getActivityId() + "," + attività.getWeek() + "," + fascia + "," + day + "," + time + ")");
+        op.executeUpdate("update activity set estimatedTime=estimatedTime-" + time + " where activityId= " + attività.getActivityId());
+        attività.setEstimatedTime(estimated-time);
+        
         }
-        if (x == 1) {
-            op.executeUpdate("insert into calendar values ('" + maintainer + "'," + attività.getActivityId() + "," + attività.getWeek() + "," + position + "," + day + "," + time + ")");
-            return;
-        }
-        for (int i = 1; i < x; i++) {
-            if (position < 7) {
-                y = (array[position + i - 1] == 60) ? true : false;
-            }
-            if (y == false || (position - 1 + x) > 7) {
-                throw new InsertException();
-            }
-            if (position == 7) {
-                y = (array[position + i - 1] == 60) ? true : false;
-            }
-        }
-
-        for (int i = 0; i < x; i++) {
-            if (i + 1 == x) {
-                op.executeUpdate("insert into calendar values ('" + maintainer + "'," + attività.getActivityId() + "," + attività.getWeek() + "," + position + "," + day + "," + time + ")");
-                return;
-            }
-            op.executeUpdate("insert into calendar values ('" + maintainer + "'," + attività.getActivityId() + "," + attività.getWeek() + "," + position + "," + day + "," + array[position - 1] + ")");
-            array[position - 1] -= time;
-            if (array[position - 1] < 0) {
-                time = -array[position - 1];
-                array[position - 1] = 0;
-            }
-            position = position + 1;
-
-        }
-
-    }
 }

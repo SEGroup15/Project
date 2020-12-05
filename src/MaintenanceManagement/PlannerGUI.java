@@ -227,7 +227,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         PlannerRecordGUI.getContentPane().add(CreateButton);
-        CreateButton.setBounds(396, 20, 70, 23);
+        CreateButton.setBounds(396, 20, 70, 25);
 
         EstimatedTimeTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -320,7 +320,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         PlannerRecordGUI.getContentPane().add(DeleteButton);
-        DeleteButton.setBounds(548, 20, 70, 23);
+        DeleteButton.setBounds(548, 20, 70, 25);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel13.setText("Type of action:");
@@ -337,7 +337,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         PlannerRecordGUI.getContentPane().add(ModifyButton);
-        ModifyButton.setBounds(473, 20, 70, 23);
+        ModifyButton.setBounds(473, 20, 70, 25);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("Materials:");
@@ -638,7 +638,6 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         MaintainerSelectionGUI.setBackground(new java.awt.Color(255, 153, 51));
         MaintainerSelectionGUI.setMinimumSize(new java.awt.Dimension(1020, 450));
-        MaintainerSelectionGUI.setPreferredSize(new java.awt.Dimension(1005, 450));
 
         jPanel2.setBackground(new java.awt.Color(255, 153, 0));
         jPanel2.setPreferredSize(new java.awt.Dimension(1005, 500));
