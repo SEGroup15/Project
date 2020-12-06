@@ -22,8 +22,8 @@ public class Planner extends User {
         this.conn = conn;
     }
 
-    public Activity createActivity(int activityId, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, String materials, int week, String workspaceNotes, Procedure procedura) {
-        Activity act = new Activity(activityId, factorySite, area, typology, description, estimatedTime, interruptible, materials, week, workspaceNotes, procedura);
+    public Activity createActivity(int activityId, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, String materials, int week, String workspaceNotes, Procedure procedura, String type) {
+        Activity act = new Activity(activityId, factorySite, area, typology, description, estimatedTime, interruptible, materials, week, workspaceNotes, procedura, type);
         return act;
     }
 
@@ -32,7 +32,7 @@ public class Planner extends User {
         String material = (a.getMaterials() == null || a.getMaterials() == "") ? "''" : "'" + a.getMaterials() + "'";
         String workspaceNote = (a.getWorkspaceNotes() == null || a.getMaterials() == "") ? "''" : "'" + a.getWorkspaceNotes() + "'";
         String insert = "insert into activity values (" + a.getActivityId() + ",'" + a.getFactorySite() + "','" + a.getArea() + "','" + a.getTypology() + "','" + a.getDescription() + "'," + a.getEstimatedTime() + ",'"
-                + a.isInterruptible() + "'," + material + "," + a.getWeek() + "," + workspaceNote + ",'" + a.getProcedure().getNome() + "')";
+                + a.isInterruptible() + "'," + material + "," + a.getWeek() + "," + workspaceNote + ",'" + a.getProcedure().getNome() + "','"+a.getType()+"')";
         op.executeUpdate(insert);
         return true;
     }
@@ -62,7 +62,7 @@ public class Planner extends User {
         ResultSet rest = op.executeQuery("select * from activity where activityId = " + id);
         Activity a;
         rest.next();
-        a = createActivity(id, rest.getString("factorySite"), rest.getString("area"), rest.getString("typology"), rest.getString("description"), rest.getInt("estimatedTime"), rest.getBoolean("interruptible"), rest.getString("materials"), rest.getInt("week"), rest.getString("workspacenotes"), new Procedure(rest.getString("procedura")));
+        a = createActivity(id, rest.getString("factorySite"), rest.getString("area"), rest.getString("typology"), rest.getString("description"), rest.getInt("estimatedTime"), rest.getBoolean("interruptible"), rest.getString("materials"), rest.getInt("week"), rest.getString("workspacenotes"), new Procedure(rest.getString("procedura")), rest.getString("typ"));
         return a;
     }
 
