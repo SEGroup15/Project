@@ -51,7 +51,6 @@ public class PlannerGUI extends javax.swing.JFrame {
     private boolean firstTable=true;
     private boolean secondTable=false;
     private int daySelected; 
-
     
     public PlannerGUI(){       
         initComponents();
@@ -227,7 +226,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         PlannerRecordGUI.getContentPane().add(CreateButton);
-        CreateButton.setBounds(396, 20, 70, 25);
+        CreateButton.setBounds(396, 20, 70, 23);
 
         EstimatedTimeTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -320,7 +319,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         PlannerRecordGUI.getContentPane().add(DeleteButton);
-        DeleteButton.setBounds(548, 20, 70, 25);
+        DeleteButton.setBounds(548, 20, 70, 23);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel13.setText("Type of action:");
@@ -337,7 +336,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         PlannerRecordGUI.getContentPane().add(ModifyButton);
-        ModifyButton.setBounds(473, 20, 70, 25);
+        ModifyButton.setBounds(473, 20, 70, 23);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("Materials:");
@@ -1224,8 +1223,14 @@ public class PlannerGUI extends javax.swing.JFrame {
                 row[8]=vec[6];       
                 maintainertab.addRow(row);
                 setList(false);
-                JOptionPane.showMessageDialog(null,"Activity correctly assigned.","Done", JOptionPane.INFORMATION_MESSAGE);
-                MaintainerSelectionGUI.setVisible(false);
+                if (Planner.getActivity(activityID).getEstimatedTime() <=0){
+                    JOptionPane.showMessageDialog(null,"Activity completely assigned.","Done", JOptionPane.INFORMATION_MESSAGE);
+                    MaintainerSelectionGUI.setVisible(false);
+
+                }
+                else{
+                   JOptionPane.showMessageDialog(null,"Activity partially assigned.","Done", JOptionPane.INFORMATION_MESSAGE);}
+                
                 PlannerVerificationGUI.setVisible(false);
             } catch (SQLException ex) {
                 Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
