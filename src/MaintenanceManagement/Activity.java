@@ -12,6 +12,7 @@ import java.util.*;
  * @author saby_
  */
 public class Activity {
+
     private final int activityId;
     private final String factorySite;
     private final String area;
@@ -24,7 +25,7 @@ public class Activity {
     private String workspaceNotes;
     private final Procedure procedure;
 
-    public Activity(int activityId, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, String materials, int week, String workspaceNotes,Procedure procedure) {
+    public Activity(int activityId, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, String materials, int week, String workspaceNotes, Procedure procedure) {
         this.activityId = activityId;
         this.factorySite = factorySite;
         this.area = area;
@@ -35,8 +36,8 @@ public class Activity {
         this.week = week;
         this.materials = materials;
         this.workspaceNotes = workspaceNotes;
-        this.procedure=procedure;
-        
+        this.procedure = procedure;
+
     }
 
     public int getActivityId() {
@@ -75,7 +76,6 @@ public class Activity {
         return procedure;
     }
 
-
     public int getWeek() {
         return week;
     }
@@ -83,5 +83,5 @@ public class Activity {
     public String getWorkspaceNotes() {
         return workspaceNotes;
     }
-    
+
 }
