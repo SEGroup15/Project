@@ -181,11 +181,11 @@ public class PlannerTest {
     }
 
     @Test
-    public void testGetArrayWithActivities() throws SQLException, InsertException {
+    public void testGetArrayWithActivity() throws SQLException, InsertException {
         Statement op = conn.createStatement();
         op.executeUpdate("insert into maintainer values('usTest','pwTest')");
-        int[] testarray = {0, 0, 0, 0, 10, 60, 60};
-        Activity a = planner.createActivity(1000, "factory", "area", "electrical", "desc", 290, true, "materials", 1, "wsnotes", procedure);
+        int[] testarray = {0, 60, 60, 60, 60, 60, 60};
+        Activity a = planner.createActivity(1000, "factory", "area", "electrical", "desc", 60, true, "materials", 1, "wsnotes", procedure);
         planner.addActivity(a);
         int[] array = planner.getArray("usTest", a, 1);
         planner.manageAvailability(array, "usTest", 1, 1, a);
@@ -193,26 +193,27 @@ public class PlannerTest {
         assertArrayEquals(testarray, array);
     }
 
-    @Test(expected = InsertException.class)
-    public void testManageAvailabilityLargeActivity() throws SQLException, InsertException {
+    @Test
+    public void testManageAvailabilityOneActivity() throws SQLException, InsertException {
         Statement op = conn.createStatement();
         op.executeUpdate("insert into maintainer values('usTest','pwTest')");
         Activity a = planner.createActivity(1000, "factory", "area", "electrical", "desc", 300, true, "materials", 1, "wsnotes", procedure);
         planner.addActivity(a);
         int[] array = planner.getArray("usTest", a, 2);
         planner.manageAvailability(array, "usTest", 2, 4, a);
+        assertEquals(240,a.getEstimatedTime());
     }
 
     @Test(expected = InsertException.class)
-    public void testManageAvailabilityNextSlotOccupied() throws SQLException, InsertException {
+    public void testManageAvailabilitySlotOccupied() throws SQLException, InsertException {
         Statement op = conn.createStatement();
         op.executeUpdate("insert into maintainer values('usTest','pwTest')");
-        Activity a = planner.createActivity(1000, "factory", "area", "electrical", "desc", 10, true, "materials", 1, "wsnotes", procedure);
+        Activity a = planner.createActivity(1000, "factory", "area", "electrical", "desc", 60, true, "materials", 1, "wsnotes", procedure);
         planner.addActivity(a);
-        Activity b = planner.createActivity(1001, "factory", "area", "electrical", "desc", 70, true, "materials", 1, "wsnotes", procedure);
+        Activity b = planner.createActivity(1001, "factory", "area", "electrical", "desc", 5, true, "materials", 1, "wsnotes", procedure);
         planner.addActivity(b);
         int[] array = planner.getArray("usTest", a, 5);
-        planner.manageAvailability(array, "usTest", 5, 2, a);
+        planner.manageAvailability(array, "usTest", 5, 1, a);
         array = planner.getArray("usTest", b, 5);
         planner.manageAvailability(array, "usTest", 5, 1, b);
 
