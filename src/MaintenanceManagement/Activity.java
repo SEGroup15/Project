@@ -13,19 +13,21 @@ import java.util.*;
  */
 public class Activity {
 
-    private final int activityId;
-    private final String factorySite;
-    private final String area;
-    private final String typology;
-    private final String description;
+    private int activityId;
+    private String factorySite;
+    private String area;
+    private String typology;
+    private String description;
     private int estimatedTime;
-    private final boolean interruptible;
-    private final String materials;
-    private final int week;
+    private boolean interruptible;
+    private String materials;
+    private int week;
     private String workspaceNotes;
-    private final Procedure procedure;
+    private Procedure procedure;
+    private String type;
 
-    public Activity(int activityId, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, String materials, int week, String workspaceNotes, Procedure procedure) {
+
+    public Activity(int activityId, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, String materials, int week, String workspaceNotes, Procedure procedure,String type) {
         this.activityId = activityId;
         this.factorySite = factorySite;
         this.area = area;
@@ -37,7 +39,7 @@ public class Activity {
         this.materials = materials;
         this.workspaceNotes = workspaceNotes;
         this.procedure = procedure;
-
+        this.type=type;
     }
 
     public int getActivityId() {
@@ -87,6 +89,11 @@ public class Activity {
     public void setEstimatedTime(int estimatedTime) {
         this.estimatedTime = estimatedTime;
     }
+
+    public String getType() {
+        return type;
+    }
+
     
     
 }

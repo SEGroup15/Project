@@ -40,9 +40,9 @@ public class PlannerGUI extends javax.swing.JFrame {
      */
     private final Connection conn;
     private final Planner Planner;
-    private static final String url = "jdbc:postgresql://suleiman.db.elephantsql.com:5432/litqgeus";
-    private static final String pwd = "tlZzxfA1WKpHPYzim2E_PENlR6oDlZ52";
-    private static final String user = "litqgeus";
+    private static final String url = "jdbc:postgresql://localhost:5432/locale2";
+    private static final String pwd = "kekkeroni";
+    private static final String user = "kek";
     private static DefaultTableModel tab;
     private static DefaultTableModel maintainertab;
     /* PlannerRecordGUI attributes */
@@ -226,7 +226,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         PlannerRecordGUI.getContentPane().add(CreateButton);
-        CreateButton.setBounds(396, 20, 70, 23);
+        CreateButton.setBounds(396, 20, 70, 25);
 
         EstimatedTimeTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -319,7 +319,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         PlannerRecordGUI.getContentPane().add(DeleteButton);
-        DeleteButton.setBounds(548, 20, 70, 23);
+        DeleteButton.setBounds(548, 20, 70, 25);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel13.setText("Type of action:");
@@ -336,7 +336,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         PlannerRecordGUI.getContentPane().add(ModifyButton);
-        ModifyButton.setBounds(473, 20, 70, 23);
+        ModifyButton.setBounds(473, 20, 70, 25);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("Materials:");
@@ -936,7 +936,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonManageMaintenanceActionPerformed
 
     private void ExtraActivityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExtraActivityButtonActionPerformed
-        typeOfActivity = "Extra";
+        typeOfActivity = "extra";
     }//GEN-LAST:event_ExtraActivityButtonActionPerformed
 
     private void YesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_YesButtonActionPerformed
@@ -969,7 +969,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_EstimatedTimeTextFieldActionPerformed
 
     private void UnplannedActivityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_UnplannedActivityButtonActionPerformed
-        typeOfActivity = "Unplanned";
+        typeOfActivity = "ewo";
     }//GEN-LAST:event_UnplannedActivityButtonActionPerformed
 
     private void ActivityTypologyComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActivityTypologyComboBoxActionPerformed
@@ -977,7 +977,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_ActivityTypologyComboBoxActionPerformed
 
     private void PlannedActivityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlannedActivityButtonActionPerformed
-        typeOfActivity = "Planned";
+        typeOfActivity = "planned";
     }//GEN-LAST:event_PlannedActivityButtonActionPerformed
 
     private void WeekComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WeekComboBoxActionPerformed
@@ -1020,7 +1020,7 @@ public class PlannerGUI extends javax.swing.JFrame {
 
                 try{
                     Procedure p = new Procedure("pr1");
-                    Activity a = Planner.createActivity(activityID, factorySite, areaOrDepartment, activityTypology, activityDescription, interventionTime, interruptible, materials, weeks, workspaceNotes,p);
+                    Activity a = Planner.createActivity(activityID, factorySite, areaOrDepartment, activityTypology, activityDescription, interventionTime, interruptible, materials, weeks, workspaceNotes,p,typeOfActivity);
                     Planner.addActivity(a);
                     setList(false);
                     JOptionPane.showMessageDialog(null,"Type of activity:  " + typeOfActivity + "\n" + "Activity ID:  " +  activityID + "\n" + "Factory site:  " + factorySite + "\n" + "Area/Department:  " + areaOrDepartment + "\n" + "Typology of activity:  " + activityTypology + "\n" + "Activity description:  " + activityDescription + "\n" + "Estimated intervention time:  " + interventionTime + "\n" + "Is it an interruptible activity?  " + isInterruptible + "\n" + "Materials to be used:  " +  materials + "\n" + "Weeks to carry out the activity:  " + weeks + "\n" + "Workspace notes:  " + workspaceNotes, "Activity Information:",1);
