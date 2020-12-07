@@ -22,6 +22,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.temporal.WeekFields;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
@@ -51,6 +52,8 @@ public class PlannerGUI extends javax.swing.JFrame {
     private boolean firstTable=true;
     private boolean secondTable=false;
     private int daySelected; 
+    private int currentID;
+    private boolean forwarded;
     
     public PlannerGUI(){       
         initComponents();
@@ -115,14 +118,17 @@ public class PlannerGUI extends javax.swing.JFrame {
         WorkspaceLabel = new javax.swing.JLabel();
         InterventionLabel = new javax.swing.JLabel();
         LabelSkill = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        SkillsTextArea = new javax.swing.JTextArea();
         ForwardButton = new javax.swing.JButton();
         jScrollPane5 = new javax.swing.JScrollPane();
         WorkspaceNotesArea = new javax.swing.JTextArea();
-        InterventionTextLabel = new javax.swing.JLabel();
-        LabelOpen = new javax.swing.JLabel();
-        OpenButton = new javax.swing.JButton();
+        PDFLabel = new javax.swing.JLabel();
+        PDFButton = new javax.swing.JButton();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tableSkills = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        interventionArea = new javax.swing.JTextArea();
+        estimatedTimeEWOField = new javax.swing.JTextField();
+        estimatedTimeEWOLabel = new javax.swing.JLabel();
         MaintainerSelectionGUI = new javax.swing.JFrame();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -131,8 +137,6 @@ public class PlannerGUI extends javax.swing.JFrame {
         ActivityLabel1 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        SkillTextArea2 = new javax.swing.JTextArea();
         jScrollPane6 = new javax.swing.JScrollPane();
         MainteinerAvailabilityTable = new javax.swing.JTable()
         {
@@ -198,6 +202,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         Workspacenotes3 = new javax.swing.JLabel();
         jScrollPane7 = new javax.swing.JScrollPane();
         WorkspaceTextArea3 = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tableSkills2 = new javax.swing.JTable();
         jLabel26 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
@@ -231,7 +237,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         PlannerRecordGUI.getContentPane().add(CreateButton);
-        CreateButton.setBounds(396, 20, 70, 25);
+        CreateButton.setBounds(396, 20, 70, 23);
 
         EstimatedTimeTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -259,7 +265,7 @@ public class PlannerGUI extends javax.swing.JFrame {
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Typology of maintenance activity:");
         PlannerRecordGUI.getContentPane().add(jLabel4);
-        jLabel4.setBounds(88, 308, 186, 14);
+        jLabel4.setBounds(88, 308, 192, 14);
 
         ActivityTypologyComboBox.setBackground(new java.awt.Color(102, 102, 102));
         ActivityTypologyComboBox.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -324,7 +330,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         PlannerRecordGUI.getContentPane().add(DeleteButton);
-        DeleteButton.setBounds(548, 20, 70, 25);
+        DeleteButton.setBounds(548, 20, 70, 23);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel13.setText("Type of action:");
@@ -341,7 +347,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         PlannerRecordGUI.getContentPane().add(ModifyButton);
-        ModifyButton.setBounds(473, 20, 70, 25);
+        ModifyButton.setBounds(473, 20, 70, 23);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("Materials:");
@@ -463,15 +469,21 @@ public class PlannerGUI extends javax.swing.JFrame {
         PlannerRecordGUI.getContentPane().add(jPanel4);
         jPanel4.setBounds(0, 0, 30000, 30000);
 
-        PlannerVerificationGUI.setMinimumSize(new java.awt.Dimension(750, 400));
+        PlannerVerificationGUI.setMinimumSize(new java.awt.Dimension(760, 400));
+        PlannerVerificationGUI.setPreferredSize(new java.awt.Dimension(760, 400));
 
         jPanel1.setBackground(new java.awt.Color(255, 153, 0));
+        jPanel1.setMinimumSize(new java.awt.Dimension(780, 420));
+        jPanel1.setPreferredSize(new java.awt.Dimension(780, 420));
+        jPanel1.setLayout(null);
 
         LabelWeek.setBackground(new java.awt.Color(255, 255, 255));
         LabelWeek.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         LabelWeek.setText("     Week n°");
         LabelWeek.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         LabelWeek.setOpaque(true);
+        jPanel1.add(LabelWeek);
+        LabelWeek.setBounds(32, 21, 129, 41);
 
         LabelNWeek.setBackground(new java.awt.Color(102, 102, 102));
         LabelNWeek.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
@@ -479,6 +491,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         LabelNWeek.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LabelNWeek.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         LabelNWeek.setOpaque(true);
+        jPanel1.add(LabelNWeek);
+        LabelNWeek.setBounds(193, 21, 54, 41);
 
         Labelact.setBackground(new java.awt.Color(255, 255, 255));
         Labelact.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -486,6 +500,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         Labelact.setText("<html>  Activity to\n  assign");
         Labelact.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         Labelact.setOpaque(true);
+        jPanel1.add(Labelact);
+        Labelact.setBounds(253, 21, 176, 41);
 
         ActivitytoaLabel.setBackground(new java.awt.Color(102, 102, 102));
         ActivitytoaLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -493,6 +509,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         ActivitytoaLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ActivitytoaLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         ActivitytoaLabel.setOpaque(true);
+        jPanel1.add(ActivitytoaLabel);
+        ActivitytoaLabel.setBounds(463, 21, 276, 41);
 
         WorkspaceLabel.setBackground(new java.awt.Color(255, 204, 102));
         WorkspaceLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -500,6 +518,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         WorkspaceLabel.setText("Workspace Notes");
         WorkspaceLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         WorkspaceLabel.setOpaque(true);
+        jPanel1.add(WorkspaceLabel);
+        WorkspaceLabel.setBounds(32, 80, 215, 43);
 
         InterventionLabel.setBackground(new java.awt.Color(255, 204, 102));
         InterventionLabel.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
@@ -507,6 +527,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         InterventionLabel.setText("Intervention Description");
         InterventionLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         InterventionLabel.setOpaque(true);
+        jPanel1.add(InterventionLabel);
+        InterventionLabel.setBounds(253, 80, 219, 43);
 
         LabelSkill.setBackground(new java.awt.Color(255, 204, 102));
         LabelSkill.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -514,12 +536,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         LabelSkill.setText("Skills needed");
         LabelSkill.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         LabelSkill.setOpaque(true);
-
-        SkillsTextArea.setEditable(false);
-        SkillsTextArea.setColumns(20);
-        SkillsTextArea.setRows(5);
-        SkillsTextArea.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jScrollPane3.setViewportView(SkillsTextArea);
+        jPanel1.add(LabelSkill);
+        LabelSkill.setBounds(490, 80, 249, 43);
 
         ForwardButton.setBackground(new java.awt.Color(0, 0, 0));
         ForwardButton.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -531,103 +549,80 @@ public class PlannerGUI extends javax.swing.JFrame {
                 ForwardButtonActionPerformed(evt);
             }
         });
+        jPanel1.add(ForwardButton);
+        ForwardButton.setBounds(523, 275, 188, 43);
 
         WorkspaceNotesArea.setColumns(20);
         WorkspaceNotesArea.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         WorkspaceNotesArea.setRows(5);
         jScrollPane5.setViewportView(WorkspaceNotesArea);
 
-        InterventionTextLabel.setBackground(new java.awt.Color(255, 255, 255));
-        InterventionTextLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        InterventionTextLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        InterventionTextLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
-        InterventionTextLabel.setAlignmentX(0.1F);
-        InterventionTextLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        InterventionTextLabel.setOpaque(true);
+        jPanel1.add(jScrollPane5);
+        jScrollPane5.setBounds(32, 129, 215, 167);
 
-        LabelOpen.setBackground(new java.awt.Color(255, 255, 255));
-        LabelOpen.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        LabelOpen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        LabelOpen.setText("<html>Standard\nMaintenance\nProcedure File\n(SMP)");
-        LabelOpen.setOpaque(true);
+        PDFLabel.setBackground(new java.awt.Color(255, 255, 255));
+        PDFLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        PDFLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        PDFLabel.setText("<html>Standard\nMaintenance\nProcedure File\n(SMP)");
+        PDFLabel.setOpaque(true);
+        jPanel1.add(PDFLabel);
+        PDFLabel.setBounds(370, 250, 96, 86);
 
-        OpenButton.setBackground(new java.awt.Color(255, 102, 0));
-        OpenButton.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        OpenButton.setText("PDF");
-        OpenButton.setBorderPainted(false);
-        OpenButton.addActionListener(new java.awt.event.ActionListener() {
+        PDFButton.setBackground(new java.awt.Color(255, 102, 0));
+        PDFButton.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        PDFButton.setText("PDF");
+        PDFButton.setBorderPainted(false);
+        PDFButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                OpenButtonActionPerformed(evt);
+                PDFButtonActionPerformed(evt);
             }
         });
+        jPanel1.add(PDFButton);
+        PDFButton.setBounds(250, 250, 119, 86);
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(LabelWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(LabelNWeek, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(WorkspaceLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(OpenButton, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(LabelOpen, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(InterventionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(InterventionTextLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane3)
-                                .addComponent(LabelSkill, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addComponent(ForwardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 188, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(Labelact, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(34, 34, 34)
-                        .addComponent(ActivitytoaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ActivitytoaLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(LabelWeek, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
-                        .addComponent(LabelNWeek, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(Labelact, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(WorkspaceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                    .addComponent(InterventionLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(LabelSkill, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(ForwardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(InterventionTextLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(OpenButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(LabelOpen, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE))))
-                .addContainerGap(33, Short.MAX_VALUE))
-        );
+        tableSkills.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane8.setViewportView(tableSkills);
+        if (tableSkills.getColumnModel().getColumnCount() > 0) {
+            tableSkills.getColumnModel().getColumn(0).setResizable(false);
+            tableSkills.getColumnModel().getColumn(1).setResizable(false);
+            tableSkills.getColumnModel().getColumn(2).setResizable(false);
+            tableSkills.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        jPanel1.add(jScrollPane8);
+        jScrollPane8.setBounds(490, 130, 250, 140);
+
+        interventionArea.setColumns(20);
+        interventionArea.setRows(5);
+        jScrollPane4.setViewportView(interventionArea);
+
+        jPanel1.add(jScrollPane4);
+        jScrollPane4.setBounds(253, 129, 219, 114);
+        jPanel1.add(estimatedTimeEWOField);
+        estimatedTimeEWOField.setBounds(360, 250, 110, 30);
+
+        estimatedTimeEWOLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        estimatedTimeEWOLabel.setText("Estimated Time:");
+        jPanel1.add(estimatedTimeEWOLabel);
+        estimatedTimeEWOLabel.setBounds(260, 260, 100, 14);
 
         javax.swing.GroupLayout PlannerVerificationGUILayout = new javax.swing.GroupLayout(PlannerVerificationGUI.getContentPane());
         PlannerVerificationGUI.getContentPane().setLayout(PlannerVerificationGUILayout);
@@ -647,6 +642,7 @@ public class PlannerGUI extends javax.swing.JFrame {
         jPanel2.setBackground(new java.awt.Color(255, 153, 0));
         jPanel2.setMinimumSize(new java.awt.Dimension(1250, 450));
         jPanel2.setPreferredSize(new java.awt.Dimension(1250, 450));
+        jPanel2.setLayout(null);
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 19)); // NOI18N
@@ -654,6 +650,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         jLabel1.setText("Week n°");
         jLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jLabel1.setOpaque(true);
+        jPanel2.add(jLabel1);
+        jLabel1.setBounds(30, 25, 128, 43);
 
         WeekLabel.setBackground(new java.awt.Color(102, 102, 102));
         WeekLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -661,6 +659,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         WeekLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         WeekLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         WeekLabel.setOpaque(true);
+        jPanel2.add(WeekLabel);
+        WeekLabel.setBounds(168, 26, 64, 43);
 
         jLabel2.setBackground(new java.awt.Color(255, 255, 255));
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -668,6 +668,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         jLabel2.setText("<html>Activity to assign");
         jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jLabel2.setOpaque(true);
+        jPanel2.add(jLabel2);
+        jLabel2.setBounds(342, 26, 132, 43);
 
         ActivityLabel1.setBackground(new java.awt.Color(102, 102, 102));
         ActivityLabel1.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N
@@ -675,6 +677,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         ActivityLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ActivityLabel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         ActivityLabel1.setOpaque(true);
+        jPanel2.add(ActivityLabel1);
+        ActivityLabel1.setBounds(480, 26, 582, 43);
 
         jLabel14.setBackground(new java.awt.Color(255, 204, 102));
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -682,6 +686,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         jLabel14.setText("Skills needed");
         jLabel14.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jLabel14.setOpaque(true);
+        jPanel2.add(jLabel14);
+        jLabel14.setBounds(30, 124, 227, 38);
 
         jLabel15.setBackground(new java.awt.Color(255, 204, 102));
         jLabel15.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -689,12 +695,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         jLabel15.setText("Mainteiner Availability");
         jLabel15.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jLabel15.setOpaque(true);
-
-        SkillTextArea2.setEditable(false);
-        SkillTextArea2.setColumns(20);
-        SkillTextArea2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
-        SkillTextArea2.setRows(5);
-        jScrollPane4.setViewportView(SkillTextArea2);
+        jPanel2.add(jLabel15);
+        jLabel15.setBounds(473, 124, 724, 38);
 
         MainteinerAvailabilityTable.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         MainteinerAvailabilityTable.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -728,6 +730,9 @@ public class PlannerGUI extends javax.swing.JFrame {
         });
         jScrollPane6.setViewportView(MainteinerAvailabilityTable);
 
+        jPanel2.add(jScrollPane6);
+        jScrollPane6.setBounds(473, 168, 724, 187);
+
         backButton.setBackground(new java.awt.Color(0, 0, 0));
         backButton.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         backButton.setForeground(new java.awt.Color(255, 255, 255));
@@ -737,12 +742,17 @@ public class PlannerGUI extends javax.swing.JFrame {
                 backButtonActionPerformed(evt);
             }
         });
+        jPanel2.add(backButton);
+        backButton.setBounds(30, 373, 61, 23);
+        backButton.setVisible(false);
 
         DayLab.setBackground(new java.awt.Color(255, 255, 255));
         DayLab.setFont(new java.awt.Font("Tahoma", 1, 19)); // NOI18N
         DayLab.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         DayLab.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         DayLab.setOpaque(true);
+        jPanel2.add(DayLab);
+        DayLab.setBounds(30, 74, 128, 43);
 
         DayNLabel.setBackground(new java.awt.Color(102, 102, 102));
         DayNLabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -750,6 +760,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         DayNLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         DayNLabel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         DayNLabel.setOpaque(true);
+        jPanel2.add(DayNLabel);
+        DayNLabel.setBounds(168, 75, 64, 43);
 
         Workspacenotes3.setBackground(new java.awt.Color(255, 204, 102));
         Workspacenotes3.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -757,6 +769,8 @@ public class PlannerGUI extends javax.swing.JFrame {
         Workspacenotes3.setText("Workspace notes");
         Workspacenotes3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         Workspacenotes3.setOpaque(true);
+        jPanel2.add(Workspacenotes3);
+        Workspacenotes3.setBounds(263, 124, 204, 38);
 
         WorkspaceTextArea3.setEditable(false);
         WorkspaceTextArea3.setColumns(20);
@@ -764,77 +778,38 @@ public class PlannerGUI extends javax.swing.JFrame {
         WorkspaceTextArea3.setRows(5);
         jScrollPane7.setViewportView(WorkspaceTextArea3);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(backButton)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 227, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(Workspacenotes3, javax.swing.GroupLayout.DEFAULT_SIZE, 204, Short.MAX_VALUE)
-                            .addComponent(jScrollPane7, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 724, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 724, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(WeekLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(DayLab, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(DayNLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(110, 110, 110)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(ActivityLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 582, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(103, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(25, 25, 25)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(DayLab, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(WeekLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(DayNLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(ActivityLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(Workspacenotes3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
-                    .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                    .addComponent(jScrollPane7))
-                .addGap(18, 18, 18)
-                .addComponent(backButton)
-                .addContainerGap(54, Short.MAX_VALUE))
-        );
+        jPanel2.add(jScrollPane7);
+        jScrollPane7.setBounds(263, 168, 204, 187);
 
-        backButton.setVisible(false);
+        tableSkills2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, true, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(tableSkills2);
+        if (tableSkills2.getColumnModel().getColumnCount() > 0) {
+            tableSkills2.getColumnModel().getColumn(0).setResizable(false);
+            tableSkills2.getColumnModel().getColumn(1).setResizable(false);
+            tableSkills2.getColumnModel().getColumn(2).setResizable(false);
+            tableSkills2.getColumnModel().getColumn(3).setResizable(false);
+        }
+
+        jPanel2.add(jScrollPane3);
+        jScrollPane3.setBounds(30, 170, 230, 190);
 
         javax.swing.GroupLayout MaintainerSelectionGUILayout = new javax.swing.GroupLayout(MaintainerSelectionGUI.getContentPane());
         MaintainerSelectionGUI.getContentPane().setLayout(MaintainerSelectionGUILayout);
@@ -1165,7 +1140,7 @@ public class PlannerGUI extends javax.swing.JFrame {
         WorkspaceNotes.setEnabled(true);
     }//GEN-LAST:event_ModifyButtonActionPerformed
 
-    private void OpenButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OpenButtonActionPerformed
+    private void PDFButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PDFButtonActionPerformed
         try {
             java.awt.Desktop.getDesktop().browse(new URI("https://www.usbr.gov/power/data/fist/fist4_1a/4-1A.pdf"));
         } catch (URISyntaxException ex) {
@@ -1173,25 +1148,36 @@ public class PlannerGUI extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }//GEN-LAST:event_OpenButtonActionPerformed
+    }//GEN-LAST:event_PDFButtonActionPerformed
 
     private void ForwardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForwardButtonActionPerformed
         firstTable=true;
+        forwarded = true;
         try {
-            String stringa = ActivitytoaLabel.getText();
-            String[] arrSplit = stringa.split("-");
-            String activityID = arrSplit[0];
-            Planner.modifyActivity(Integer.parseInt(activityID),WorkspaceNotesArea.getText());
+
+            Planner.modifyActivity(currentID,WorkspaceNotesArea.getText());
             MaintainerSelectionGUI.setVisible(true);
             WeekLabel.setText(LabelNWeek.getText());
             ActivityLabel1.setText(ActivitytoaLabel.getText());
-            SkillTextArea2.setText(SkillsTextArea.getText());
-            setMaintainerList(Integer.valueOf(activityID));
-            if(true){
-                WorkspaceTextArea3.setText(WorkspaceNotesArea.getText());
-            }
             
-             } catch (SQLException ex) {
+            setMaintainerList(currentID);
+            String[] lista =null;
+            if(Planner.getActivity(currentID).getType().equals("EWO") || Planner.getActivity(currentID).getType().equals("extra") ){
+                DefaultTableModel model = (DefaultTableModel)tableSkills.getModel();
+                int i=0;
+                int j=0;
+                lista = new String[model.getRowCount()];
+                while (i<model.getRowCount()){
+                if (model.getValueAt(i, 1)!=null && model.getValueAt(i, 1).equals(true)){
+                    lista[j]=(String.valueOf(model.getValueAt(i, 0)));
+                    j++;
+                }
+                i++;
+                }                
+            }
+            querySkill(currentID,tableSkills2,lista);
+            
+            } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         
@@ -1199,10 +1185,6 @@ public class PlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_ForwardButtonActionPerformed
 
     private void MainteinerAvailabilityTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MainteinerAvailabilityTableMouseClicked
-        int k=0;
-        String stringa = ActivitytoaLabel.getText();
-        String[] arrSplit = stringa.split("-");
-        Integer activityID = Integer.valueOf(arrSplit[0]);
         if (firstTable==true){       
         int indexRow = MainteinerAvailabilityTable.getSelectedRow();
         int indexCol = MainteinerAvailabilityTable.getSelectedColumn();
@@ -1217,7 +1199,7 @@ public class PlannerGUI extends javax.swing.JFrame {
         int[] vec= null;
         if (daySelected>=1 && daySelected<=7){
             try {
-                vec = Planner.getArray(maintainer, Planner.getActivity(activityID), daySelected);
+                vec = Planner.getArray(maintainer, Planner.getActivity(currentID), daySelected);
             } catch (SQLException ex) {
                 Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -1265,9 +1247,9 @@ public class PlannerGUI extends javax.swing.JFrame {
             int fascia = indexCol-1;
             int[] vec =null;
             try {
-                Planner.manageAvailability(Planner.getArray(maintainer, Planner.getActivity(activityID), daySelected),
-                        maintainer, daySelected, fascia, Planner.getActivity(activityID));
-                vec = Planner.getArray(maintainer, Planner.getActivity(activityID), daySelected);
+                Planner.manageAvailability(Planner.getArray(maintainer, Planner.getActivity(currentID), daySelected),
+                        maintainer, daySelected, fascia, Planner.getActivity(currentID));
+                vec = Planner.getArray(maintainer, Planner.getActivity(currentID), daySelected);
                 String[] nomi = {"Maintainer","Skills","8:00-9:00","9:00-10:00","10:00-11:00","11:00-12:00","14:00-15:00","15:00-16:00","16:00-17:00"};
                 maintainertab.setRowCount(0);
                 maintainertab.setColumnIdentifiers(nomi);
@@ -1283,8 +1265,8 @@ public class PlannerGUI extends javax.swing.JFrame {
                 row[8]=vec[6];       
                 maintainertab.addRow(row);
                 setList(false);
-                if (Planner.getActivity(activityID).getEstimatedTime() <=0){
-                    JOptionPane.showMessageDialog(null,"Activity completely assigned.","Done", JOptionPane.INFORMATION_MESSAGE);
+                if (Planner.getActivity(currentID).getEstimatedTime() <=0){
+                    JOptionPane.showMessageDialog(null,"Activity completely assigned.","Done", JOptionPane.INFORMATION_MESSAGE);                    
                     MaintainerSelectionGUI.setVisible(false);
 
                 }
@@ -1319,11 +1301,8 @@ public class PlannerGUI extends javax.swing.JFrame {
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         firstTable=true;
         DayLab.setText("");
-        String stringa = ActivitytoaLabel.getText();
-        String[] arrSplit = stringa.split("-");
-        Integer activityID = Integer.valueOf(arrSplit[0]);
         try {
-            setMaintainerList(activityID);
+            setMaintainerList(currentID);
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1331,10 +1310,15 @@ public class PlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void scheduledMaintenanceListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduledMaintenanceListMouseClicked
+        forwarded=false;
         try{
-            String activityid = (String) tab.getValueAt(scheduledMaintenanceList.getSelectedRow(), 0);
-            queryVerification(activityid);
-            querySkill(activityid);
+            String activityid = String.valueOf(tab.getValueAt(scheduledMaintenanceList.getSelectedRow(), 0));
+            String[] arrSplit = activityid.split("-");
+            String num = arrSplit[0].strip();
+            Integer intero = Integer.valueOf(num);
+            currentID = intero;
+            queryVerification(currentID);
+            querySkill(currentID,tableSkills,null);
             PlannerVerificationGUI.setVisible(true);
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
@@ -1351,12 +1335,10 @@ public class PlannerGUI extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_LabelWeekNumberActionPerformed
     private void wrongSelectionFunction() throws SQLException, InsertException{
-        String stringa = ActivitytoaLabel.getText();
-        String[] arrSplit = stringa.split("-");
-        Integer activityID = Integer.valueOf(arrSplit[0]);
+
         if (firstTable==true){
         try {
-            setMaintainerList(activityID);
+            setMaintainerList(currentID);
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1368,7 +1350,7 @@ public class PlannerGUI extends javax.swing.JFrame {
         String skills = (String) MainteinerAvailabilityTable.getValueAt(indexRow,1);
         int fascia = indexCol-1;
         int[] vec =null;
-        vec = Planner.getArray(maintainer, Planner.getActivity(activityID), daySelected);
+        vec = Planner.getArray(maintainer, Planner.getActivity(currentID), daySelected);
         String[] nomi = {"Maintainer","Skills","8:00-9:00","9:00-10:00","10:00-11:00","11:00-12:00","14:00-15:00","15:00-16:00","16:00-17:00"};
             maintainertab.setRowCount(0);
             maintainertab.setColumnIdentifiers(nomi);
@@ -1406,7 +1388,7 @@ public class PlannerGUI extends javax.swing.JFrame {
         Object[] row = new Object[4];
         try{
             while(rst.next()){
-                row[0]=rst.getString("activityid");
+                row[0]=rst.getString("activityid") + " - " + rst.getString("typ");
                 row[1]=rst.getString("factorysite") + " - " + rst.getString("area");
                 row[2]=rst.getString("typology");
                 row[3]=rst.getString("estimatedtime");
@@ -1464,40 +1446,72 @@ public class PlannerGUI extends javax.swing.JFrame {
         }
         return conn;
     }
-     private void queryVerification(String activityid) throws SQLException {
-        Statement op = conn.createStatement();
-        ResultSet rst = op.executeQuery("select * from activity where activityId= " + activityid);
-        while (rst.next()) {
-            String activityto = "";
-            String area = "";
-            String typology = "";
-            String esttime = "";
-            String workspacenotes = "";
-            String nweek = "";
-            String description = "";
-            area = rst.getString("area");
-            typology = rst.getString("typology");
-            description = rst.getString("description");
-            esttime = rst.getString("estimatedtime");
-            nweek = rst.getString("week");
-            workspacenotes = rst.getString("workspaceNotes");
-            WorkspaceNotesArea.setText(workspacenotes);
-            activityto = activityid + "-" + area + "-" + typology + "-" + esttime;
-            LabelNWeek.setText(nweek);
-            ActivitytoaLabel.setText(activityto);
-            InterventionTextLabel.setText(description);
+     private void queryVerification(int activityid) throws SQLException {
+        Activity ac = Planner.getActivity(activityid);
+        WorkspaceNotesArea.setText(ac.getWorkspaceNotes());
+        String activityto = ac.getType()+" "+activityid + "-" + ac.getArea() + "-" + ac.getTypology() + "-" + ac.getEstimatedTime();
+        LabelNWeek.setText(String.valueOf(ac.getWeek()));
+        ActivitytoaLabel.setText(activityto);
+        interventionArea.setText(ac.getDescription());
+        if (ac.getType().equals("extra") || ac.getType().equals("EWO")){
+            interventionArea.setEditable(true);
+            PDFButton.setVisible(false);
+            PDFLabel.setVisible(false);
+            estimatedTimeEWOField.setVisible(true);
+            estimatedTimeEWOLabel.setVisible(true);
+        }
+        else{
+            interventionArea.setEditable(false);
+            PDFButton.setVisible(true);
+            PDFLabel.setVisible(true);
+            estimatedTimeEWOField.setVisible(false);
+            estimatedTimeEWOLabel.setVisible(false);
         }
 
     }
 
-    private void querySkill(String activityid) throws SQLException {
+    private void querySkill(int activityid,JTable tab,String[] st) throws SQLException {
         Statement o = conn.createStatement();
-        ResultSet rst = o.executeQuery("select competence from proceduraComp where procedura=(select procedura from activity where activityId=" + activityid + ")");
-        String skill = "";
-        while (rst.next()) {
-            skill = skill + "·" + rst.getString("competence") + "\n";
-            SkillsTextArea.setText(skill);
+        ResultSet rst = null;
+        if (Planner.getActivity(Integer.valueOf(activityid)).getType().equals("EWO") || Planner.getActivity(Integer.valueOf(activityid)).getType().equals("extra")){
+            rst = o.executeQuery("select * from competence " );
+            DefaultTableModel tabskills = new DefaultTableModel(new Object[]{"",""}, 0) {
+                @Override
+                public Class<?> getColumnClass(int column) {
+                    if (column == 1) {
+                        tab.getColumnModel().getColumn(column).setMaxWidth(5);
+                        return Boolean.class;
+                    } else {
+                        return String.class;
+                    }
+                }
+            };
+            if (forwarded){
+                DefaultTableModel tabskills2 = (DefaultTableModel) tab.getModel();
+                tabskills2.setRowCount(0);
+                tabskills2.setColumnIdentifiers(new String[]{""});
+                int num=0;
+                while (num!=st.length){
+                    tabskills2.addRow(new String[]{st[num]});
+                    num++;
+                }
+            }
+            else{
+            tab.setModel(tabskills);
+            while (rst.next()) {
+                tabskills.addRow(new Object[]{rst.getString("nome")});
+            }
+            }
+        } else {
+            rst = o.executeQuery("select competence from proceduraComp where procedura=(select procedura from activity where activityId=" + activityid + ")");
+            DefaultTableModel tabskills = (DefaultTableModel) tab.getModel();
+            tabskills.setRowCount(0);
+            tabskills.setColumnIdentifiers(new String[]{""});
+            while (rst.next()) {
+                tabskills.addRow(new Object[]{rst.getString("competence")});
+            }
         }
+        
     }
    
     private String getDay(){
@@ -1583,9 +1597,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     private javax.swing.JButton ForwardButton;
     private javax.swing.ButtonGroup InterruptibileActivity;
     private javax.swing.JLabel InterventionLabel;
-    private javax.swing.JLabel InterventionTextLabel;
     private javax.swing.JLabel LabelNWeek;
-    private javax.swing.JLabel LabelOpen;
     private javax.swing.JLabel LabelSkill;
     private javax.swing.JLabel LabelWeek;
     private javax.swing.JTextField LabelWeekNumber;
@@ -1595,12 +1607,11 @@ public class PlannerGUI extends javax.swing.JFrame {
     private javax.swing.JTextField MaterialsTextField;
     private javax.swing.JRadioButton ModifyButton;
     private javax.swing.JRadioButton NoButton;
-    private javax.swing.JButton OpenButton;
+    private javax.swing.JButton PDFButton;
+    private javax.swing.JLabel PDFLabel;
     private javax.swing.JRadioButton PlannedActivityButton;
     private javax.swing.JFrame PlannerRecordGUI;
     private javax.swing.JFrame PlannerVerificationGUI;
-    private javax.swing.JTextArea SkillTextArea2;
-    private javax.swing.JTextArea SkillsTextArea;
     private javax.swing.JComboBox<String> WeekComboBox;
     private javax.swing.JLabel WeekLabel;
     private javax.swing.JLabel WorkspaceLabel;
@@ -1612,6 +1623,9 @@ public class PlannerGUI extends javax.swing.JFrame {
     private javax.swing.JButton backButton;
     private javax.swing.JButton buttonManageMaintenance;
     private javax.swing.JComboBox<String> comboBoxWeek;
+    private javax.swing.JTextField estimatedTimeEWOField;
+    private javax.swing.JLabel estimatedTimeEWOLabel;
+    private javax.swing.JTextArea interventionArea;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1640,6 +1654,9 @@ public class PlannerGUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
+    private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTable scheduledMaintenanceList;
+    private javax.swing.JTable tableSkills;
+    private javax.swing.JTable tableSkills2;
     // End of variables declaration//GEN-END:variables
 }
