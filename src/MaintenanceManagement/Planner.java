@@ -59,8 +59,11 @@ public class Planner extends User {
     a.setEstimatedTime(estimatedTime);
     a.setDescription(description);
     for(String stringa : lista) {
+        if (stringa == null)
+            break;
         String query ="insert into ewoComp values (" + a.getActivityId() + ",'" + stringa + "')";
-        op.executeUpdate(query); }
+        op.executeUpdate(query); 
+    }
     }
     else
         throw new InsertException();

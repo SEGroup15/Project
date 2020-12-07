@@ -1364,36 +1364,43 @@ public class PlannerGUI extends javax.swing.JFrame {
         firstTable=true;
         forwarded = true;
         try {
-
+            if (Planner.getActivity(currentID).getType().equals("EWO")){
+            Planner.modifyEwo(Planner.getActivity(currentID),Integer.valueOf(estimatedTimeEWOField.getText()), interventionArea.getText(), getCompetenceList(Planner.getActivity(currentID)));
+            queryVerification(currentID);
+            WorkspaceNotesArea.setEditable(false);}
             Planner.modifyActivity(currentID,WorkspaceNotesArea.getText());
             MaintainerSelectionGUI.setVisible(true);
             WeekLabel.setText(LabelNWeek.getText());
-            ActivityLabel1.setText(ActivitytoaLabel.getText());
-            
+            ActivityLabel1.setText(ActivitytoaLabel.getText());          
             setMaintainerList(currentID);
-            String[] lista =null;
-            if(Planner.getActivity(currentID).getType().equals("EWO") || Planner.getActivity(currentID).getType().equals("extra") ){
-                DefaultTableModel model = (DefaultTableModel)tableSkills.getModel();
-                int i=0;
-                int j=0;
-                lista = new String[model.getRowCount()];
-                while (i<model.getRowCount()){
-                if (model.getValueAt(i, 1)!=null && model.getValueAt(i, 1).equals(true)){
-                    lista[j]=(String.valueOf(model.getValueAt(i, 0)));
-                    j++;
-                }
-                i++;
-                }                
-            }
-            querySkill(currentID,tableSkills2,lista);
+            querySkill(currentID,tableSkills2,getCompetenceList(Planner.getActivity(currentID)));
             
             } catch (SQLException ex) {
+            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }catch (InsertException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         
     }//GEN-LAST:event_ForwardButtonActionPerformed
 
+    private String[] getCompetenceList(Activity a){
+            if(a.getType().equals("EWO") || a.getType().equals("extra") ){
+                DefaultTableModel model = (DefaultTableModel)tableSkills.getModel();
+                int i=0;
+                int j=0;
+                String[] lista = new String[model.getRowCount()];
+                while (i<model.getRowCount()){
+                if (model.getValueAt(i, 1)!=null && model.getValueAt(i, 1).equals(true)){
+                    lista[j]=(String.valueOf(model.getValueAt(i, 0)));
+                    j++;
+                }
+                i++;
+                }
+                return lista;
+            }
+            return null;
+    }
     private void MainteinerAvailabilityTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MainteinerAvailabilityTableMouseClicked
         if (firstTable==true){       
         int indexRow = MainteinerAvailabilityTable.getSelectedRow();
@@ -1475,12 +1482,17 @@ public class PlannerGUI extends javax.swing.JFrame {
                 row[8]=vec[6];       
                 maintainertab.addRow(row);
                 setList(false);
-                if (Planner.getActivity(currentID).getEstimatedTime() <=0){
+                if (Planner.getActivity(currentID).getEstimatedTime() <=0){  
+                    queryVerification(currentID);
+                    ActivityLabel1.setText(ActivitytoaLabel.getText());
                     JOptionPane.showMessageDialog(null,"Activity completely assigned.","Done", JOptionPane.INFORMATION_MESSAGE);                    
                     MaintainerSelectionGUI.setVisible(false);
 
                 }
                 else{
+                  
+                   queryVerification(currentID);
+                   ActivityLabel1.setText(ActivitytoaLabel.getText());                                      
                    JOptionPane.showMessageDialog(null,"Activity partially assigned.","Done", JOptionPane.INFORMATION_MESSAGE);}
                 
                 PlannerVerificationGUI.setVisible(false);
@@ -1528,8 +1540,10 @@ public class PlannerGUI extends javax.swing.JFrame {
             Integer intero = Integer.valueOf(num);
             currentID = intero;
             queryVerification(currentID);
-            querySkill(currentID,tableSkills,null);
+            querySkill(currentID,tableSkills,null);         
             PlannerVerificationGUI.setVisible(true);
+            if (Planner.getActivity(currentID).getType().equals("EWO") || Planner.getActivity(currentID).getType().equals("extra") )
+                    this.estimatedTimeEWOField.setText(String.valueOf(Planner.getActivity(currentID).getEstimatedTime()));
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }catch(java.lang.ArrayIndexOutOfBoundsException e){
@@ -1622,6 +1636,8 @@ public class PlannerGUI extends javax.swing.JFrame {
    private void setMaintainerList(int id) throws SQLException{
        ResultSet rst = null;
        Statement st = conn.createStatement();
+       
+       if (Planner.getActivity(id).getType().equals("planned")){
        Activity a = Planner.getActivity(id);
        rst= st.executeQuery("select maintainer,mc,pc,lun,mar,mer,gio,ven,sab,dom from table3('"+a.getProcedure().getNome()+"',"+ a.getWeek()+")" );
        String[] nomi = {"Maintainer","Skills","Lun","Mar","Mer","Gio","Ven","Sab","Dom"};
@@ -1643,7 +1659,32 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         }catch(SQLException ex){
             
+        }}
+       else{
+           Activity a = Planner.getActivity(id);
+       rst= st.executeQuery("select maintainer,mc,cr,lun,mar,mer,gio,ven,sab,dom from table3_ewo('"+a.getActivityId()+"',"+ a.getWeek()+")" );
+       String[] nomi = {"Maintainer","Skills","Lun","Mar","Mer","Gio","Ven","Sab","Dom"};
+       maintainertab.setRowCount(0);
+       maintainertab.setColumnIdentifiers(nomi);
+       Object[] row = new Object[9];
+        try{
+            while(rst.next()){
+                row[0]=rst.getString("maintainer");
+                row[1]=rst.getBigDecimal("mc") + "/" + rst.getBigDecimal("cr");
+                row[2]=rst.getInt("lun");
+                row[3]=rst.getInt("mar");
+                row[4]=rst.getInt("mer");
+                row[5]=rst.getInt("gio");
+                row[6]=rst.getInt("ven");
+                row[7]=rst.getInt("sab");
+                row[8]=rst.getInt("dom");        
+                maintainertab.addRow(row);
+            }
+        }catch(SQLException ex){
+            
         }
+       }
+   
    }
     
     private static boolean isNumeric(String str) { 
@@ -1672,6 +1713,7 @@ public class PlannerGUI extends javax.swing.JFrame {
         ActivitytoaLabel.setText(activityto);
         interventionArea.setText(ac.getDescription());
         if (ac.getType().equals("extra") || ac.getType().equals("EWO")){
+            WorkspaceNotesArea.setEditable(false);
             interventionArea.setEditable(true);
             PDFButton.setVisible(false);
             PDFLabel.setVisible(false);
@@ -1679,6 +1721,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             estimatedTimeEWOLabel.setVisible(true);
         }
         else{
+            WorkspaceNotesArea.setEditable(true);
             interventionArea.setEditable(false);
             PDFButton.setVisible(true);
             PDFLabel.setVisible(true);
