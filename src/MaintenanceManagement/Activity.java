@@ -94,6 +94,10 @@ public class Activity {
         return type;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     
     
 }

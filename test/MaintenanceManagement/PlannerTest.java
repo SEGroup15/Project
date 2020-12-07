@@ -35,6 +35,7 @@ public class PlannerTest {
         Statement op = conn.createStatement();
         planner.deleteActivity(1000);
         planner.deleteActivity(1001);
+        planner.deleteActivity(1002);
         op.executeUpdate("delete from maintainer where username = 'usTest'");
         conn.close();
     }
@@ -192,6 +193,28 @@ public class PlannerTest {
         array = planner.getArray("usTest", a, 1);
         assertArrayEquals(testarray, array);
     }
+    
+    @Test
+    public void testGetArrayEwo() throws SQLException, InsertException {
+        Statement op = conn.createStatement();
+        int[] testarray = {40,60,60,60,60,60,60 };
+        op.executeUpdate("insert into maintainer values('usTest','pwTest')");
+        Activity a = planner.createActivity(1000, "factory", "area", "electrical", "desc", 20, false, "materials", 1, "wsnotes", procedure,"planned");
+        planner.addActivity(a);
+        Activity b = planner.createActivity(1001, "factory", "area", "electrical", "desc", 20, true, "materials", 1, "wsnotes", procedure,"planned");
+        planner.addActivity(b);
+        Activity ewo = planner.createActivity(1002, "factory", "area", "electrical", "desc", 10, true, "materials", 1, "wsnotes", procedure,"EWO");
+        planner.addActivity(ewo);
+        int[] array = planner.getArray("usTest", a, 5);
+        planner.manageAvailability(array, "usTest", 5, 1, a);
+        array = planner.getArray("usTest", b, 5);
+        planner.manageAvailability(array, "usTest", 5, 2, b);
+        array=planner.getArray("usTest", ewo, 5);
+        assertArrayEquals(testarray,array);
+    
+    }
+    
+    
 
     @Test
     public void testManageAvailabilityOneActivity() throws SQLException, InsertException {
@@ -216,7 +239,39 @@ public class PlannerTest {
         planner.manageAvailability(array, "usTest", 5, 1, a);
         array = planner.getArray("usTest", b, 5);
         planner.manageAvailability(array, "usTest", 5, 1, b);
-
+    }
+    
+    
+    @Test
+    public void testModifyEwo() throws SQLException, InsertException {
+    Statement op=conn.createStatement();
+    String [] lista = new String[2];
+    lista[0] = "electrical manteinance";
+    lista[1] = "xyz-type robot knowledge";
+    Activity a = planner.createActivity(1000, "factory", "area", "electrical", null, 0, true, "materials", 1, "wsnotes", procedure,"EWO");
+    planner.addActivity(a);
+    planner.modifyEwo(a, 60, "testdesc", lista );
+    assertEquals(60,a.getEstimatedTime());
+    assertEquals("testdesc",a.getDescription());
+    ResultSet rest =op.executeQuery("select estimatedTime, description from activity where activityId = 1000");
+    rest.next();
+    assertEquals(60,rest.getInt("estimatedTime"));
+    assertEquals("testdesc",rest.getString("description"));
+    rest = op.executeQuery("select competence from ewoComp where idactivity =1000");
+    rest.next();
+    assertEquals("electrical manteinance",rest.getString("competence"));
+    rest.next();
+    assertEquals("xyz-type robot knowledge",rest.getString("competence"));
+    }
+    
+    @Test (expected=InsertException.class)
+    public void testModifyEwoNotEwo() throws SQLException, InsertException {
+        Statement op=conn.createStatement();
+        String [] lista = new String[2];
+        lista[0] = "electrical manteinance";
+        lista[1] = "xyz-type robot knowledge";
+        Activity a = planner.createActivity(1000, "factory", "area", "electrical", null, 0, true, "materials", 1, "wsnotes", procedure,"planned");
+        planner.modifyEwo(a, 60, "testdesc", lista );
     }
 
 }

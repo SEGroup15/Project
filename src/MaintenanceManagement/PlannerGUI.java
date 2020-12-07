@@ -55,7 +55,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     private int currentID;
     private boolean forwarded;
     
-    public PlannerGUI(){       
+    public PlannerGUI() throws SQLException{       
         initComponents();
         conn = PlannerGUI.startConnection();
         Planner= new Planner("admin","admin","Planner",conn);
@@ -1524,7 +1524,7 @@ public class PlannerGUI extends javax.swing.JFrame {
         try{
             String activityid = String.valueOf(tab.getValueAt(scheduledMaintenanceList.getSelectedRow(), 0));
             String[] arrSplit = activityid.split("-");
-            String num = arrSplit[0].strip();
+            String num = arrSplit[0].trim();
             Integer intero = Integer.valueOf(num);
             currentID = intero;
             queryVerification(currentID);
@@ -1784,7 +1784,11 @@ public class PlannerGUI extends javax.swing.JFrame {
                
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PlannerGUI().setVisible(true);
+                try {
+                    new PlannerGUI().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
