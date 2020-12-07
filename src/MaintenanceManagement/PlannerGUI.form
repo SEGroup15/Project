@@ -921,6 +921,9 @@
                         </Column>
                       </TableColumnModel>
                     </Property>
+                    <Property name="gridColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                      <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                    </Property>
                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                       <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                     </Property>
@@ -1022,38 +1025,27 @@
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="jScrollPane3" min="-2" pref="227" max="-2" attributes="0"/>
                                   <Component id="jLabel14" alignment="0" min="-2" pref="227" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabel1" min="-2" pref="128" max="-2" attributes="0"/>
+                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                                      <Component id="WeekLabel" min="-2" pref="64" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="jLabel2" max="32767" attributes="0"/>
                                   <Component id="Workspacenotes3" pref="204" max="32767" attributes="0"/>
                                   <Component id="jScrollPane7" pref="0" max="32767" attributes="0"/>
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="ActivityLabel1" min="-2" pref="724" max="-2" attributes="0"/>
                                   <Component id="jLabel15" min="-2" pref="724" max="-2" attributes="0"/>
                                   <Component id="jScrollPane6" min="-2" pref="724" max="-2" attributes="0"/>
                               </Group>
                           </Group>
-                          <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="1" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Component id="jLabel1" min="-2" pref="128" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="WeekLabel" min="-2" pref="64" max="-2" attributes="0"/>
-                                  </Group>
-                                  <Group type="102" attributes="0">
-                                      <Component id="DayLab" min="-2" pref="128" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="DayNLabel" min="-2" pref="64" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
-                              <EmptySpace min="-2" pref="110" max="-2" attributes="0"/>
-                              <Component id="jLabel2" min="-2" pref="132" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="ActivityLabel1" min="-2" pref="582" max="-2" attributes="0"/>
-                          </Group>
                       </Group>
-                      <EmptySpace pref="103" max="32767" attributes="0"/>
+                      <EmptySpace pref="53" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1062,41 +1054,31 @@
                   <Group type="102" attributes="0">
                       <EmptySpace min="25" pref="25" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="jLabel1" min="-2" pref="43" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="DayLab" min="-2" pref="43" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jLabel1" min="-2" pref="43" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="1" pref="1" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" attributes="0">
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="WeekLabel" min="-2" pref="43" max="-2" attributes="0"/>
-                                          <Component id="jLabel2" alignment="0" min="-2" pref="43" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="DayNLabel" min="-2" pref="43" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="WeekLabel" min="-2" pref="43" max="-2" attributes="0"/>
+                                  <Component id="jLabel2" alignment="0" min="-2" pref="43" max="-2" attributes="0"/>
                                   <Component id="ActivityLabel1" min="-2" pref="43" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="jLabel14" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
                           <Component id="jLabel15" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
                           <Component id="Workspacenotes3" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
+                          <Component id="jLabel14" alignment="3" min="-2" pref="38" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="jScrollPane3" pref="187" max="32767" attributes="0"/>
-                          <Component id="jScrollPane6" pref="0" max="32767" attributes="0"/>
-                          <Component id="jScrollPane7" alignment="0" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jScrollPane7" min="-2" pref="187" max="-2" attributes="0"/>
+                          <Component id="jScrollPane3" min="-2" pref="187" max="-2" attributes="0"/>
+                          <Component id="jScrollPane6" min="-2" pref="187" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="62" max="-2" attributes="0"/>
                       <Component id="backButton" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="111" max="32767" attributes="0"/>
+                      <EmptySpace pref="104" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1254,6 +1236,9 @@
                     <Property name="selectionForeground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                       <Color blue="0" green="0" red="0" type="rgb"/>
                     </Property>
+                    <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                      <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
+                    </Property>
                   </Properties>
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="MainteinerAvailabilityTableMouseClicked"/>
@@ -1283,43 +1268,6 @@
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="backButton.setVisible(false);"/>
               </AuxValues>
-            </Component>
-            <Component class="javax.swing.JLabel" name="DayLab">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                </Property>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Tahoma" size="19" style="1"/>
-                </Property>
-                <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                    <LineBorder/>
-                  </Border>
-                </Property>
-                <Property name="opaque" type="boolean" value="true"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JLabel" name="DayNLabel">
-              <Properties>
-                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="66" green="66" red="66" type="rgb"/>
-                </Property>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Tahoma" size="18" style="1"/>
-                </Property>
-                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
-                </Property>
-                <Property name="horizontalAlignment" type="int" value="0"/>
-                <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                  <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
-                    <LineBorder/>
-                  </Border>
-                </Property>
-                <Property name="opaque" type="boolean" value="true"/>
-              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="Workspacenotes3">
               <Properties>
@@ -1611,6 +1559,9 @@
                   </StringArray>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="WeekComboBox2ActionPerformed"/>
+              </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
@@ -1664,7 +1615,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTable" name="scheduledMaintenanceList1">
+                <Component class="javax.swing.JTable" name="EWOTab">
                   <Properties>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
@@ -1672,18 +1623,10 @@
                       </Border>
                     </Property>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                      <Font name="Tahoma" size="11" style="1"/>
+                      <Font name="Tahoma" size="12" style="1"/>
                     </Property>
-                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="7" rowCount="4">
-                        <Column editable="false" title="EWO" type="java.lang.Object"/>
-                        <Column editable="false" title="AREA" type="java.lang.Object"/>
-                        <Column editable="false" title="TYPE" type="java.lang.Object"/>
-                        <Column editable="false" title="Estimated intervention time [min]" type="java.lang.Object"/>
-                        <Column editable="true" title="Department" type="java.lang.Object"/>
-                        <Column editable="true" title="Maintainer" type="java.lang.Object"/>
-                        <Column editable="true" title="State" type="java.lang.Object"/>
-                      </Table>
+                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="new javax.swing.table.DefaultTableModel(&#xa;    new Object [][] {&#xa;        {null, null, null, null, null, null, null},&#xa;        {null, null, null, null, null, null, null},&#xa;        {null, null, null, null, null, null, null},&#xa;        {null, null, null, null, null, null, null}&#xa;    },&#xa;    new String [] {&#xa;        &quot;EWO&quot;, &quot;AREA&quot;, &quot;TYPE&quot;, &quot;Estimated intervention time [min]&quot;, &quot;Department&quot;, &quot;Maintainer&quot;, &quot;State&quot;&#xa;    }&#xa;) {&#xa;    boolean[] canEdit = new boolean [] {&#xa;        false, false, false, false, true, true, true&#xa;    };&#xa;&#xa;    public boolean isCellEditable(int rowIndex, int columnIndex) {&#xa;        return false;&#xa;    }&#xa;}" type="code"/>
                     </Property>
                     <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                       <TableColumnModel selectionModel="0">
@@ -1719,15 +1662,16 @@
                       <Dimension value="[800, 400]"/>
                     </Property>
                     <Property name="rowHeight" type="int" value="39"/>
+                    <Property name="rowSelectionAllowed" type="boolean" value="false"/>
                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                      <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                      <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                     </Property>
                   </Properties>
                   <Events>
-                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="scheduledMaintenanceList1MouseClicked"/>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="EWOTabMouseClicked"/>
                   </Events>
                   <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()&#xa;{&#xa;    @Override&#xa;    public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){&#xa;        Component component = super.prepareRenderer(renderer, rowIndex, columnIndex);&#xa;        Object value = getModel().getValueAt(rowIndex,columnIndex);&#xa;        component.setBackground(Color.WHITE);&#xa;        component.setForeground(Color.BLACK);&#xa;&#xa;        if (columnIndex &gt; 3 &amp;&amp; value!=null){&#xa;            if ((String)value == &quot;Not sent&quot;){&#xa;                component.setBackground(Color.RED);&#xa;            }&#xa;            else if ((String)value == &quot;Sent&quot; || (String)value == &quot;Not started&quot; || (String)value == &quot;In progress&quot;){&#xa;                component.setBackground(Color.YELLOW);&#xa;            }&#xa;            else if ((String)value == &quot;Received&quot; || (String)value == &quot;Close&quot;){&#xa;                component.setBackground(Color.GREEN);&#xa;            }&#xa;&#xa;        };&#xa;        return component;    }&#xa;}&#xa;"/>
+                    <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new javax.swing.JTable()&#xa;{&#xa;    @Override&#xa;    public Component prepareRenderer (TableCellRenderer renderer, int rowIndex, int columnIndex){&#xa;        Component component = super.prepareRenderer(renderer, rowIndex, columnIndex);&#xa;        Object value = getModel().getValueAt(rowIndex,columnIndex);&#xa;        component.setBackground(Color.WHITE);&#xa;        component.setForeground(Color.BLACK);&#xa;&#xa;        if (columnIndex &gt; 3 &amp;&amp; value!=null){&#xa;            if ((String)value == &quot;Not sent&quot;){&#xa;                component.setBackground(Color.RED);&#xa;            }&#xa;            else if ((String)value == &quot;Sent&quot; || (String)value == &quot;Not started&quot; || (String)value == &quot;In progress&quot;){&#xa;                component.setBackground(Color.YELLOW);&#xa;            }&#xa;            else if ((String)value == &quot;Received&quot; || (String)value == &quot;Closed&quot; || (String)value== &quot;Read&quot;){&#xa;                component.setBackground(Color.GREEN);&#xa;            }&#xa;&#xa;        };&#xa;        return component;    }&#xa;}&#xa;"/>
                   </AuxValues>
                 </Component>
               </SubComponents>
