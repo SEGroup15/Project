@@ -92,4 +92,11 @@ public class Planner extends User {
         attività.setEstimatedTime(estimated-time);
         
         }
+    
+    
+    public ResultSet getAssignedEWO (String week) throws SQLException{
+        Statement op = conn.createStatement();
+        ResultSet rst = op.executeQuery("select * from activity A where (week = " + week + " and A.estimatedTime=0 and A.typ='EWO')");
+        return rst;
+    }
 }
