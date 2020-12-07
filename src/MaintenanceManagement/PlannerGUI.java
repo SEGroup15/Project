@@ -470,7 +470,6 @@ public class PlannerGUI extends javax.swing.JFrame {
         jPanel4.setBounds(0, 0, 30000, 30000);
 
         PlannerVerificationGUI.setMinimumSize(new java.awt.Dimension(760, 400));
-        PlannerVerificationGUI.setPreferredSize(new java.awt.Dimension(760, 400));
 
         jPanel1.setBackground(new java.awt.Color(255, 153, 0));
         jPanel1.setMinimumSize(new java.awt.Dimension(780, 420));
@@ -637,7 +636,6 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         MaintainerSelectionGUI.setBackground(new java.awt.Color(255, 153, 51));
         MaintainerSelectionGUI.setMinimumSize(new java.awt.Dimension(1250, 450));
-        MaintainerSelectionGUI.setPreferredSize(new java.awt.Dimension(1250, 450));
 
         jPanel2.setBackground(new java.awt.Color(255, 153, 0));
         jPanel2.setMinimumSize(new java.awt.Dimension(1250, 450));
