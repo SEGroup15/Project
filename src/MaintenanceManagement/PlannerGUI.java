@@ -56,7 +56,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     private int currentID;
     private boolean forwarded;
     
-    public PlannerGUI(){       
+    public PlannerGUI() throws SQLException{       
         initComponents();
         conn = PlannerGUI.startConnection();
         Planner= new Planner("admin","admin","Planner",conn);
@@ -1803,7 +1803,11 @@ public class PlannerGUI extends javax.swing.JFrame {
                
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new PlannerGUI().setVisible(true);
+                try {
+                    new PlannerGUI().setVisible(true);
+                } catch (SQLException ex) {
+                    Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
