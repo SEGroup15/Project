@@ -117,4 +117,15 @@ public class Planner extends User {
         ResultSet rst = op.executeQuery("select * from activity A where (week = " + week + " and A.estimatedTime=0 and A.typ='EWO')");
         return rst;
     }
+    
+    public String[] getEWOestime(String id) throws SQLException{
+        Statement op = conn.createStatement();
+        ResultSet rst = op.executeQuery("select sum(minuti),day from calendar where idattivita="+ id+"group by day");
+        String[] esti=new String[2];
+        while(rst.next()){
+            esti[0]=rst.getString("sum");
+            esti[1]=rst.getString("day");
+    }
+        return esti;
+}
 }

@@ -247,18 +247,9 @@ public class PlannerGUI extends javax.swing.JFrame {
         TicketStatusButton = new javax.swing.JButton();
 
         PlannerRecordGUI.setMinimumSize(new java.awt.Dimension(958, 500));
-        PlannerRecordGUI.getContentPane().setLayout(null);
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel9.setText("Week:");
-        PlannerRecordGUI.getContentPane().add(jLabel9);
-        jLabel9.setBounds(667, 154, 50, 14);
-        PlannerRecordGUI.getContentPane().add(FactorySiteTextField);
-        FactorySiteTextField.setBounds(88, 212, 203, 30);
-        PlannerRecordGUI.getContentPane().add(ActivityDescriptionTextField);
-        ActivityDescriptionTextField.setBounds(378, 154, 230, 30);
-        PlannerRecordGUI.getContentPane().add(ActivityIDTextField);
-        ActivityIDTextField.setBounds(88, 154, 203, 30);
 
         CreateButton.setBackground(new java.awt.Color(255, 153, 0));
         ActionType.add(CreateButton);
@@ -269,36 +260,24 @@ public class PlannerGUI extends javax.swing.JFrame {
                 CreateButtonActionPerformed(evt);
             }
         });
-        PlannerRecordGUI.getContentPane().add(CreateButton);
-        CreateButton.setBounds(396, 20, 70, 23);
 
         EstimatedTimeTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 EstimatedTimeTextFieldActionPerformed(evt);
             }
         });
-        PlannerRecordGUI.getContentPane().add(EstimatedTimeTextField);
-        EstimatedTimeTextField.setBounds(378, 214, 230, 30);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel3.setText("Area or Department:");
-        PlannerRecordGUI.getContentPane().add(jLabel3);
-        jLabel3.setBounds(88, 250, 140, 14);
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel5.setText("Activity description:");
-        PlannerRecordGUI.getContentPane().add(jLabel5);
-        jLabel5.setBounds(378, 134, 120, 14);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel6.setText("Estimated intervention time (in minutes):");
-        PlannerRecordGUI.getContentPane().add(jLabel6);
-        jLabel6.setBounds(378, 194, 240, 14);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel4.setText("Typology of maintenance activity:");
-        PlannerRecordGUI.getContentPane().add(jLabel4);
-        jLabel4.setBounds(88, 308, 192, 14);
 
         ActivityTypologyComboBox.setBackground(new java.awt.Color(102, 102, 102));
         ActivityTypologyComboBox.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -308,32 +287,19 @@ public class PlannerGUI extends javax.swing.JFrame {
                 ActivityTypologyComboBoxActionPerformed(evt);
             }
         });
-        PlannerRecordGUI.getContentPane().add(ActivityTypologyComboBox);
-        ActivityTypologyComboBox.setBounds(88, 328, 200, 30);
-        PlannerRecordGUI.getContentPane().add(MaterialsTextField);
-        MaterialsTextField.setBounds(378, 319, 230, 30);
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel7.setText("Factory site:");
-        PlannerRecordGUI.getContentPane().add(jLabel7);
-        jLabel7.setBounds(88, 192, 80, 14);
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel11.setText("Type of activity:");
-        PlannerRecordGUI.getContentPane().add(jLabel11);
-        jLabel11.setBounds(287, 65, 100, 14);
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel10.setText("Workspace notes:");
-        PlannerRecordGUI.getContentPane().add(jLabel10);
-        jLabel10.setBounds(667, 205, 120, 14);
 
         WorkspaceNotes.setColumns(20);
         WorkspaceNotes.setRows(5);
         jScrollPane2.setViewportView(WorkspaceNotes);
-
-        PlannerRecordGUI.getContentPane().add(jScrollPane2);
-        jScrollPane2.setBounds(667, 225, 210, 110);
 
         WeekComboBox.setBackground(new java.awt.Color(102, 102, 102));
         WeekComboBox.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -343,15 +309,9 @@ public class PlannerGUI extends javax.swing.JFrame {
                 WeekComboBoxActionPerformed(evt);
             }
         });
-        PlannerRecordGUI.getContentPane().add(WeekComboBox);
-        WeekComboBox.setBounds(667, 174, 50, 30);
-        PlannerRecordGUI.getContentPane().add(AreaDepartmentTextField);
-        AreaDepartmentTextField.setBounds(88, 270, 203, 30);
 
         ActivityLabel.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         ActivityLabel.setText("Activity ID:");
-        PlannerRecordGUI.getContentPane().add(ActivityLabel);
-        ActivityLabel.setBounds(88, 134, 80, 14);
 
         DeleteButton.setBackground(new java.awt.Color(255, 153, 0));
         ActionType.add(DeleteButton);
@@ -362,13 +322,9 @@ public class PlannerGUI extends javax.swing.JFrame {
                 DeleteButtonActionPerformed(evt);
             }
         });
-        PlannerRecordGUI.getContentPane().add(DeleteButton);
-        DeleteButton.setBounds(548, 20, 70, 23);
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel13.setText("Type of action:");
-        PlannerRecordGUI.getContentPane().add(jLabel13);
-        jLabel13.setBounds(290, 24, 100, 14);
 
         ModifyButton.setBackground(new java.awt.Color(255, 153, 0));
         ActionType.add(ModifyButton);
@@ -379,13 +335,9 @@ public class PlannerGUI extends javax.swing.JFrame {
                 ModifyButtonActionPerformed(evt);
             }
         });
-        PlannerRecordGUI.getContentPane().add(ModifyButton);
-        ModifyButton.setBounds(473, 20, 70, 23);
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("Materials:");
-        PlannerRecordGUI.getContentPane().add(jLabel8);
-        jLabel8.setBounds(378, 293, 70, 14);
 
         jPanel4.setBackground(new java.awt.Color(255, 153, 0));
         jPanel4.setInheritsPopupMenu(true);
@@ -499,8 +451,127 @@ public class PlannerGUI extends javax.swing.JFrame {
                 .addContainerGap(29600, Short.MAX_VALUE))
         );
 
-        PlannerRecordGUI.getContentPane().add(jPanel4);
-        jPanel4.setBounds(0, 0, 30000, 30000);
+        javax.swing.GroupLayout PlannerRecordGUILayout = new javax.swing.GroupLayout(PlannerRecordGUI.getContentPane());
+        PlannerRecordGUI.getContentPane().setLayout(PlannerRecordGUILayout);
+        PlannerRecordGUILayout.setHorizontalGroup(
+            PlannerRecordGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(396, 396, 396)
+                .addComponent(CreateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
+                .addComponent(ModifyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(5, 5, 5)
+                .addComponent(DeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(287, 287, 287)
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(378, 378, 378)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(88, 88, 88)
+                .addGroup(PlannerRecordGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ActivityIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(87, 87, 87)
+                .addGroup(PlannerRecordGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(ActivityDescriptionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(49, 49, 49)
+                .addComponent(WeekComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(88, 88, 88)
+                .addGroup(PlannerRecordGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(FactorySiteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(AreaDepartmentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ActivityTypologyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(87, 87, 87)
+                .addGroup(PlannerRecordGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(EstimatedTimeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(MaterialsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(59, 59, 59)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(290, 290, 290)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(667, 667, 667)
+                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(667, 667, 667)
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(88, 88, 88)
+                .addComponent(ActivityLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(88, 88, 88)
+                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        PlannerRecordGUILayout.setVerticalGroup(
+            PlannerRecordGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(PlannerRecordGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(CreateButton)
+                    .addComponent(ModifyButton)
+                    .addComponent(DeleteButton))
+                .addGap(22, 22, 22)
+                .addComponent(jLabel11)
+                .addGap(55, 55, 55)
+                .addComponent(jLabel5)
+                .addGap(6, 6, 6)
+                .addGroup(PlannerRecordGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                        .addComponent(ActivityIDTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel7))
+                    .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                        .addComponent(ActivityDescriptionTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel6))
+                    .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(WeekComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(4, 4, 4)
+                .addGroup(PlannerRecordGUILayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                        .addComponent(FactorySiteTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(8, 8, 8)
+                        .addComponent(jLabel3)
+                        .addGap(6, 6, 6)
+                        .addComponent(AreaDepartmentTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(ActivityTypologyComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                        .addGap(2, 2, 2)
+                        .addComponent(EstimatedTimeTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(49, 49, 49)
+                        .addComponent(jLabel8)
+                        .addGap(12, 12, 12)
+                        .addComponent(MaterialsTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE))))
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jLabel13))
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(205, 205, 205)
+                .addComponent(jLabel10))
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(154, 154, 154)
+                .addComponent(jLabel9))
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(134, 134, 134)
+                .addComponent(ActivityLabel))
+            .addGroup(PlannerRecordGUILayout.createSequentialGroup()
+                .addGap(308, 308, 308)
+                .addComponent(jLabel4))
+            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         PlannerVerificationGUI.setMinimumSize(new java.awt.Dimension(760, 400));
 
@@ -643,12 +714,16 @@ public class PlannerGUI extends javax.swing.JFrame {
         jPanel1.add(jScrollPane8);
         jScrollPane8.setBounds(490, 130, 250, 140);
 
+        interventionArea.setEditable(false);
         interventionArea.setColumns(20);
         interventionArea.setRows(5);
+        interventionArea.setFocusable(false);
         jScrollPane4.setViewportView(interventionArea);
 
         jPanel1.add(jScrollPane4);
         jScrollPane4.setBounds(253, 129, 219, 114);
+
+        estimatedTimeEWOField.setEditable(false);
         jPanel1.add(estimatedTimeEWOField);
         estimatedTimeEWOField.setBounds(360, 250, 110, 30);
 
@@ -915,6 +990,11 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         WeekComboBox3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         WeekComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" }));
+        WeekComboBox3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                WeekComboBox3ActionPerformed(evt);
+            }
+        });
 
         EWOTab.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         EWOTab.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -942,6 +1022,7 @@ public class PlannerGUI extends javax.swing.JFrame {
         EWOTab.setPreferredSize(new java.awt.Dimension(800, 400));
         EWOTab.setRowHeight(39);
         EWOTab.setRowSelectionAllowed(false);
+        EWOTab.setShowGrid(true);
         EWOTab.getTableHeader().setReorderingAllowed(false);
         EWOTab.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -1349,6 +1430,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             if (Planner.getActivity(currentID).getType().equals("EWO")){
             Planner.modifyEwo(Planner.getActivity(currentID),Integer.valueOf(estimatedTimeEWOField.getText()), interventionArea.getText(), getCompetenceList(Planner.getActivity(currentID)));
             queryVerification(currentID);
+            interventionArea.setEditable(false);
             WorkspaceNotesArea.setEditable(false);}
             Planner.modifyActivity(currentID,WorkspaceNotesArea.getText());
             MaintainerSelectionGUI.setVisible(true);
@@ -1554,6 +1636,10 @@ public class PlannerGUI extends javax.swing.JFrame {
     private void WeekComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WeekComboBox2ActionPerformed
        setAssignedEWOTable();
     }//GEN-LAST:event_WeekComboBox2ActionPerformed
+
+    private void WeekComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WeekComboBox3ActionPerformed
+      setAssignedEWOTable();
+    }//GEN-LAST:event_WeekComboBox3ActionPerformed
     private void wrongSelectionFunction() throws SQLException, InsertException{
 
         if (firstTable==true){
@@ -1681,6 +1767,7 @@ public class PlannerGUI extends javax.swing.JFrame {
        String[] generalState = new String[]{"Not started", "In progress", "Closed"};
        java.util.Random rand = new java.util.Random();
        int int_random;
+   
             
         ResultSet rst = null;
         try {
@@ -1693,14 +1780,21 @@ public class PlannerGUI extends javax.swing.JFrame {
         Object[] row = new Object[7];
         try{
             while(rst.next()){
+                String[] results= Planner.getEWOestime(rst.getString("activityid"));
+                String sum=results[0];
+                String day=results[1];
+                        
                 row[0]=rst.getString("activityid") + " - " + rst.getString("typ");
                 row[1]=rst.getString("factorysite") + " - " + rst.getString("area");
                 row[2]=rst.getString("typology");
-                row[3]=rst.getString("estimatedtime");
+                row[3]=sum;
                 row[4]=areaState[int_random = rand.nextInt(3)];
                 row[5]=maintainerState[int_random = rand.nextInt(3)];
                 row[6]=generalState[int_random = rand.nextInt(3)];
-                EWOTable.addRow(row);
+                if(Integer.parseInt(day)==(WeekComboBox3.getSelectedIndex()+1)){
+                  EWOTable.addRow(row);  
+                }
+                
             }
         }catch(SQLException ex){
             
