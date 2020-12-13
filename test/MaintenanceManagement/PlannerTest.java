@@ -273,5 +273,32 @@ public class PlannerTest {
         Activity a = planner.createActivity(1000, "factory", "area", "electrical", null, 0, true, "materials", 1, "wsnotes", procedure,"planned");
         planner.modifyEwo(a, 60, "testdesc", lista );
     }
-
-}
+    
+    @Test 
+    public void testGetAssignedEWO() throws SQLException {
+        ResultSet rst = null;
+        rst = planner.getAssignedEWO("1");
+        assertNotNull(rst);
+    }
+    @Test
+    (expected = SQLException.class)
+    public void testGetAssignedEWOWrongTypeWeek() throws SQLException {
+        ResultSet rst = null;
+        rst = planner.getAssignedEWO("a");
+    }
+    @Test
+    public void testGetEWOestimeWrongid() throws SQLException {
+        String[] str=new String[2];
+        str=planner.getEWOestime(544848);
+        assertNull(str[0]);
+    }
+   
+    @Test
+    public void testGetEWOestime() throws SQLException{
+        Statement op = conn.createStatement();
+        planner.addActivity(new Activity(1000, "aa", "bb", "electrical", "dd", 30, true, "", 1, "qq", procedure,"EWO"));
+        op.executeUpdate("insert into calendar(maintainer,idattivita,week,fascia,day,minuti) values('us1',1000,2,1,1,30)");
+        assertEquals("30",planner.getEWOestime(1000)[0]); 
+        assertEquals("1",planner.getEWOestime(1000)[1]);
+        
+    }}

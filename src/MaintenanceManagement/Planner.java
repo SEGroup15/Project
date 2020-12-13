@@ -58,9 +58,13 @@ public class Planner extends User {
     op.executeUpdate(modify);
     a.setEstimatedTime(estimatedTime);
     a.setDescription(description);
+    op.executeQuery("select * from updatewo("+ a.getActivityId()+")");
     for(String stringa : lista) {
+        if (stringa == null)
+            break;
         String query ="insert into ewoComp values (" + a.getActivityId() + ",'" + stringa + "')";
-        op.executeUpdate(query); }
+        op.executeUpdate(query); 
+    }
     }
     else
         throw new InsertException();
@@ -68,7 +72,7 @@ public class Planner extends User {
             
             
     public ResultSet getActivities(String week) throws SQLException {
-        ResultSet rst = op.executeQuery("select * from activity A where (week = " + week + " and A.estimatedTime!=0)");
+        ResultSet rst = op.executeQuery("select * from activity A where (week = " + week + " and (A.estimatedTime!=0 or A.estimatedTime is null))");
         return rst;
     }
 
@@ -111,7 +115,54 @@ public class Planner extends User {
     
     public ResultSet getAssignedEWO (String week) throws SQLException{
         Statement op = conn.createStatement();
-        ResultSet rst = op.executeQuery("select * from activity A where (week = " + week + " and A.estimatedTime=0 and A.typ='EWO')");
+        ResultSet rst = op.executeQuery("select * from activity A where (week = " + week + " and activityid in (select idattivita from calendar))");
         return rst;
     }
+    
+    public String[] getEWOestime(int id) throws SQLException{
+        Statement op = conn.createStatement();
+        ResultSet rst = op.executeQuery("select sum(minuti),day from calendar where idattivita="+ id+"group by day");
+        String[] esti=new String[2];
+        while(rst.next()){
+            esti[0]=rst.getString("sum");
+            esti[1]=rst.getString("day");
+    }
+        return esti;
+}
+    
+    
+    public String getEWOTotalEstime(int id) throws SQLException{
+        Statement op = conn.createStatement();
+        ResultSet rst = op.executeQuery("select sum(minuti) from calendar where idattivita="+ id);
+        String esti="";
+        while(rst.next()){
+          esti = rst.getString("sum");
+    }
+        return esti; 
+    }
+    
+    public boolean EWOexists(int id) throws SQLException{
+        boolean exist=false;
+        Statement op = conn.createStatement();
+        ResultSet rst = op.executeQuery("select idattivita from calendar where idattivita="+ id);
+        while(rst.next()){
+            if (rst.getString("idattivita") != null){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public ResultSet getAssignedSkills(int id) throws SQLException{
+        Statement op = conn.createStatement();
+        ResultSet rst = op.executeQuery("select competence from ewoComp where idactivity="+ id);
+        return rst;        
+    }
+    
+    public ResultSet getAllMaintainer() throws SQLException{
+       Statement op = conn.createStatement();
+       ResultSet maintainerList = op.executeQuery("select username from maintainer");
+       return maintainerList;
+    }
+    
 }
