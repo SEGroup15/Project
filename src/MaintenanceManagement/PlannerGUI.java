@@ -1450,7 +1450,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                 String activityDescription = ActivityDescriptionTextField.getText();
                 int interventionTime = Integer.parseInt(EstimatedTimeTextField.getText());
                 String materials = MaterialsTextField.getText();
-                int weeks = WeekComboBox.getSelectedIndex() + 1;
+                int weeks = Integer.valueOf(WeekComboBox.getSelectedItem().toString());
                 String workspaceNotes = WorkspaceNotes.getText();
                 
                 try{
@@ -1491,7 +1491,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                 String activityDescription = " ";
                 int interventionTime = 0;
                 String materials = MaterialsTextField.getText();
-                int weeks = (int)WeekComboBox.getSelectedItem();
+                int weeks = Integer.valueOf(WeekComboBox.getSelectedItem().toString());
                 String workspaceNotes = WorkspaceNotes.getText();                
                 try{
                     Procedure p = new Procedure("pr1");

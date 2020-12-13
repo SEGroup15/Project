@@ -115,7 +115,7 @@ public class Planner extends User {
     
     public ResultSet getAssignedEWO (String week) throws SQLException{
         Statement op = conn.createStatement();
-        ResultSet rst = op.executeQuery("select * from activity A where (week = " + week + " and activityid in (select idattivita from calendar))");
+        ResultSet rst = op.executeQuery("select * from activity A where (A.typ='EWO' and week = " + week + " and activityid in (select idattivita from calendar))");
         return rst;
     }
     
