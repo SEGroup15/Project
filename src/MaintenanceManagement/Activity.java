@@ -12,19 +12,22 @@ import java.util.*;
  * @author saby_
  */
 public class Activity {
-    private final int activityId;
-    private final String factorySite;
-    private final String area;
-    private final String typology;
-    private final String description;
-    private final int estimatedTime;
-    private final boolean interruptible;
-    private final String materials;
-    private final int week;
-    private String workspaceNotes;
-    private final Procedure procedure;
 
-    public Activity(int activityId, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, String materials, int week, String workspaceNotes,Procedure procedure) {
+    private int activityId;
+    private String factorySite;
+    private String area;
+    private String typology;
+    private String description;
+    private int estimatedTime;
+    private boolean interruptible;
+    private String materials;
+    private int week;
+    private String workspaceNotes;
+    private Procedure procedure;
+    private String type;
+
+
+    public Activity(int activityId, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, String materials, int week, String workspaceNotes, Procedure procedure,String type) {
         this.activityId = activityId;
         this.factorySite = factorySite;
         this.area = area;
@@ -35,8 +38,8 @@ public class Activity {
         this.week = week;
         this.materials = materials;
         this.workspaceNotes = workspaceNotes;
-        this.procedure=procedure;
-        
+        this.procedure = procedure;
+        this.type=type;
     }
 
     public int getActivityId() {
@@ -75,7 +78,6 @@ public class Activity {
         return procedure;
     }
 
-
     public int getWeek() {
         return week;
     }
@@ -83,5 +85,19 @@ public class Activity {
     public String getWorkspaceNotes() {
         return workspaceNotes;
     }
+
+    public void setEstimatedTime(int estimatedTime) {
+        this.estimatedTime = estimatedTime;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    
     
 }
