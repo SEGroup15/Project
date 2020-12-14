@@ -9,11 +9,28 @@ package MaintenanceManagement;
  *
  * @author saby_
  */
-public class Mantainer extends User {
-    
+public class Mantainer implements User {
+    private final String username;
+    private final String password;
 
-    public Mantainer(String name, String username, String password, String role) {
-        super(username, password, role);
+    public Mantainer(String username, String password) {
+        this.username=username;
+        this.password=password;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.username;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.password;
+    }
+
+    @Override
+    public String getRole() {
+        return "Maintainer";
     }
     
     

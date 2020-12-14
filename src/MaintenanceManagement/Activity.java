@@ -5,47 +5,29 @@
  */
 package MaintenanceManagement;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
  *
  * @author saby_
  */
-public class Activity {
+public abstract class Activity {
+    protected int id;
+    protected String factorySite;
+    protected String area;
+    protected String typology;
+    protected String description;
+    protected int estimatedTime;
+    protected boolean interruptible;
+    protected LinkedList<String> materials;
+    protected int week;
+    protected String workspaceNotes;
 
-    private int activityId;
-    private String factorySite;
-    private String area;
-    private String typology;
-    private String description;
-    private int estimatedTime;
-    private boolean interruptible;
-    private String materials;
-    private int week;
-    private String workspaceNotes;
-    private Procedure procedure;
-    private String type;
-
-
-    public Activity(int activityId, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, String materials, int week, String workspaceNotes, Procedure procedure,String type) {
-        this.activityId = activityId;
-        this.factorySite = factorySite;
-        this.area = area;
-        this.typology = typology;
-        this.description = description;
-        this.estimatedTime = estimatedTime;
-        this.interruptible = interruptible;
-        this.week = week;
-        this.materials = materials;
-        this.workspaceNotes = workspaceNotes;
-        this.procedure = procedure;
-        this.type=type;
+    public int getId() {
+        return id;
     }
-
-    public int getActivityId() {
-        return activityId;
-    }
-
     public String getFactorySite() {
         return factorySite;
     }
@@ -70,12 +52,8 @@ public class Activity {
         return interruptible;
     }
 
-    public String getMaterials() {
+    public LinkedList<String> getMaterials() {
         return materials;
-    }
-
-    public Procedure getProcedure() {
-        return procedure;
     }
 
     public int getWeek() {
@@ -86,17 +64,16 @@ public class Activity {
         return workspaceNotes;
     }
 
-    public void setEstimatedTime(int estimatedTime) {
-        this.estimatedTime = estimatedTime;
-    }
+    public abstract void setDescription(String description);
 
-    public String getType() {
-        return type;
-    }
+    public abstract void setEstimatedTime(int estimatedTime);
+    
+    public abstract boolean upload(Connection conn);
+    
+    public abstract void modify(Connection conn,String workspaceNotes,String description, int estimatedTime,LinkedList<String> competencies);
+        
+    public abstract String getType();
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     
     
