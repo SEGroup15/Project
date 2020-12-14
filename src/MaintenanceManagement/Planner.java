@@ -104,10 +104,9 @@ public class Planner implements User {
     
     
 
-    public boolean deleteActivity(int activityId) throws SQLException {
+    public void deleteActivity(int activityId) throws SQLException {
         String delete = "delete from activity where id=" + activityId;
         op.executeUpdate(delete);
-        return true;
     }
 
     public Activity modifyActivity(Activity a,String workspaceNotes,String description,int estimatedTime,LinkedList<String> competencies) throws SQLException {
@@ -117,7 +116,7 @@ public class Planner implements User {
     
                       
     public ResultSet getActivities(String week) throws SQLException {
-        ResultSet rst = op.executeQuery("select * from activity where (week = " + week + " and (estimated_time!=0 or estimated_time is null))");
+        ResultSet rst = op.executeQuery("select * from activity where (week = " + week + " and (estimated_time!=0 or estimated_time is null)) order by id desc");
         return rst;
     }
 

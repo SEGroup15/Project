@@ -67,7 +67,7 @@ public class EWOActivity extends Activity{
             Statement st = conn.createStatement();
             this.setDescription(description);
             this.setEstimatedTime(estimatedTime);
-            this.setCompetenciesList(competenciesList);
+            this.setCompetenciesList(competencies);
             st.executeUpdate("update activity set estimated_time = " + estimatedTime + ", description = '" + description +"' where id="+id);
             st.executeQuery("select * from updatewo("+ this.id +")");
             if (competencies != null){

@@ -53,7 +53,7 @@ public class ExtraActivity extends Activity{
         try{
         Statement st = conn.createStatement();
         st.executeUpdate("insert into extra_activity values('"+this.factorySite+"','"+this.area+"','"+this.typology+"',"
-                +this.interruptible+","+this.week+",'"+this.workspaceNotes+"',"+"'Extra')");
+                +this.interruptible+","+this.week+",'"+this.workspaceNotes+"')");
         }catch(SQLException ex){
         return false;
         }
@@ -66,7 +66,7 @@ public class ExtraActivity extends Activity{
             Statement st = conn.createStatement();
             this.setDescription(description);
             this.setEstimatedTime(estimatedTime);
-            this.setCompetenciesList(competenciesList);
+            this.setCompetenciesList(competencies);
             st.executeUpdate("update activity set estimated_time = " + estimatedTime + ", description = '" + description +"' where id="+id);
             for(String competence : competencies) {
                 if (competence == null)
