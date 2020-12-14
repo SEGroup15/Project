@@ -50,6 +50,9 @@ public class PlannedActivity extends Activity {
         Statement st = conn.createStatement();
         st.executeUpdate("insert into planned_activity values('"+this.factorySite+"','"+this.area+"','"+this.typology+"','"
                 +this.description+"',"+this.estimatedTime+","+this.interruptible+","+this.week+",'"+this.workspaceNotes+"')");
+        for(String mat : this.materials) {
+        st.executeUpdate("insert into pm values('"+mat+"',"+this.id+")");
+        }
         
         }catch(SQLException ex){
             System.out.println(ex);

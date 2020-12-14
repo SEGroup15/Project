@@ -60,8 +60,29 @@ public class PlannerGUI extends javax.swing.JFrame {
         maintainertab = (DefaultTableModel) this.MainteinerAvailabilityTable.getModel();
         EWOTable = (DefaultTableModel) this.EWOTab.getModel();
         materialsTable = (DefaultTableModel) this.MaterialTable.getModel();
-         }
+        setComboBox();
+        setTypologyBox();
 
+            
+        }
+         
+    
+    private void setComboBox() throws SQLException {        
+        Statement op =conn.createStatement();
+        ResultSet rst =op.executeQuery("select * from site");
+        while (rst.next()) {
+            String stringa = rst.getString("factory_site") + "-" +rst.getString("area");
+            SiteComboBox.addItem(stringa);
+            
+    } }
+    
+    private void setTypologyBox() throws SQLException {        
+        Statement op =conn.createStatement();
+        ResultSet rst =op.executeQuery("select * from typology");
+        while (rst.next()) {
+            ActivityTypologyComboBox.addItem(rst.getString("name_typology"));
+            
+    } }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -281,7 +302,6 @@ public class PlannerGUI extends javax.swing.JFrame {
 
         ActivityTypologyComboBox.setBackground(new java.awt.Color(102, 102, 102));
         ActivityTypologyComboBox.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        ActivityTypologyComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Electrical", "Electronic", "Hydraulic", "Mechanical" }));
         ActivityTypologyComboBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ActivityTypologyComboBoxActionPerformed(evt);
@@ -352,7 +372,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         jPanel4.add(NoButton);
-        NoButton.setBounds(561, 262, 45, 23);
+        NoButton.setBounds(561, 262, 45, 25);
 
         YesButton.setBackground(new java.awt.Color(255, 153, 0));
         InterruptibileActivity.add(YesButton);
@@ -364,7 +384,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         jPanel4.add(YesButton);
-        YesButton.setBounds(514, 262, 45, 23);
+        YesButton.setBounds(514, 262, 49, 25);
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel12.setText("Interruptible activity:");
@@ -394,7 +414,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         jPanel4.add(PlannedActivityButton);
-        PlannedActivityButton.setBounds(394, 60, 70, 23);
+        PlannedActivityButton.setBounds(394, 60, 70, 25);
 
         EWOActivityButton.setBackground(new java.awt.Color(255, 153, 0));
         ActivityType.add(EWOActivityButton);
@@ -406,7 +426,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         jPanel4.add(EWOActivityButton);
-        EWOActivityButton.setBounds(482, 61, 51, 20);
+        EWOActivityButton.setBounds(482, 61, 53, 20);
 
         ExtraActivityButton.setBackground(new java.awt.Color(255, 153, 0));
         ActivityType.add(ExtraActivityButton);
@@ -418,7 +438,7 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         });
         jPanel4.add(ExtraActivityButton);
-        ExtraActivityButton.setBounds(554, 60, 60, 23);
+        ExtraActivityButton.setBounds(554, 60, 60, 25);
 
         SiteComboBox.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jPanel4.add(SiteComboBox);
@@ -1314,7 +1334,6 @@ public class PlannerGUI extends javax.swing.JFrame {
         
         try {
             setMaterialsList(MaterialTable);
-            setSiteList();
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -1418,14 +1437,17 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
         
             else{
-                String activityTypology = (ActivityTypologyComboBox.getItemAt(ActivityTypologyComboBox.getSelectedIndex())).toLowerCase();
+                String activityTypology = ActivityTypologyComboBox.getSelectedItem().toString();
                 String activityDescription = ActivityDescriptionTextField.getText();
                 int interventionTime = Integer.parseInt(EstimatedTimeTextField.getText());
                 int weeks = Integer.valueOf(WeekComboBox.getSelectedItem().toString());
                 String workspaceNotes = WorkspaceNotes.getText();
-                String[] factoryArea = SiteComboBox.getSelectedItem().toString().split(" - ");
+                String [] factoryArea = SiteComboBox.getSelectedItem().toString().split("-");
                 String factorySite = factoryArea[0];
-                String areaOrDepartment = factoryArea[1];
+                String Area = factoryArea[1];
+                System.out.println(factorySite);
+                
+                
                 
                 LinkedList<String> materials = new LinkedList<>();
                 DefaultTableModel model = (DefaultTableModel)MaterialTable.getModel();
@@ -1438,8 +1460,8 @@ public class PlannerGUI extends javax.swing.JFrame {
                 }              
                 
                 try{
-                    Planner.createActivity(typeOfActivity, factorySite, areaOrDepartment, activityTypology, activityDescription, interventionTime, interruptible, materials, weeks, workspaceNotes);                  
-                    JOptionPane.showMessageDialog(null,"Type of activity:  " + typeOfActivity + "\n" + "Factory site:  " + factorySite + "\n" + "Area/Department:  " + areaOrDepartment + "\n" + "Typology of activity:  " + activityTypology + "\n" + "Activity description:  " + activityDescription + "\n" + "Estimated intervention time:  " + interventionTime + "\n" + "Is it an interruptible activity?  " + isInterruptible + "\n" + "Materials to be used:  " +  materials + "\n" + "Weeks to carry out the activity:  " + weeks + "\n" + "Workspace notes:  " + workspaceNotes, "Activity Information:",1);
+                    Planner.createActivity(typeOfActivity, factorySite, Area, activityTypology, activityDescription, interventionTime, interruptible, materials, weeks, workspaceNotes);                  
+                    JOptionPane.showMessageDialog(null,"Type of activity:  " + typeOfActivity + "\n" + "Factory site:  " + factorySite + "\n" + "Area/Department:  " + Area + "\n" + "Typology of activity:  " + activityTypology + "\n" + "Activity description:  " + activityDescription + "\n" + "Estimated intervention time:  " + interventionTime + "\n" + "Is it an interruptible activity?  " + isInterruptible + "\n" + "Materials to be used:  " +  materials + "\n" + "Weeks to carry out the activity:  " + weeks + "\n" + "Workspace notes:  " + workspaceNotes, "Activity Information:",1);
                     clear();
                     
                 }
@@ -2294,19 +2316,15 @@ private void setFirstTable(){
     
 
     
-    private void setSiteList() throws SQLException{
-        Statement o = conn.createStatement();
-        ResultSet rst = o.executeQuery("select * from site");
-        while(rst.next()){
-        String stringa = rst.getString("factory_site") + " - "+ rst.getString("area");
-        SiteComboBox.addItem(stringa);
-    }
-    }
+
     
     private void setMaterialsList(JTable materialsTable) throws SQLException{
-        //Statement o = conn.createStatement();
-        //ResultSet rst = o.executeQuery("select * from materials");
-        String[] materials = new String[]{"Screwdriver", "Handsaw", "Wrench", "Nails", "Bolts", "Nuts", "Hammer"};
+        Statement o = conn.createStatement();
+        ResultSet rst = o.executeQuery("select * from material");
+        LinkedList<String> materials = new LinkedList<>();
+        while(rst.next()){
+        materials.add(rst.getString("name_material"));
+        }
         DefaultTableModel tabmaterials= new DefaultTableModel(new Object[]{"",""}, 0) {
         @Override
         public Class<?> getColumnClass(int column) {
@@ -2319,11 +2337,8 @@ private void setFirstTable(){
                 }
             };
          materialsTable.setModel(tabmaterials);
-         
-         int i=0;
-         while (i < materials.length){
-             tabmaterials.addRow(new Object[]{materials[i]});
-             i++;
+         for (String material : materials) {
+             tabmaterials.addRow(new Object[]{material});
          }
 
     }
