@@ -69,6 +69,7 @@ public class EWOActivity extends Activity{
             this.setEstimatedTime(estimatedTime);
             this.setCompetenciesList(competenciesList);
             st.executeUpdate("update activity set estimated_time = " + estimatedTime + ", description = '" + description +"' where id="+id);
+            st.executeQuery("select * from updatewo("+ this.id +")");
             if (competencies != null){
             for(String competence : competencies) {
                 if (competence == null)

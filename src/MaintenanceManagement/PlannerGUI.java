@@ -59,6 +59,11 @@ public class PlannerGUI extends javax.swing.JFrame {
         maintainertab = (DefaultTableModel) this.MainteinerAvailabilityTable.getModel();
         EWOTable = (DefaultTableModel) this.EWOTab.getModel();
          }
+   // LinkedList<String> kekw 
+   // "select * from site;"
+   // while(rst.next)
+   // String stringa = rst.getString("factory_site") + "-"+ rst.getString("area")
+    // kekw.append(stringa)
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -1586,6 +1591,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "No EWO time was specified!", "Error!", 0);
                 }
             else{
+            
             PlannerVerificationGUI.setVisible(false);          
             Planner.modifyActivity(Planner.getActivity(currentID), WorkspaceNotesArea.getText(),ActivityDescriptionTextField.getText(),Integer.valueOf(estimatedTimeEWOField.getText()),getCompetenceList(Planner.getActivity(currentID)));
             MaintainerSelectionGUI.setVisible(true);
@@ -1713,9 +1719,9 @@ public class PlannerGUI extends javax.swing.JFrame {
             }
             return lista;
     }
-    private void MainteinerAvailabilityTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_MainteinerAvailabilityTableMouseClicked
+    private void MainteinerAvailabilityTableMouseClicked(java.awt.event.MouseEvent evt) {                                                         
          try {
-        //GEN-FIRST:event_MainteinerAvailabilityTableMouseClicked
+//GEN-FIRST:event_MainteinerAvailabilityTableMouseClicked
         if(!(Planner.getActivity(currentID).getType().equals("EWO"))){
             if (firstTable==true)
                 setFirstTable();
@@ -2266,7 +2272,7 @@ private void setFirstTable(){
         ResultSet rst = Planner.getAllMaintainer();
         while (rst.next()){
             String name = rst.getString("username");
-            ResultSet rst2= st.executeQuery("select username,mc,ec from table_ewo("+a.getId()+")");
+            ResultSet rst2= st.executeQuery("select mc,ec from table_ewo("+a.getId()+",'"+ name+"')");
             int vec[] = Planner.getArray(name, a, day);
             Object[] row = new Object[9];
             row[0] = name;
