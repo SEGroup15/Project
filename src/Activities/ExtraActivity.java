@@ -20,6 +20,17 @@ public class ExtraActivity extends Activity {
 
     private LinkedList<String> competenciesList;
 
+    /**
+     *
+     * @param id
+     * @param factorySite
+     * @param area
+     * @param typology
+     * @param interruptible
+     * @param materials
+     * @param week
+     * @param workspaceNotes
+     */
     public ExtraActivity(int id, String factorySite, String area, String typology, boolean interruptible, LinkedList<String> materials, int week, String workspaceNotes) {
         this.id = id;
         this.factorySite = factorySite;
@@ -31,24 +42,46 @@ public class ExtraActivity extends Activity {
         this.workspaceNotes = workspaceNotes;
     }
 
+    /**
+     *
+     * @param competenciesList
+     */
     public void setCompetenciesList(LinkedList<String> competenciesList) {
         this.competenciesList = competenciesList;
     }
 
+    /**
+     *
+     * @param description
+     */
     @Override
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     *
+     * @param estimatedTime
+     */
     @Override
     public void setEstimatedTime(int estimatedTime) {
         this.estimatedTime = estimatedTime;
     }
 
+    /**
+     *
+     * @return
+     */
     public LinkedList<String> getCompetenciesList() {
         return competenciesList;
     }
 
+    /**
+     * Insert an extra activity into the database (through the view extra_activity) and the materials linked with it;
+     * It returns true if the upload was successful, false if not.
+     * @param conn
+     * @return
+     */
     @Override
     public boolean upload(Connection conn) {
         try {
@@ -66,6 +99,14 @@ public class ExtraActivity extends Activity {
         return true;
     }
 
+    /**
+     * Modify the extra activity, setting all the editable fields (description, estimated time, competencies).
+     * @param conn
+     * @param workspaceNotes
+     * @param description
+     * @param estimatedTime
+     * @param competencies
+     */
     @Override
     public void modify(Connection conn, String workspaceNotes, String description, int estimatedTime, LinkedList<String> competencies) {
         try {
@@ -85,6 +126,10 @@ public class ExtraActivity extends Activity {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getType() {
         return "Extra";

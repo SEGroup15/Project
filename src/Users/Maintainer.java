@@ -9,11 +9,11 @@ package Users;
  *
  * @author saby_
  */
-public class Mantainer implements User {
+public class Maintainer implements User {
     private final String username;
     private final String password;
 
-    public Mantainer(String username, String password) {
+    public Maintainer(String username, String password) {
         this.username=username;
         this.password=password;
     }

@@ -25,6 +25,12 @@ public class Planner implements User {
     private final Connection conn;
     private final Statement op;
 
+    /**
+     *
+     * @param username
+     * @param password
+     * @throws SQLException
+     */
     public Planner(String username, String password) throws SQLException {
         this.username = username;
         this.password = password;
@@ -32,6 +38,21 @@ public class Planner implements User {
         this.op = conn.createStatement();
     }
 
+    /**
+     * By type, it creates and uploads the specified activity into the database.
+     * @param type
+     * @param factorySite
+     * @param area
+     * @param typology
+     * @param description
+     * @param estimatedTime
+     * @param interruptible
+     * @param materials
+     * @param week
+     * @param workspaceNotes
+     * @return
+     * @throws SQLException
+     */
     public boolean createActivity(String type, String factorySite, String area, String typology, String description, int estimatedTime, boolean interruptible, LinkedList<String> materials, int week, String workspaceNotes) throws SQLException {
         int id = 1;
         ResultSet rst = op.executeQuery("select max(id) as max from activity");
@@ -51,6 +72,12 @@ public class Planner implements User {
         }
     }
 
+    /**
+     * Returns the specified type activity with all its features, selecting it by id.
+     * @param id
+     * @return
+     * @throws SQLException
+     */
     public Activity getActivity(int id) throws SQLException {
         try {
             ResultSet rst = op.executeQuery("select * from activity where id=" + id);
@@ -76,7 +103,8 @@ public class Planner implements User {
         }
         return null;
     }
-
+    
+    /* Returns the planned activity with the specified id. */ 
     private PlannedActivity getPlanned(ResultSet rst, int id, LinkedList<String> materials) throws SQLException {
         LinkedList<String> competenciesProcedure = new LinkedList<>();
         ResultSet rstProcedure = op.executeQuery("select P.name_procedure,url_pdf from procedure P,possession_act PA where P.name_procedure=PA.name_procedure and id=" + id);
@@ -92,7 +120,8 @@ public class Planner implements User {
         pa.setProcedure(p);
         return pa;
     }
-
+    
+    /* Returns the EWO activity with the specified id. */ 
     private EWOActivity getEwo(ResultSet rst, int id, LinkedList<String> materials) throws SQLException {
         LinkedList<String> competencies = new LinkedList<>();
         ResultSet rstCompetencies = op.executeQuery("select name_competence from ewo_competence where id=" + id);
@@ -106,7 +135,8 @@ public class Planner implements User {
         return ewo;
 
     }
-
+    
+    /* Returns the extra activity with the specified id. */ 
     private ExtraActivity getExtra(ResultSet rst, int id, LinkedList<String> materials) throws SQLException {
         LinkedList<String> competencies = new LinkedList<>();
         ResultSet rstCompetencies = op.executeQuery("select name_competence from extra_competence where id=" + id);
@@ -120,21 +150,49 @@ public class Planner implements User {
         return extra;
     }
 
+    /**
+     * Deletes the activity with the specified ID from the database.
+     * @param activityId
+     * @throws SQLException
+     */
     public void deleteActivity(int activityId) throws SQLException {
         String delete = "delete from activity where id=" + activityId;
         op.executeUpdate(delete);
     }
 
+    /**
+     * Modifies the activity passed as a parameter and sets the activity values to the passed other parameters.
+     * @param a
+     * @param workspaceNotes
+     * @param description
+     * @param estimatedTime
+     * @param competencies
+     * @return
+     * @throws SQLException
+     */
     public Activity modifyActivity(Activity a, String workspaceNotes, String description, int estimatedTime, LinkedList<String> competencies) throws SQLException {
         a.modify(conn, workspaceNotes, description, estimatedTime, competencies);
         return a;
     }
 
+    /**
+     *
+     * @param week
+     * @return
+     * @throws SQLException
+     */
     public ResultSet getActivities(String week) throws SQLException {
         ResultSet rst = op.executeQuery("select * from activity where (week = " + week + " and (estimated_time!=0 or estimated_time is null)) order by id desc");
         return rst;
     }
 
+    /**
+     * Returns an array of integers (each cell of the array represents a time slot) relative to the availability in minutes of a specified maintainer in a specified date.
+     * @param maintainer
+     * @param act
+     * @param day
+     * @return
+     */
     public int[] getArray(String maintainer, Activity act, int day) {
         try {
             String[] days = {"lunedi", "martedi", "mercoledi", "giovedi", "venerdi", "sabato", "domenica"};
@@ -157,6 +215,16 @@ public class Planner implements User {
         return null;
     }
 
+    /**
+     * Inserts the activity passed as parameter in a specified day and time slot and update the estimated time of the activity.
+     * @param array
+     * @param maintainer
+     * @param day
+     * @param fascia
+     * @param a
+     * @throws SQLException
+     * @throws UnsupportedOperationException
+     */
     public void manageAvailability(int[] array, String maintainer, int day, int fascia, Activity a) throws SQLException, UnsupportedOperationException {
         try {
             String[] days = {"lunedi", "martedi", "mercoledi", "giovedi", "venerdi", "sabato", "domenica"};
@@ -174,16 +242,28 @@ public class Planner implements User {
         }
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getUsername() {
         return this.username;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getPassword() {
         return this.password;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getRole() {
         return "Planner";
