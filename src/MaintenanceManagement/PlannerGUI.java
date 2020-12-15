@@ -5,17 +5,17 @@
  */
 package MaintenanceManagement;
 
+import Activities.EWOActivity;
+import Activities.Activity;
+import Activities.PlannedActivity;
+import Users.Planner;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.util.Locale;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.temporal.WeekFields;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -35,6 +35,7 @@ public class PlannerGUI extends javax.swing.JFrame {
      */
     private final Connection conn;
     private final Planner Planner;
+    private final Statement op;
     private static final String url = "jdbc:postgresql://localhost:5432/locale2";
     private static final String pwd = "kekkeroni";
     private static final String user = "kek";
@@ -44,45 +45,46 @@ public class PlannerGUI extends javax.swing.JFrame {
     private static DefaultTableModel materialsTable;
     /* PlannerRecordGUI attributes */
     private String typeOfActivity;
-    private String isInterruptible;
-    private boolean firstTable=true;
-    private boolean secondTable=false;
-    private int daySelected; 
+    private String isInterruptible ;
+    private boolean firstTable = true;
+    private boolean secondTable = false;
+    private int daySelected;
     private int currentID;
+    private Activity a;
     private boolean forwarded;
-    
-    public PlannerGUI() throws SQLException{       
+
+    public PlannerGUI() throws SQLException {
         initComponents();
-        conn = DriverManager.getConnection(url,user,pwd);
-        Planner= new Planner(user,pwd);
+        conn = DriverManager.getConnection(url, user, pwd);
+        op = conn.createStatement();
+        Planner = new Planner(user, pwd);
         tab = (DefaultTableModel) this.scheduledMaintenanceList.getModel();
         setList(true);
         maintainertab = (DefaultTableModel) this.MainteinerAvailabilityTable.getModel();
         EWOTable = (DefaultTableModel) this.EWOTab.getModel();
         materialsTable = (DefaultTableModel) this.MaterialTable.getModel();
-        setComboBox();
+        setSiteBox();
         setTypologyBox();
+    }
 
-            
-        }
-         
-    
-    private void setComboBox() throws SQLException {        
-        Statement op =conn.createStatement();
-        ResultSet rst =op.executeQuery("select * from site");
+    private void setSiteBox() throws SQLException {
+        ResultSet rst = op.executeQuery("select * from site");
         while (rst.next()) {
-            String stringa = rst.getString("factory_site") + "-" +rst.getString("area");
+            String stringa = rst.getString("factory_site") + "-" + rst.getString("area");
             SiteComboBox.addItem(stringa);
-            
-    } }
-    
-    private void setTypologyBox() throws SQLException {        
-        Statement op =conn.createStatement();
-        ResultSet rst =op.executeQuery("select * from typology");
+
+        }
+    }
+
+    private void setTypologyBox() throws SQLException {
+
+        ResultSet rst = op.executeQuery("select * from typology");
         while (rst.next()) {
             ActivityTypologyComboBox.addItem(rst.getString("name_typology"));
-            
-    } }
+
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -170,14 +172,11 @@ public class PlannerGUI extends javax.swing.JFrame {
                         if ((Integer)value == 0){
                             component.setBackground(Color.RED);
                         }
-                        else if ((Integer)value > 1 && (Integer)value < 33){
+                        else if ((Integer)value > 0 && (Integer)value < 50){
                             component.setBackground(Color.ORANGE);
                         }
-                        else if ((Integer)value > 32 && (Integer)value < 66){
+                        else if ((Integer)value >= 50 && (Integer)value < 100){
                             component.setBackground(Color.YELLOW);
-                        }
-                        else if ((Integer)value > 65 && (Integer)value < 99){
-                            component.setBackground(Color.CYAN);
                         }
                         else if ((Integer)value == 100){
                             component.setBackground(Color.GREEN);
@@ -191,16 +190,13 @@ public class PlannerGUI extends javax.swing.JFrame {
                         if ((Integer)value == 0){
                             component.setBackground(Color.RED);
                         }
-                        else if ((Integer)value >= 1 && (Integer)value <= 20){
+                        else if ((Integer)value >= 1 && (Integer)value <= 30){
                             component.setBackground(Color.ORANGE);
                         }
-                        else if ((Integer)value > 20 && (Integer)value <= 35){
+                        else if ((Integer)value > 30 && (Integer)value <= 59){
                             component.setBackground(Color.YELLOW);
                         }
-                        else if ((Integer)value > 35 && (Integer)value <= 50){
-                            component.setBackground(Color.CYAN);
-                        }
-                        else if ((Integer)value > 50 && (Integer)value <= 60){
+                        else if ((Integer)value==60){
                             component.setBackground(Color.GREEN);
                         }
 
@@ -747,10 +743,10 @@ public class PlannerGUI extends javax.swing.JFrame {
         );
 
         MaintainerSelectionGUI.setBackground(new java.awt.Color(255, 153, 51));
-        MaintainerSelectionGUI.setMinimumSize(new java.awt.Dimension(1250, 450));
+        MaintainerSelectionGUI.setMinimumSize(new java.awt.Dimension(1250, 480));
 
         jPanel2.setBackground(new java.awt.Color(255, 153, 0));
-        jPanel2.setMinimumSize(new java.awt.Dimension(1250, 450));
+        jPanel2.setMinimumSize(new java.awt.Dimension(1250, 480));
         jPanel2.setPreferredSize(new java.awt.Dimension(1250, 450));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
@@ -1025,7 +1021,7 @@ public class PlannerGUI extends javax.swing.JFrame {
                                     .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addContainerGap(99, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(TotalMinutes, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1331,7 +1327,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void buttonManageMaintenanceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonManageMaintenanceActionPerformed
-        
+        isInterruptible="Yes";
         try {
             setMaterialsList(MaterialTable);
         } catch (SQLException ex) {
@@ -1343,11 +1339,15 @@ public class PlannerGUI extends javax.swing.JFrame {
 
     private void ExtraActivityButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExtraActivityButtonActionPerformed
         typeOfActivity = "Extra";
-        NoButton.setEnabled(true);
+        LocalDate date = LocalDate.now();
+        WeekFields weekFields = WeekFields.of(Locale.getDefault());
+        WeekComboBox.getModel().setSelectedItem(date.get(weekFields.weekOfWeekBasedYear()));
         ActivityIDTextField.setEnabled(false);
-        EstimatedTimeTextField.setEnabled(true);
-        ActivityDescriptionTextField.setEnabled(true);
-        WeekComboBox.setEnabled(true);
+        WeekComboBox.setEnabled(false);
+        InterruptibileActivity.clearSelection();
+        EstimatedTimeTextField.setEnabled(false);
+        ActivityDescriptionTextField.setEnabled(false);
+        YesButton.setSelected(true);
     }//GEN-LAST:event_ExtraActivityButtonActionPerformed
 
     private void YesButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_YesButtonActionPerformed
@@ -1360,19 +1360,19 @@ public class PlannerGUI extends javax.swing.JFrame {
 
     private void CreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_CreateButtonActionPerformed
         SiteComboBox.setEnabled(true);
-        if ("EWO".equals(typeOfActivity)){
-        EstimatedTimeTextField.setEnabled(false);
-        ActivityDescriptionTextField.setEnabled(false);
-        YesButton.setSelected(true);
-        LocalDate date = LocalDate.now();
-        WeekFields weekFields = WeekFields.of(Locale.getDefault());
-        WeekComboBox.getModel().setSelectedItem(date.get(weekFields.weekOfWeekBasedYear()));
-        WeekComboBox.setEnabled(false);
-        }
-        else{
-        ActivityDescriptionTextField.setEnabled(true);
-        EstimatedTimeTextField.setEnabled(true);
-        WeekComboBox.setEnabled(true);
+        MaterialTable.setEnabled(true);
+        if ("EWO".equals(typeOfActivity)) {
+            EstimatedTimeTextField.setEnabled(false);
+            ActivityDescriptionTextField.setEnabled(false);
+            YesButton.setSelected(true);
+            LocalDate date = LocalDate.now();
+            WeekFields weekFields = WeekFields.of(Locale.getDefault());
+            WeekComboBox.getModel().setSelectedItem(date.get(weekFields.weekOfWeekBasedYear()));
+            WeekComboBox.setEnabled(false);
+        } else {
+            ActivityDescriptionTextField.setEnabled(true);
+            EstimatedTimeTextField.setEnabled(true);
+            WeekComboBox.setEnabled(true);
         }
         ActivityIDTextField.setEnabled(false);
         ActivityTypologyComboBox.setEnabled(true);
@@ -1419,131 +1419,36 @@ public class PlannerGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_WeekComboBoxActionPerformed
 
     private void ExecuteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ExecuteButtonActionPerformed
-        
-        boolean interruptible=true;
-        interruptible = "Yes".equals(isInterruptible);
 
-        if (!(CreateButton.isSelected()) && !(ModifyButton.isSelected()) && !(DeleteButton.isSelected())){
+        boolean interruptible = "Yes".equals(isInterruptible);
+
+        if (!(CreateButton.isSelected()) && !(ModifyButton.isSelected()) && !(DeleteButton.isSelected())) {
             JOptionPane.showMessageDialog(null, "A type of action must be selected!", "Error!", 0);
         }
 
-        if (CreateButton.isSelected()){
-            if (!"EWO".equals(typeOfActivity)){
-                if (ActivityDescriptionTextField.getText().isEmpty() || EstimatedTimeTextField.getText().isEmpty() || (!(PlannedActivityButton.isSelected()) && !(EWOActivityButton.isSelected()) && !(ExtraActivityButton.isSelected()))){
-                    JOptionPane.showMessageDialog(null, "Some fields have not been filled in!", "Error!", 0);
-            }
-                else if (!isNumeric(EstimatedTimeTextField.getText())){
-                    JOptionPane.showMessageDialog(null, "Estimated time must be a number!", "Error!", 0);
-            }
-        
-            else{
-                String activityTypology = ActivityTypologyComboBox.getSelectedItem().toString();
-                String activityDescription = ActivityDescriptionTextField.getText();
-                int interventionTime = Integer.parseInt(EstimatedTimeTextField.getText());
-                int weeks = Integer.valueOf(WeekComboBox.getSelectedItem().toString());
-                String workspaceNotes = WorkspaceNotes.getText();
-                String [] factoryArea = SiteComboBox.getSelectedItem().toString().split("-");
-                String factorySite = factoryArea[0];
-                String Area = factoryArea[1];
-                System.out.println(factorySite);
-                
-                
-                
-                LinkedList<String> materials = new LinkedList<>();
-                DefaultTableModel model = (DefaultTableModel)MaterialTable.getModel();
-                int i=0;               
-                while (i<model.getRowCount()){
-                if (model.getValueAt(i, 1)!=null && model.getValueAt(i, 1).equals(true)){
-                    materials.add(String.valueOf(model.getValueAt(i, 0)));
-                }
-                i++;
-                }              
-                
-                try{
-                    Planner.createActivity(typeOfActivity, factorySite, Area, activityTypology, activityDescription, interventionTime, interruptible, materials, weeks, workspaceNotes);                  
-                    JOptionPane.showMessageDialog(null,"Type of activity:  " + typeOfActivity + "\n" + "Factory site:  " + factorySite + "\n" + "Area/Department:  " + Area + "\n" + "Typology of activity:  " + activityTypology + "\n" + "Activity description:  " + activityDescription + "\n" + "Estimated intervention time:  " + interventionTime + "\n" + "Is it an interruptible activity?  " + isInterruptible + "\n" + "Materials to be used:  " +  materials + "\n" + "Weeks to carry out the activity:  " + weeks + "\n" + "Workspace notes:  " + workspaceNotes, "Activity Information:",1);
-                    clear();
-                    
-                }
-                catch (SQLException e){                  
-                }
-            }}
-            else if ("EWO".equals(typeOfActivity)){
-                EstimatedTimeTextField.setEnabled(false);
-                ActivityDescriptionTextField.setEnabled(false);
-                YesButton.setSelected(true);
-                if ((!(PlannedActivityButton.isSelected()) && !(EWOActivityButton.isSelected()) && !(ExtraActivityButton.isSelected()))){
-                    JOptionPane.showMessageDialog(null, "Some fields have not been filled in!", "Error!", 0);   
-                }                            
-                else{
-                String[] factoryArea = SiteComboBox.getSelectedItem().toString().split(" - ");
-                String factorySite = factoryArea[0];
-                String areaOrDepartment = factoryArea[1];
-                String activityTypology = (ActivityTypologyComboBox.getItemAt(ActivityTypologyComboBox.getSelectedIndex())).toLowerCase();
-                String activityDescription = " ";
-                int interventionTime = 0;
-                int weeks = Integer.valueOf(WeekComboBox.getSelectedItem().toString());
-                String workspaceNotes = WorkspaceNotes.getText(); 
-                
-                LinkedList<String> materials = new LinkedList<>();
-                DefaultTableModel model = (DefaultTableModel)MaterialTable.getModel();
-                int i=0;               
-                while (i<model.getRowCount()){
-                if (model.getValueAt(i, 1)!=null && model.getValueAt(i, 1).equals(true)){
-                    materials.add(String.valueOf(model.getValueAt(i, 0)));
-                }
-                i++;
-                } 
-                
-                try{
-                    Planner.createActivity(typeOfActivity, factorySite, areaOrDepartment, activityTypology, activityDescription, interventionTime, interruptible, null, weeks, workspaceNotes);                  
-                    //JOptionPane.showMessageDialog(null,"Type of activity:  " + typeOfActivity + "\n" + "Factory site:  " + factorySite + "\n" + "Area/Department:  " + areaOrDepartment + "\n" + "Typology of activity:  " + activityTypology + "\n" + "Activity description:  " + activityDescription + "\n" + "Estimated intervention time:  " + interventionTime + "\n" + "Is it an interruptible activity?  " + isInterruptible + "\n" + "Materials to be used:  " +  materials + "\n" + "Weeks to carry out the activity:  " + weeks + "\n" + "Workspace notes:  " + workspaceNotes, "Activity Information:",1);
-                    clear();   
-                }
-                catch (SQLException e){
-                }
-            }
-            }
-           
-        }
-
-        if (ModifyButton.isSelected()){
-            if (ActivityIDTextField.getText().isEmpty()){
-                JOptionPane.showMessageDialog(null, "No activity ID was specified", "Error!", 0);
-            }
-            else{
-                try{
-                    int activityID = Integer.parseInt(ActivityIDTextField.getText());
-                    Planner.modifyActivity(Planner.getActivity(activityID), WorkspaceNotes.getText(),ActivityDescriptionTextField.getText(),Integer.valueOf(EstimatedTimeTextField.getText()),null);
-                    JOptionPane.showMessageDialog(null, "The workspace notes have been modified","Modify",1);
-                    clear();
-                }
-                catch (java.sql.SQLException e){
-                }
+        if (CreateButton.isSelected()) {
+            if ("Planned".equals(typeOfActivity)) {
+                CreatePlannedActivity(interruptible);
+            } else {
+                CreateEwoOrExtraActivity(interruptible);
             }
         }
 
-        if (DeleteButton.isSelected()){
-            if (ActivityIDTextField.getText().isEmpty()){
-                JOptionPane.showMessageDialog(null, "No activity ID was specified", "Error!", 0);
-            }
-            else{
-                try{
-                    Planner.deleteActivity(Integer.parseInt(ActivityIDTextField.getText()));
-                    JOptionPane.showMessageDialog(null, "The activity has been deleted","Delete",1);
-                    clear();
-                }
-                catch (java.sql.SQLException e){
-                }
-            }
+        if (ModifyButton.isSelected()) {
+            ModifyButtonSelected();
         }
+
+        if (DeleteButton.isSelected()) {
+            DeleteButtonSelected();
+        }
+
 
     }//GEN-LAST:event_ExecuteButtonActionPerformed
-     private void clear(){
+    private void clear() {
         ActivityIDTextField.setText(null);
         ActivityDescriptionTextField.setText(null);
         EstimatedTimeTextField.setText(null);
-        WorkspaceNotes.setText(null); 
+        WorkspaceNotes.setText(null);
         setList(false);
         try {
             setMaterialsList(MaterialTable);
@@ -1551,7 +1456,102 @@ public class PlannerGUI extends javax.swing.JFrame {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
+    private void CreatePlannedActivity(boolean interruptible) {
+        if (ActivityDescriptionTextField.getText().isEmpty() || EstimatedTimeTextField.getText().isEmpty() || (!(PlannedActivityButton.isSelected()) && !(EWOActivityButton.isSelected()) && !(ExtraActivityButton.isSelected()))) {
+            JOptionPane.showMessageDialog(null, "Some fields have not been filled in!", "Error!", 0);
+        } else if (!isNumeric(EstimatedTimeTextField.getText())) {
+            JOptionPane.showMessageDialog(null, "Estimated time must be a number!", "Error!", 0);
+        } else {
+            String activityTypology = ActivityTypologyComboBox.getSelectedItem().toString();
+            String activityDescription = ActivityDescriptionTextField.getText();
+            int interventionTime = Integer.parseInt(EstimatedTimeTextField.getText());
+            int weeks = Integer.valueOf(WeekComboBox.getSelectedItem().toString());
+            String workspaceNotes = WorkspaceNotes.getText();
+            String[] factoryArea = SiteComboBox.getSelectedItem().toString().split("-");
+            String factorySite = factoryArea[0];
+            String Area = factoryArea[1];
+            LinkedList<String> materials = new LinkedList<>();
+            DefaultTableModel model = (DefaultTableModel) MaterialTable.getModel();
+            int i = 0;
+            while (i < model.getRowCount()) {
+                if (model.getValueAt(i, 1) != null && model.getValueAt(i, 1).equals(true)) {
+                    materials.add(String.valueOf(model.getValueAt(i, 0)));
+                }
+                i++;
+            }
+            try {
+                Planner.createActivity(typeOfActivity, factorySite, Area, activityTypology, activityDescription, interventionTime, interruptible, materials, weeks, workspaceNotes);
+                JOptionPane.showMessageDialog(null, "Type of activity:  " + typeOfActivity + "\n" + "Factory site:  " + factorySite + "\n" + "Area/Department:  " + Area + "\n" + "Typology of activity:  " + activityTypology + "\n" + "Activity description:  " + activityDescription + "\n" + "Estimated intervention time:  " + interventionTime + "\n" + "Is it an interruptible activity?  " + isInterruptible + "\n" + "Materials to be used:  " + materials + "\n" + "Weeks to carry out the activity:  " + weeks + "\n" + "Workspace notes:  " + workspaceNotes, "Activity Information:", 1);
+                clear();
+
+            } catch (SQLException e) {
+            }
+        }
+    }
+
+    private void CreateEwoOrExtraActivity(boolean interruptible) {
+        EstimatedTimeTextField.setEnabled(false);
+        ActivityDescriptionTextField.setEnabled(false);
+        YesButton.setSelected(true);
+        if ((!(PlannedActivityButton.isSelected()) && !(EWOActivityButton.isSelected()) && !(ExtraActivityButton.isSelected()))) {
+            JOptionPane.showMessageDialog(null, "Some fields have not been filled in!", "Error!", 0);
+        } else {
+            String[] factoryArea = SiteComboBox.getSelectedItem().toString().split("-");
+            String factorySite = factoryArea[0];
+            String areaOrDepartment = factoryArea[1];
+            String activityTypology = ActivityTypologyComboBox.getSelectedItem().toString();
+            String activityDescription = " ";
+            int interventionTime = 0;
+            int weeks = Integer.valueOf(WeekComboBox.getSelectedItem().toString());
+            String workspaceNotes = WorkspaceNotes.getText();
+
+            LinkedList<String> materials = new LinkedList<>();
+            DefaultTableModel model = (DefaultTableModel) MaterialTable.getModel();
+            int i = 0;
+            while (i < model.getRowCount()) {
+                if (model.getValueAt(i, 1) != null && model.getValueAt(i, 1).equals(true)) {
+                    materials.add(String.valueOf(model.getValueAt(i, 0)));
+                }
+                i++;
+            }
+
+            try {
+                Planner.createActivity(typeOfActivity, factorySite, areaOrDepartment, activityTypology, activityDescription, interventionTime, interruptible, materials, weeks, workspaceNotes);
+                JOptionPane.showMessageDialog(null, "Type of activity:  " + typeOfActivity + "\n" + "Factory site:  " + factorySite + "\n" + "Area/Department:  " + areaOrDepartment + "\n" + "Typology of activity:  " + activityTypology + "\n" + "Activity description:  " + activityDescription + "\n" + "Estimated intervention time:  " + interventionTime + "\n" + "Is it an interruptible activity?  " + isInterruptible + "\n" + "Materials to be used:  " + materials + "\n" + "Weeks to carry out the activity:  " + weeks + "\n" + "Workspace notes:  " + workspaceNotes, "Activity Information:", 1);
+                clear();
+            } catch (SQLException e) {
+            }
+        }
+    }
+
+    private void DeleteButtonSelected() {
+        if (ActivityIDTextField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No activity ID was specified", "Error!", 0);
+        } else {
+            try {
+                Planner.deleteActivity(Integer.parseInt(ActivityIDTextField.getText()));
+                JOptionPane.showMessageDialog(null, "The activity has been deleted", "Delete", 1);
+                clear();
+            } catch (java.sql.SQLException e) {
+            }
+        }
+    }
+
+    private void ModifyButtonSelected() {
+        if (ActivityIDTextField.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "No activity ID was specified", "Error!", 0);
+        } else {
+            try {
+                int activityID = Integer.parseInt(ActivityIDTextField.getText());
+                Planner.modifyActivity(Planner.getActivity(activityID), WorkspaceNotes.getText(), ActivityDescriptionTextField.getText(), Integer.valueOf(EstimatedTimeTextField.getText()), null);
+                JOptionPane.showMessageDialog(null, "The workspace notes have been modified", "Modify", 1);
+                clear();
+            } catch (java.sql.SQLException e) {
+            }
+        }
+    }
+
     private void DeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_DeleteButtonActionPerformed
         SiteComboBox.setEnabled(false);
         ActivityIDTextField.setEnabled(true);
@@ -1569,6 +1569,7 @@ public class PlannerGUI extends javax.swing.JFrame {
 
     private void ModifyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ModifyButtonActionPerformed
         SiteComboBox.setEnabled(false);
+        MaterialTable.setEnabled(false);
         ActivityIDTextField.setEnabled(true);
         PlannedActivityButton.setEnabled(false);
         EWOActivityButton.setEnabled(false);
@@ -1594,7 +1595,7 @@ public class PlannerGUI extends javax.swing.JFrame {
 
     private void ForwardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ForwardButtonActionPerformed
         AssignedMinutes.setText("");
-        LeftMinutes.setText(""); 
+        LeftMinutes.setText("");
         TotalMinutes.setText("");
         AssignedMinutes.setVisible(false);
         LeftMinutes.setVisible(false);
@@ -1602,375 +1603,350 @@ public class PlannerGUI extends javax.swing.JFrame {
         jLabel20.setVisible(false);
         jLabel21.setVisible(false);
         jLabel24.setVisible(false);
-        firstTable=true;
+        firstTable = true;
         forwarded = true;
-        
-        
+
         try {
-            if (Planner.getActivity(currentID).getType().equals("EWO")){
-            if (!isNumeric(estimatedTimeEWOField.getText())){
-                estimatedTimeEWOField.setText("");
-                estimatedTimeEWOField.setText("Insert EWO time");
-                JOptionPane.showMessageDialog(null, "No EWO time was specified!", "Error!", 0);
-                }
-            else{
-            
-            PlannerVerificationGUI.setVisible(false);          
-            Planner.modifyActivity(Planner.getActivity(currentID), WorkspaceNotesArea.getText(),ActivityDescriptionTextField.getText(),Integer.valueOf(estimatedTimeEWOField.getText()),getCompetenceList(Planner.getActivity(currentID)));
-            MaintainerSelectionGUI.setVisible(true);
-            WeekLabel.setText(LabelNWeek.getText());
-            ActivityLabel1.setText(ActivitytoaLabel.getText());
-            WorkspaceTextArea3.setText(WorkspaceNotesArea.getText());
-            setMaintainerList(currentID);
-            InterruptibleLabel.setVisible(false);
-            jLabel19.setVisible(false);
-            InterruptibleLabel.setVisible(true);
-            jLabel19.setVisible(true);
-            InterruptibleLabel.setText(isInterruptible(currentID));    
-            MaintainerSelectionGUI.setVisible(true);  
-            if (!(Planner.EWOexists(currentID))){
-            Planner.modifyActivity(Planner.getActivity(currentID), WorkspaceNotesArea.getText(),interventionArea.getText(),Integer.valueOf(estimatedTimeEWOField.getText()),getCompetenceList(Planner.getActivity(currentID)));
-            }
-            queryVerification(currentID);
-            interventionArea.setEditable(false);
-            WorkspaceNotesArea.setEditable(false);
-            
-            //Inizializzazione Label minuti e settaggio della lista delle skill
-            jLabel20.setVisible(true);
-            jLabel21.setVisible(true);
-            jLabel24.setVisible(true);
-            AssignedMinutes.setVisible(true);
-            LeftMinutes.setVisible(true);
-            TotalMinutes.setVisible(true);
-            setCompetenciesSkill(tableSkills2);
-            int left=Planner.getActivity(currentID).getEstimatedTime();
-            String assigned;
-            String estime = Planner.getEWOTotalEstime(currentID);
-            if (estime!=null){
-                assigned=estime; 
-            }                
-            else{
-                assigned = "0";
-            }
-            int total = left + Integer.parseInt(assigned);
-            LeftMinutes.setText(String.valueOf(left));
-            AssignedMinutes.setText(assigned);
-            TotalMinutes.setText(String.valueOf(total));
-            
-            //Inizializzazione tabella fasce maintainer
+            if (a.getType().equals("EWO")) {
+                if (!isNumeric(estimatedTimeEWOField.getText())) {
+                    estimatedTimeEWOField.setText("");
+                    JOptionPane.showMessageDialog(null, "No time was specified!", "Error!", 0);
+                } else {
 
-            int day = LocalDate.now().getDayOfWeek().getValue();
-            
-            String[] nomi = {"Maintainer","Skills","8:00-9:00","9:00-10:00","10:00-11:00","11:00-12:00","14:00-15:00","15:00-16:00","16:00-17:00"};
-                    maintainertab.setRowCount(0);
-                    maintainertab.setColumnIdentifiers(nomi);
-                    setEWOAvailabilityTable(day,Planner.getActivity(currentID));
-            }
-            
-            
-            if (Planner.EWOexists(currentID)){
-                EWOActivity  ewo = (EWOActivity) Planner.getActivity(currentID);
-                String[] strings = new String[ewo.getCompetenciesList().size()];
-                int i=0;
-                for (String str:ewo.getCompetenciesList()){
-                    strings[i]=str;
-                    i++;
-                }
-                querySkill(currentID,tableSkills2,strings);
+                    PlannerVerificationGUI.setVisible(false);
+                    Planner.modifyActivity(a, WorkspaceNotesArea.getText(), ActivityDescriptionTextField.getText(), Integer.valueOf(estimatedTimeEWOField.getText()), getCompetenceList(a));
+                    MaintainerSelectionGUI.setVisible(true);
+                    WeekLabel.setText(LabelNWeek.getText());
+                    ActivityLabel1.setText(ActivitytoaLabel.getText());
+                    WorkspaceTextArea3.setText(WorkspaceNotesArea.getText());
+                    setMaintainerList(currentID);
+                    InterruptibleLabel.setVisible(false);
+                    jLabel19.setVisible(false);
+                    InterruptibleLabel.setVisible(true);
+                    jLabel19.setVisible(true);
+                    InterruptibleLabel.setText(isInterruptible());
+                    MaintainerSelectionGUI.setVisible(true);
+                    if (!(Activityexists(currentID))) {
+                        Planner.modifyActivity(a, WorkspaceNotesArea.getText(), interventionArea.getText(), Integer.valueOf(estimatedTimeEWOField.getText()), getCompetenceList(a));
+                    }
+                    queryVerification();
+                    interventionArea.setEditable(false);
+                    WorkspaceNotesArea.setEditable(false);
 
-            }
-            else{
-            String[] lista =null;           
-            DefaultTableModel model = (DefaultTableModel)tableSkills.getModel();
-                int i=0;
-                int j=0;
-                lista = new String[model.getRowCount()];
-                
-                while (i<model.getRowCount()){
-                if (model.getValueAt(i, 1)!=null && model.getValueAt(i, 1).equals(true)){
-                    lista[j]=(String.valueOf(model.getValueAt(i, 0)));
-                    j++;
-                }
-                i++;
-                }
-                querySkill(currentID,tableSkills2,lista);
-            }      
-            }
-                 
-            else{            
-            Planner.modifyActivity(Planner.getActivity(currentID), WorkspaceNotesArea.getText(),ActivityDescriptionTextField.getText(),0,getCompetenceList(Planner.getActivity(currentID)));
-            MaintainerSelectionGUI.setVisible(true);
-            WeekLabel.setText(LabelNWeek.getText());
-            ActivityLabel1.setText(ActivitytoaLabel.getText());
-            WorkspaceTextArea3.setText(WorkspaceNotesArea.getText());
-            setMaintainerList(currentID);
-            InterruptibleLabel.setVisible(false);
-            jLabel19.setVisible(false);
-            InterruptibleLabel.setVisible(true);
-            jLabel19.setVisible(true);
-            InterruptibleLabel.setText(isInterruptible(currentID));
-            querySkill(currentID,tableSkills2,null);    
-            }
-            
-            } catch (SQLException ex) {
-            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        
-        
-        
-    }//GEN-LAST:event_ForwardButtonActionPerformed
-
-    private LinkedList<String> getCompetenceList(Activity a){
-            LinkedList<String> lista = new LinkedList<>();
-            DefaultTableModel model = (DefaultTableModel)tableSkills.getModel();
-            if(model.getColumnCount()>1 && (a.getType().equals("EWO") || a.getType().equals("extra")) ){
-                int i=0;               
-                while (i<model.getRowCount()){
-                if (model.getValueAt(i, 1)!=null && model.getValueAt(i, 1).equals(true)){
-                    lista.add(String.valueOf(model.getValueAt(i, 0)));
-                }
-                i++;
-                }
-            }else{
-                int i=0;
-                while (i<model.getRowCount()){
-                    lista.add(String.valueOf(model.getValueAt(i, 0)));
-                
-                i++;
-                }
-                
-            }
-            return lista;
-    }
-    private void MainteinerAvailabilityTableMouseClicked(java.awt.event.MouseEvent evt) {                                                         
-         try {
-//GEN-FIRST:event_MainteinerAvailabilityTableMouseClicked
-        if(!(Planner.getActivity(currentID).getType().equals("EWO"))){
-            if (firstTable==true)
-                setFirstTable();
-            else
-                setSecondTable();}
-        
-        else
-           setEwoTable();
-        } catch (SQLException ex) {
-            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_MainteinerAvailabilityTableMouseClicked
-private void setFirstTable(){
-        int indexRow = MainteinerAvailabilityTable.getSelectedRow();
-            int indexCol = MainteinerAvailabilityTable.getSelectedColumn();
-            String maintainer = (String) MainteinerAvailabilityTable.getValueAt(indexRow,0);
-            String skills = (String) MainteinerAvailabilityTable.getValueAt(indexRow,1);
-            daySelected = indexCol-1;
-            jLabel15.setText("Maintainer Availability: " + getDay());
-                    
-                    
-                    int[] vec= null;
-                    if (daySelected>=1 && daySelected<=7){
-                        try {
-                            vec = Planner.getArray(maintainer, Planner.getActivity(currentID), daySelected);
-                        } catch (SQLException ex) {
-                            System.out.println("CAzzo merda divano");
-                            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                        String[] nomi = {"Maintainer","Skills","8:00-9:00","9:00-10:00","10:00-11:00","11:00-12:00","14:00-15:00","15:00-16:00","16:00-17:00"};
-                        maintainertab.setRowCount(0);
-                        maintainertab.setColumnIdentifiers(nomi);
-                        Object[] row = {maintainer,skills,vec[0],vec[1],vec[2],vec[3],vec[4],vec[5],vec[6]};                 
-                        maintainertab.addRow(row);
-                        backButton.setVisible(true);
-                        firstTable=false;
-                    }
-                    else if (JOptionPane.showConfirmDialog(null, "Wrong Selection!", "Wrong", JOptionPane.OK_CANCEL_OPTION)>=0){
-                        SwingUtilities.invokeLater(new Runnable(){
-                            @Override
-                            public void run() {
-                                try {
-                                    firstTable=true;
-                                    wrongSelectionFunction();
-                                } catch (SQLException | InsertException ex) {
-                                    Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
-                                }
-                            }
-                        });
-                    }
-                    
-                    
-        
-    }
-    private void setSecondTable(){
-        if (daySelected>=1 && daySelected<=7){
-                    int indexRow = MainteinerAvailabilityTable.getSelectedRow();
-                    int indexCol = MainteinerAvailabilityTable.getSelectedColumn();
-                    String maintainer = (String) MainteinerAvailabilityTable.getValueAt(indexRow,0);
-                    String skills = (String) MainteinerAvailabilityTable.getValueAt(indexRow,1);
-                    int fascia = indexCol-1;
-                    int[] vec =null;
-                    try {
-                        Planner.manageAvailability(Planner.getArray(maintainer, Planner.getActivity(currentID), daySelected),
-                                maintainer, daySelected, fascia, Planner.getActivity(currentID));
-                        vec = Planner.getArray(maintainer, Planner.getActivity(currentID), daySelected);
-                        String[] nomi = {"Maintainer","Skills","8:00-9:00","9:00-10:00","10:00-11:00","11:00-12:00","14:00-15:00","15:00-16:00","16:00-17:00"};
-                        maintainertab.setRowCount(0);
-                        maintainertab.setColumnIdentifiers(nomi);
-                        Object[] row = {maintainer,skills,vec[0],vec[1],vec[2],vec[3],vec[4],vec[5],vec[6]};
-                        maintainertab.addRow(row);
-                        setList(false);
-                        
-                        if (Planner.getActivity(currentID).getEstimatedTime() <=0){
-                            queryVerification(currentID);
-                            ActivityLabel1.setText(ActivitytoaLabel.getText());
-                            JOptionPane.showMessageDialog(null,"Activity completely assigned.","Done", JOptionPane.INFORMATION_MESSAGE);
-                            MaintainerSelectionGUI.setVisible(false);
-                            
-                        }
-                        else{
-                            queryVerification(currentID);
-                            ActivityLabel1.setText(ActivitytoaLabel.getText());
-                            JOptionPane.showMessageDialog(null,"Activity partially assigned.","Done", JOptionPane.INFORMATION_MESSAGE);
-                        }
-                        
-                        PlannerVerificationGUI.setVisible(false);
-                    } catch (SQLException | InsertException | ArrayIndexOutOfBoundsException ex) {
-                        if (JOptionPane.showConfirmDialog(null, "Wrong Selection!", "Wrong", JOptionPane.OK_CANCEL_OPTION)>=0){
-                            SwingUtilities.invokeLater(new Runnable(){
-                                @Override
-                                public void run() {
-                                    try {
-                                        wrongSelectionFunction();
-                                    } catch (SQLException | InsertException ex1) {
-                                        Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex1);
-                                    }
-                                }
-                            });
-                        }
-                    }
-                }
-    }
-    private void setEwoTable(){
-        int indexRow = MainteinerAvailabilityTable.getSelectedRow();
-            int indexCol = MainteinerAvailabilityTable.getSelectedColumn();
-            String maintainer = (String) MainteinerAvailabilityTable.getValueAt(indexRow,0);
-            String skills = (String) MainteinerAvailabilityTable.getValueAt(indexRow,1);
-            int fascia = indexCol-1;
-            int[] vec =null;
-            try {
-                //Calendar calendar = Calendar.getInstance();
-                int day = LocalDate.now().getDayOfWeek().getValue();
-                
-                
-                Planner.manageAvailability(Planner.getArray(maintainer, Planner.getActivity(currentID), day),
-                        maintainer, day, fascia, Planner.getActivity(currentID));
-                setEWOAvailabilityTable(day,Planner.getActivity(currentID));
-                
-                if(Planner.getActivity(currentID).getType().equals("EWO")){
-                    AssignedMinutes.setText("");
-                    LeftMinutes.setText("");
-                    TotalMinutes.setText("");
+                    //Inizializzazione Label minuti e settaggio della lista delle skill
+                    jLabel20.setVisible(true);
+                    jLabel21.setVisible(true);
+                    jLabel24.setVisible(true);
                     AssignedMinutes.setVisible(true);
                     LeftMinutes.setVisible(true);
                     TotalMinutes.setVisible(true);
-                    int left=Planner.getActivity(currentID).getEstimatedTime();
+                    setCompetenciesSkill(tableSkills2);
+                    int left = a.getEstimatedTime();
                     String assigned;
-                    String estime = Planner.getEWOTotalEstime(currentID);
-                    if (estime!=null){
-                        assigned=estime;
-                    }
-                    else{
+                    String estime = getTotalEstime(currentID);
+                    if (estime != null) {
+                        assigned = estime;
+                    } else {
                         assigned = "0";
                     }
                     int total = left + Integer.parseInt(assigned);
                     LeftMinutes.setText(String.valueOf(left));
                     AssignedMinutes.setText(assigned);
                     TotalMinutes.setText(String.valueOf(total));
-                }
-                
-                setList(false);
-                if (Planner.getActivity(currentID).getEstimatedTime() <=0){
-                    queryVerification(currentID);
-                    ActivityLabel1.setText(ActivitytoaLabel.getText());
-                    JOptionPane.showMessageDialog(null,"Activity completely assigned.","Done", JOptionPane.INFORMATION_MESSAGE);
-                    MaintainerSelectionGUI.setVisible(false);
-                    
-                }
-                else{
-                    queryVerification(currentID);
-                    ActivityLabel1.setText(ActivitytoaLabel.getText());
-                    JOptionPane.showMessageDialog(null,"Activity partially assigned.","Done", JOptionPane.INFORMATION_MESSAGE);
-                }
-                
-                PlannerVerificationGUI.setVisible(false);
-            }
-            catch (SQLException | InsertException | ArrayIndexOutOfBoundsException ex) {
-                        if (MainteinerAvailabilityTable.getSelectedColumn()<=1){
-                            if(JOptionPane.showConfirmDialog(null, "Wrong Selection!", "Wrong", JOptionPane.OK_CANCEL_OPTION)>=0){
-                            SwingUtilities.invokeLater(new Runnable(){
-                                @Override
-                                public void run() {
-                                    try {
-                                        wrongSelectionFunction();
-                                    } catch (SQLException | InsertException ex1) {
-                                        Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex1);
-                                    }
-                                }
-                            });
-                        }}
-                        else
-                           JOptionPane.showMessageDialog(null,"Error!","Error", JOptionPane.ERROR_MESSAGE);
 
-                    }
-    }
-    
-    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        try {
-            if(Planner.getActivity(currentID).getType().equals("Planned")){
-                firstTable=true;
-                jLabel15.setText("Maintainer Availability");
-                try {
-                    setMaintainerList(currentID);
-                } catch (SQLException ex) {
-                    Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    //Inizializzazione tabella fasce maintainer
+                    int day = LocalDate.now().getDayOfWeek().getValue();
+
+                    String[] nomi = {"Maintainer", "Skills", "8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "14:00-15:00", "15:00-16:00", "16:00-17:00"};
+                    maintainertab.setRowCount(0);
+                    maintainertab.setColumnIdentifiers(nomi);
+                    setEWOAvailabilityTable(day, a);
                 }
-                backButton.setVisible(false);}
+
+                if (Activityexists(currentID)) {
+                    EWOActivity ewo = (EWOActivity) a;
+                    String[] strings = new String[ewo.getCompetenciesList().size()];
+                    int i = 0;
+                    for (String str : ewo.getCompetenciesList()) {
+                        strings[i] = str;
+                        i++;
+                    }
+                    querySkill(tableSkills2, strings);
+
+                } else {
+                    String[] lista = null;
+                    DefaultTableModel model = (DefaultTableModel) tableSkills.getModel();
+                    int i = 0;
+                    int j = 0;
+                    lista = new String[model.getRowCount()];
+
+                    while (i < model.getRowCount()) {
+                        if (model.getValueAt(i, 1) != null && model.getValueAt(i, 1).equals(true)) {
+                            lista[j] = (String.valueOf(model.getValueAt(i, 0)));
+                            j++;
+                        }
+                        i++;
+                    }
+                    querySkill(tableSkills2, lista);
+                }
+            } else {
+                Planner.modifyActivity(a, WorkspaceNotesArea.getText(), ActivityDescriptionTextField.getText(), 0, getCompetenceList(a));
+                MaintainerSelectionGUI.setVisible(true);
+                WeekLabel.setText(LabelNWeek.getText());
+                ActivityLabel1.setText(ActivitytoaLabel.getText());
+                WorkspaceTextArea3.setText(WorkspaceNotesArea.getText());
+                setMaintainerList(currentID);
+                InterruptibleLabel.setVisible(false);
+                jLabel19.setVisible(false);
+                InterruptibleLabel.setVisible(true);
+                jLabel19.setVisible(true);
+                InterruptibleLabel.setText(isInterruptible());
+                querySkill(tableSkills2, null);
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_ForwardButtonActionPerformed
+
+    private LinkedList<String> getCompetenceList(Activity a) {
+        LinkedList<String> lista = new LinkedList<>();
+        DefaultTableModel model = (DefaultTableModel) tableSkills.getModel();
+        if (model.getColumnCount() > 1 && (a.getType().equals("EWO") || a.getType().equals("Extra"))) {
+            int i = 0;
+            while (i < model.getRowCount()) {
+                if (model.getValueAt(i, 1) != null && model.getValueAt(i, 1).equals(true)) {
+                    lista.add(String.valueOf(model.getValueAt(i, 0)));
+                }
+                i++;
+            }
+        } else {
+            int i = 0;
+            while (i < model.getRowCount()) {
+                lista.add(String.valueOf(model.getValueAt(i, 0)));
+
+                i++;
+            }
+
+        }
+        return lista;
+    }
+
+    private void MainteinerAvailabilityTableMouseClicked(java.awt.event.MouseEvent evt) {
+//GEN-FIRST:event_MainteinerAvailabilityTableMouseClicked
+        if (!(a.getType().equals("EWO"))) {
+            if (firstTable == true) {
+                setFirstTable();
+            } else {
+                setSecondTable();
+            }
+        } else {
+            setEwoTable();
+        }
+    }//GEN-LAST:event_MainteinerAvailabilityTableMouseClicked
+
+    private void setFirstTable() {
+        int indexRow = MainteinerAvailabilityTable.getSelectedRow();
+        int indexCol = MainteinerAvailabilityTable.getSelectedColumn();
+        String maintainer = (String) MainteinerAvailabilityTable.getValueAt(indexRow, 0);
+        String skills = (String) MainteinerAvailabilityTable.getValueAt(indexRow, 1);
+        daySelected = indexCol - 1;
+        jLabel15.setText("Maintainer Availability: " + getDay());
+
+        int[] vec = null;
+        if (daySelected >= 1 && daySelected <= 7) {
+            vec = Planner.getArray(maintainer, a, daySelected);
+            String[] nomi = {"Maintainer", "Skills", "8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "14:00-15:00", "15:00-16:00", "16:00-17:00"};
+            maintainertab.setRowCount(0);
+            maintainertab.setColumnIdentifiers(nomi);
+            Object[] row = {maintainer, skills, vec[0], vec[1], vec[2], vec[3], vec[4], vec[5], vec[6]};
+            maintainertab.addRow(row);
+            backButton.setVisible(true);
+            firstTable = false;
+        } else if (JOptionPane.showConfirmDialog(null, "Wrong Selection!", "Wrong", JOptionPane.OK_CANCEL_OPTION) >= 0) {
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        firstTable = true;
+                        wrongSelectionFunction();
+                    } catch (SQLException | UnsupportedOperationException ex) {
+                        Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            });
+        }
+
+    }
+
+    private void setSecondTable() {
+        if (daySelected >= 1 && daySelected <= 7) {
+            int indexRow = MainteinerAvailabilityTable.getSelectedRow();
+            int indexCol = MainteinerAvailabilityTable.getSelectedColumn();
+            String maintainer = (String) MainteinerAvailabilityTable.getValueAt(indexRow, 0);
+            String skills = (String) MainteinerAvailabilityTable.getValueAt(indexRow, 1);
+            int fascia = indexCol - 1;
+            int[] vec = null;
+            try {
+                Planner.manageAvailability(Planner.getArray(maintainer, a, daySelected),
+                        maintainer, daySelected, fascia, a);
+                vec = Planner.getArray(maintainer, a, daySelected);
+                String[] nomi = {"Maintainer", "Skills", "8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "14:00-15:00", "15:00-16:00", "16:00-17:00"};
+                maintainertab.setRowCount(0);
+                maintainertab.setColumnIdentifiers(nomi);
+                Object[] row = {maintainer, skills, vec[0], vec[1], vec[2], vec[3], vec[4], vec[5], vec[6]};
+                maintainertab.addRow(row);
+                setList(false);
+
+                if (a.getEstimatedTime() <= 0) {
+                    queryVerification();
+                    ActivityLabel1.setText(ActivitytoaLabel.getText());
+                    JOptionPane.showMessageDialog(null, "Activity completely assigned.", "Done", JOptionPane.INFORMATION_MESSAGE);
+                    MaintainerSelectionGUI.setVisible(false);
+
+                } else {
+                    queryVerification();
+                    ActivityLabel1.setText(ActivitytoaLabel.getText());
+                    JOptionPane.showMessageDialog(null, "Activity partially assigned.", "Done", JOptionPane.INFORMATION_MESSAGE);
+                }
+
+                PlannerVerificationGUI.setVisible(false);
+            } catch (SQLException | UnsupportedOperationException | ArrayIndexOutOfBoundsException ex) {
+                if (JOptionPane.showConfirmDialog(null, "Wrong Selection!", "Wrong", JOptionPane.OK_CANCEL_OPTION) >= 0) {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                wrongSelectionFunction();
+                            } catch (SQLException | UnsupportedOperationException ex1) {
+                                Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex1);
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    }
+
+    private void setEwoTable() {
+        int indexRow = MainteinerAvailabilityTable.getSelectedRow();
+        int indexCol = MainteinerAvailabilityTable.getSelectedColumn();
+        String maintainer = (String) MainteinerAvailabilityTable.getValueAt(indexRow, 0);
+        String skills = (String) MainteinerAvailabilityTable.getValueAt(indexRow, 1);
+        int fascia = indexCol - 1;
+        int[] vec = null;
+        try {
+            //Calendar calendar = Calendar.getInstance();
+            int day = LocalDate.now().getDayOfWeek().getValue();
+
+            Planner.manageAvailability(Planner.getArray(maintainer, a, day),
+                    maintainer, day, fascia, a);
+            setEWOAvailabilityTable(day, a);
+
+            if (a.getType().equals("EWO")) {
+                AssignedMinutes.setText("");
+                LeftMinutes.setText("");
+                TotalMinutes.setText("");
+                AssignedMinutes.setVisible(true);
+                LeftMinutes.setVisible(true);
+                TotalMinutes.setVisible(true);
+                int left = a.getEstimatedTime();
+                String assigned;
+                String estime = getTotalEstime(currentID);
+                if (estime != null) {
+                    assigned = estime;
+                } else {
+                    assigned = "0";
+                }
+                int total = left + Integer.parseInt(assigned);
+                LeftMinutes.setText(String.valueOf(left));
+                AssignedMinutes.setText(assigned);
+                TotalMinutes.setText(String.valueOf(total));
+            }
+
+            setList(false);
+            if (a.getEstimatedTime() <= 0) {
+                queryVerification();
+                ActivityLabel1.setText(ActivitytoaLabel.getText());
+                JOptionPane.showMessageDialog(null, "Activity completely assigned.", "Done", JOptionPane.INFORMATION_MESSAGE);
+                MaintainerSelectionGUI.setVisible(false);
+
+            } else {
+                queryVerification();
+                ActivityLabel1.setText(ActivitytoaLabel.getText());
+                JOptionPane.showMessageDialog(null, "Activity partially assigned.", "Done", JOptionPane.INFORMATION_MESSAGE);
+            }
+
+            PlannerVerificationGUI.setVisible(false);
+        } catch (SQLException | UnsupportedOperationException | ArrayIndexOutOfBoundsException ex) {
+            if (MainteinerAvailabilityTable.getSelectedColumn() <= 1) {
+                if (JOptionPane.showConfirmDialog(null, "Wrong Selection!", "Wrong", JOptionPane.OK_CANCEL_OPTION) >= 0) {
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                wrongSelectionFunction();
+                            } catch (SQLException | UnsupportedOperationException ex1) {
+                                Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex1);
+                            }
+                        }
+                    });
+                }
+            } else {
+                JOptionPane.showMessageDialog(null, "Error!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        }
+    }
+
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+
+        if (a.getType().equals("Planned")) {
+            firstTable = true;
+            jLabel15.setText("Maintainer Availability");
+            try {
+                setMaintainerList(currentID);
+            } catch (SQLException ex) {
+                Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            backButton.setVisible(false);
         }
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void scheduledMaintenanceListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_scheduledMaintenanceListMouseClicked
-        forwarded=false;
-        
-        try{
+        forwarded = false;
+
+        try {
             interventionArea.setEditable(true);
             String activityid = String.valueOf(tab.getValueAt(scheduledMaintenanceList.getSelectedRow(), 0));
             String[] arrSplit = activityid.split("-");
             String num = arrSplit[0].trim();
             Integer intero = Integer.valueOf(num);
             currentID = intero;
-            queryVerification(currentID);
-            querySkill(currentID,tableSkills,null);         
+            a = Planner.getActivity(currentID);
+            queryVerification();
+            querySkill(tableSkills, null);
             PlannerVerificationGUI.setVisible(true);
-            if (Planner.getActivity(currentID).getType().equals("EWO")){
-                if (Planner.EWOexists(currentID)){
+            if (a.getType().equals("EWO")) {
+                if (Activityexists(currentID)) {
                     setCompetenciesSkill(tableSkills);
                     tableSkills.setEnabled(false);
                     estimatedTimeEWOField.setEnabled(false);
                     ForwardButton.setEnabled(true);
-                    this.estimatedTimeEWOField.setText(String.valueOf(Planner.getActivity(currentID).getEstimatedTime()));
-                    
+                    this.estimatedTimeEWOField.setText(String.valueOf(a.getEstimatedTime()));
+
+                } else {
+                    estimatedTimeEWOField.setText("");
+                    tableSkills.setEnabled(true);
+                    estimatedTimeEWOField.setEnabled(true);
                 }
-                else{
-                estimatedTimeEWOField.setText("");
-                estimatedTimeEWOField.setText("Insert EWO time");
-                tableSkills.setEnabled(true);
-                estimatedTimeEWOField.setEnabled(true);
-                }   
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }catch(java.lang.ArrayIndexOutOfBoundsException e){
+        } catch (java.lang.ArrayIndexOutOfBoundsException e) {
             JOptionPane.showMessageDialog(null, "No activity selected!", "Error!", 0);
         }
     }//GEN-LAST:event_scheduledMaintenanceListMouseClicked
@@ -1984,9 +1960,9 @@ private void setFirstTable(){
     }//GEN-LAST:event_LabelWeekNumberActionPerformed
 
     private void TicketStatusButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_TicketStatusButtonActionPerformed
-      EWOStatusGUI.setVisible(true);
-      setAssignedEWOTable();
-      
+        EWOStatusGUI.setVisible(true);
+        setAssignedEWOTable();
+
     }//GEN-LAST:event_TicketStatusButtonActionPerformed
 
     private void EWOTabMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_EWOTabMouseClicked
@@ -1994,183 +1970,181 @@ private void setFirstTable(){
     }//GEN-LAST:event_EWOTabMouseClicked
 
     private void WeekComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WeekComboBox2ActionPerformed
-       setAssignedEWOTable();
+        setAssignedEWOTable();
     }//GEN-LAST:event_WeekComboBox2ActionPerformed
 
     private void WeekComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_WeekComboBox3ActionPerformed
-      setAssignedEWOTable();
+        setAssignedEWOTable();
     }//GEN-LAST:event_WeekComboBox3ActionPerformed
 
     private void MainteinerAvailabilityTableMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_MainteinerAvailabilityTableMouseWheelMoved
-     
+
     }//GEN-LAST:event_MainteinerAvailabilityTableMouseWheelMoved
 
     private void estimatedTimeEWOFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_estimatedTimeEWOFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_estimatedTimeEWOFieldActionPerformed
-    
-    
-    
-    //Funzioni di utilità    
-    private void wrongSelectionFunction() throws SQLException, InsertException{
 
-        if (firstTable==true){
-        try {
-            setMaintainerList(currentID);
-        } catch (SQLException ex) {
-            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        }
-        else{
-        int indexRow = MainteinerAvailabilityTable.getSelectedRow();
-        int indexCol = MainteinerAvailabilityTable.getSelectedColumn();
-        String maintainer = (String) MainteinerAvailabilityTable.getValueAt(indexRow,0);
-        String skills = (String) MainteinerAvailabilityTable.getValueAt(indexRow,1);
-        int fascia = indexCol-1;
-        int[] vec =null;
-        vec = Planner.getArray(maintainer, Planner.getActivity(currentID), daySelected);
-        String[] nomi = {"Maintainer","Skills","8:00-9:00","9:00-10:00","10:00-11:00","11:00-12:00","14:00-15:00","15:00-16:00","16:00-17:00"};
+    //Funzioni di utilità    
+    private void wrongSelectionFunction() throws SQLException, UnsupportedOperationException {
+
+        if (firstTable == true) {
+            try {
+                setMaintainerList(currentID);
+            } catch (SQLException ex) {
+                Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            int indexRow = MainteinerAvailabilityTable.getSelectedRow();
+            int indexCol = MainteinerAvailabilityTable.getSelectedColumn();
+            String maintainer = (String) MainteinerAvailabilityTable.getValueAt(indexRow, 0);
+            String skills = (String) MainteinerAvailabilityTable.getValueAt(indexRow, 1);
+            int fascia = indexCol - 1;
+            int[] vec = null;
+            vec = Planner.getArray(maintainer, a, daySelected);
+            String[] nomi = {"Maintainer", "Skills", "8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00", "14:00-15:00", "15:00-16:00", "16:00-17:00"};
             maintainertab.setRowCount(0);
             maintainertab.setColumnIdentifiers(nomi);
-            Object[] row = {maintainer,skills,vec[0],vec[1],vec[2],vec[3],vec[4],vec[5],vec[6]};                 
+            Object[] row = {maintainer, skills, vec[0], vec[1], vec[2], vec[3], vec[4], vec[5], vec[6]};
             maintainertab.addRow(row);
-        
-    }}    
-    
-    private void setList(boolean initialize){
-        if (initialize==true) {
-        LocalDate date = LocalDate.now();
-        WeekFields weekFields = WeekFields.of(Locale.getDefault());
-        this.comboBoxWeek.getModel().setSelectedItem(date.get(weekFields.weekOfWeekBasedYear()));
+
+        }
+    }
+
+    private void setList(boolean initialize) {
+        if (initialize == true) {
+            LocalDate date = LocalDate.now();
+            WeekFields weekFields = WeekFields.of(Locale.getDefault());
+            this.comboBoxWeek.getModel().setSelectedItem(date.get(weekFields.weekOfWeekBasedYear()));
         };
-        String[] nomi = {"ID","AREA","TYPE","Estimated intervention time[min]"};
+        String[] nomi = {"ID", "AREA", "TYPE", "Estimated intervention time[min]"};
         ResultSet rst = null;
         try {
             rst = Planner.getActivities(this.comboBoxWeek.getSelectedItem().toString());
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
+
         tab.setRowCount(0);
         tab.setColumnIdentifiers(nomi);
         Object[] row = new Object[4];
-        try{
-            while(rst.next()){
-                row[0]=rst.getString("id") + " - " + rst.getString("type");
-                row[1]=rst.getString("factory_site") + " - " + rst.getString("area");
-                row[2]=rst.getString("name_typology");
-                row[3]=rst.getString("estimated_time");
+        try {
+            while (rst.next()) {
+                row[0] = rst.getString("id") + " - " + rst.getString("type");
+                row[1] = rst.getString("factory_site") + " - " + rst.getString("area");
+                row[2] = rst.getString("name_typology");
+                row[3] = rst.getString("estimated_time");
                 tab.addRow(row);
             }
-        }catch(SQLException ex){
-            
+        } catch (SQLException ex) {
+
         }
-             
+
     }
-    
-    
-   private void setMaintainerList(int id) throws SQLException{
-       ResultSet rst = null;
-       Statement st = conn.createStatement();
-              
-       if (Planner.getActivity(id).getType().equals("Planned")){
-       PlannedActivity a = (PlannedActivity)Planner.getActivity(id);
-       rst= st.executeQuery("select username,mc,pc,lunedi,martedi,mercoledi,giovedi,venerdi,sabato,domenica from availability_3('"+a.getProcedure().getName()+"',"+ a.getWeek()+")" );
-       String[] nomi = {"Maintainer","Skills","Lun","Mar","Mer","Gio","Ven","Sab","Dom"};
-       maintainertab.setRowCount(0);
-       maintainertab.setColumnIdentifiers(nomi);
-       Object[] row = new Object[9];
-        try{
-            while(rst.next()){
-                row[0]=rst.getString("username");
-                row[1]=rst.getBigDecimal("mc") + "/" + rst.getBigDecimal("pc");
-                row[2]=rst.getObject("lunedi");
-                row[3]=rst.getObject("martedi");
-                row[4]=rst.getObject("mercoledi");
-                row[5]=rst.getObject("giovedi");
-                row[6]=rst.getObject("venerdi");
-                row[7]=rst.getObject("sabato");
-                row[8]=rst.getObject("domenica");
-                for (int i=0;i<9;i++){
-                    if(row[i]==null)
-                        row[i]=(Integer)100;
+
+    private void setMaintainerList(int id) throws SQLException {
+        ResultSet rst = null;
+
+        if (a.getType().equals("Planned")) {
+            PlannedActivity pl = (PlannedActivity) a;
+            rst = op.executeQuery("select username,mc,pc,lunedi,martedi,mercoledi,giovedi,venerdi,sabato,domenica from availability_3('" + pl.getProcedure().getName() + "'," + pl.getWeek() + ")");
+            String[] nomi = {"Maintainer", "Skills", "Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"};
+            maintainertab.setRowCount(0);
+            maintainertab.setColumnIdentifiers(nomi);
+            Object[] row = new Object[9];
+            try {
+                while (rst.next()) {
+                    row[0] = rst.getString("username");
+                    row[1] = rst.getBigDecimal("mc") + "/" + rst.getBigDecimal("pc");
+                    row[2] = rst.getObject("lunedi");
+                    row[3] = rst.getObject("martedi");
+                    row[4] = rst.getObject("mercoledi");
+                    row[5] = rst.getObject("giovedi");
+                    row[6] = rst.getObject("venerdi");
+                    row[7] = rst.getObject("sabato");
+                    row[8] = rst.getObject("domenica");
+                    for (int i = 0; i < 9; i++) {
+                        if (row[i] == null) {
+                            row[i] = (Integer) 100;
+                        }
+                    }
+                    maintainertab.addRow(row);
                 }
-                maintainertab.addRow(row);
+            } catch (SQLException ex) {
+
             }
-        }catch(SQLException ex){
-            
-        }}
-   
-   }
-   
-   private void setAssignedEWOTable(){
-       String[] areaState = new String[]{"Received", "Sent", "Not sent"}; 
-       String[] maintainerState = new String[]{"Received", "Sent", "Read"};
-       String[] generalState = new String[]{"Not started", "In progress", "Closed"};
-       java.util.Random rand = new java.util.Random();
-       int int_random;
-   
-            
+        }
+
+    }
+
+    private void setAssignedEWOTable() {
+        String[] areaState = new String[]{"Received", "Sent", "Not sent"};
+        String[] maintainerState = new String[]{"Received", "Sent", "Read"};
+        String[] generalState = new String[]{"Not started", "In progress", "Closed"};
+        java.util.Random rand = new java.util.Random();
+        int int_random;
+
         ResultSet rst = null;
         try {
-            rst = Planner.getAssignedEWO(this.WeekComboBox2.getSelectedItem().toString());
+            rst = op.executeQuery("select * from activity  where (type='ewo' and week = " + this.WeekComboBox2.getSelectedItem().toString() + " and id in (select id from assigned))");
         } catch (SQLException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         EWOTable.setRowCount(0);
         Object[] row = new Object[7];
-        try{
-            String[] days ={"lunedi","martedi","mercoledi","giovedi","venerdi","sabato","domenica"};
-            while(rst.next()){
-                String[] results= Planner.getEWOestime(Integer.parseInt(rst.getString("id")));
-                String sum=results[0];
-                String day=results[1];
-                        
-                row[0]=rst.getString("id") + " - " + rst.getString("type");
-                row[1]=rst.getString("factory_site") + " - " + rst.getString("area");
-                row[2]=rst.getString("name_typology");
-                row[3]=sum;
-                if(sum != "1"){
-                row[4]=areaState[int_random = rand.nextInt(3)];
-                row[5]=maintainerState[int_random = rand.nextInt(3)];
-                row[6]=generalState[int_random = rand.nextInt(3)];}
-                if (day.equals(days[WeekComboBox3.getSelectedIndex()])){  
+        try {
+            String[] days = {"lunedi", "martedi", "mercoledi", "giovedi", "venerdi", "sabato", "domenica"};
+            while (rst.next()) {
+                ResultSet r = op.executeQuery("select sum(minuti) as sum ,giorno from assigned where id=" + rst.getInt("id") + " group by giorno");
+                r.next();
+                int sum = r.getInt("sum");
+                String day = r.getString("giorno");
+
+                row[0] = rst.getInt("id") + " - " + rst.getString("type");
+                row[1] = rst.getString("factory_site") + " - " + rst.getString("area");
+                row[2] = rst.getString("name_typology");
+                row[3] = sum;
+                if (sum != 1) {
+                    row[4] = areaState[int_random = rand.nextInt(3)];
+                    row[5] = maintainerState[int_random = rand.nextInt(3)];
+                    row[6] = generalState[int_random = rand.nextInt(3)];
+                }
+                if (day.equals(days[WeekComboBox3.getSelectedIndex()])) {
                     EWOTable.addRow(row);
-                } 
-                
+                }
+
             }
-        }catch(SQLException ex){
+        } catch (SQLException ex) {
             System.out.println(ex);
         }
-   }
-    
-    private static boolean isNumeric(String str) { 
-  try {  
-    Double.parseDouble(str);  
-    return true;
-  } catch(NumberFormatException e){  
-    return false;  
-  }  
-}  
-    private static Connection startConnection(){
+    }
+
+    private static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private static Connection startConnection() {
         Connection conn = null;
         try {
-            conn=DriverManager.getConnection(url, user, pwd);
-        }
-        catch(SQLException ex){
-            
+            conn = DriverManager.getConnection(url, user, pwd);
+        } catch (SQLException ex) {
+
         }
         return conn;
     }
-     private void queryVerification(int activityid) throws SQLException {
-        Activity ac = Planner.getActivity(activityid);
-        WorkspaceNotesArea.setText(ac.getWorkspaceNotes());
-        LabelNWeek.setText(String.valueOf(ac.getWeek()));
-        interventionArea.setText(ac.getDescription());
-        if (ac.getType().equals("extra") || ac.getType().equals("EWO")){
-            String activityto = ac.getType()+" "+activityid + "-" + ac.getArea() + "-" + ac.getTypology();
+
+    private void queryVerification() throws SQLException {
+        WorkspaceNotesArea.setText(a.getWorkspaceNotes());
+        LabelNWeek.setText(String.valueOf(a.getWeek()));
+        interventionArea.setText(a.getDescription());
+        if (a.getType().equals("Extra") || a.getType().equals("EWO")) {
+            String activityto = a.getType() + " " + a.getId() + "-" + a.getArea() + "-" + a.getTypology();
             ActivitytoaLabel.setText(activityto);
             WorkspaceNotesArea.setEditable(false);
             interventionArea.setEditable(true);
@@ -2178,9 +2152,8 @@ private void setFirstTable(){
             PDFLabel.setVisible(false);
             estimatedTimeEWOField.setVisible(true);
             estimatedTimeEWOLabel.setVisible(true);
-        }
-        else{
-            String activityto = ac.getType()+" "+activityid + "-" + ac.getArea() + "-" + ac.getTypology() + "-" + ac.getEstimatedTime();
+        } else {
+            String activityto = a.getType() + " " + a.getId() + "-" + a.getArea() + "-" + a.getTypology() + "-" + a.getEstimatedTime();
             ActivitytoaLabel.setText(activityto);
             WorkspaceNotesArea.setEditable(true);
             interventionArea.setEditable(false);
@@ -2192,12 +2165,11 @@ private void setFirstTable(){
 
     }
 
-    private void querySkill(int activityid,JTable tab,String[] st) throws SQLException {
-        Statement o = conn.createStatement();
+    private void querySkill(JTable tab, String[] st) throws SQLException {
         ResultSet rst = null;
-        if (Planner.getActivity(Integer.valueOf(activityid)).getType().equals("EWO") || Planner.getActivity(Integer.valueOf(activityid)).getType().equals("extra")){
-            rst = o.executeQuery("select * from competence " );
-            DefaultTableModel tabskills = new DefaultTableModel(new Object[]{"",""}, 0) {
+        if (a.getType().equals("EWO") || a.getType().equals("Extra")) {
+            rst = op.executeQuery("select * from competence ");
+            DefaultTableModel tabskills = new DefaultTableModel(new Object[]{"", ""}, 0) {
                 @Override
                 public Class<?> getColumnClass(int column) {
                     if (column == 1) {
@@ -2208,25 +2180,24 @@ private void setFirstTable(){
                     }
                 }
             };
-            if (forwarded){
+            if (forwarded) {
                 DefaultTableModel tabskills2 = (DefaultTableModel) tab.getModel();
                 tabskills2.setRowCount(0);
                 tabskills2.setColumnIdentifiers(new String[]{""});
-                int num=0;
-                while (num!=st.length){
+                int num = 0;
+                while (num != st.length) {
                     tabskills2.addRow(new String[]{st[num]});
                     num++;
                 }
-            }
-            else{
-            tab.setModel(tabskills);
-            while (rst.next()) {
-                tabskills.addRow(new Object[]{rst.getString("name_competence")});
-            }
+            } else {
+                tab.setModel(tabskills);
+                while (rst.next()) {
+                    tabskills.addRow(new Object[]{rst.getString("name_competence")});
+                }
             }
         } else {
-            PlannedActivity pl= (PlannedActivity) Planner.getActivity(activityid);
-            rst = o.executeQuery("select name_competence from possession_procedure where name_procedure='" + pl.getProcedure().getName()+"'");
+            PlannedActivity pl = (PlannedActivity) a;
+            rst = op.executeQuery("select name_competence from possession_procedure where name_procedure='" + pl.getProcedure().getName() + "'");
             DefaultTableModel tabskills = (DefaultTableModel) tab.getModel();
             tabskills.setRowCount(0);
             tabskills.setColumnIdentifiers(new String[]{""});
@@ -2234,73 +2205,77 @@ private void setFirstTable(){
                 tabskills.addRow(new Object[]{rst.getString("name_competence")});
             }
         }
-        
+
     }
-   
-    private String getDay(){
-        String day="";
-        int indexCo= MainteinerAvailabilityTable.getSelectedColumn();
-        switch(indexCo){
-            case 2: day="Monday";
-            break;
-            case 3: day="Tuesday";
-            break;
-            case 4: day="Wednesday";
-            break;
-            case 5: day="Thursday";
-            break;
-            case 6: day="Friday";
-            break;
-            case 7: day="Saturday";
-            break;
-            case 8: day="Sunday";
-            break;
+
+    private String getDay() {
+        String day = "";
+        int indexCo = MainteinerAvailabilityTable.getSelectedColumn();
+        switch (indexCo) {
+            case 2:
+                day = "Monday";
+                break;
+            case 3:
+                day = "Tuesday";
+                break;
+            case 4:
+                day = "Wednesday";
+                break;
+            case 5:
+                day = "Thursday";
+                break;
+            case 6:
+                day = "Friday";
+                break;
+            case 7:
+                day = "Saturday";
+                break;
+            case 8:
+                day = "Sunday";
+                break;
         }
         return day;
     }
-    
-    private String isInterruptible(int id) throws SQLException{
-        Activity a = Planner.getActivity(id);
-        if (a.isInterruptible() == false){
-            return "No";}
-        else{
+
+    private String isInterruptible() throws SQLException {
+
+        if (a.isInterruptible() == false) {
+            return "No";
+        } else {
             return "Yes";
         }
     }
-    
-    
-    private void setCompetenciesSkill(JTable tab) throws SQLException{
-        ResultSet rst = Planner.getAssignedSkills(currentID);
+
+    private void setCompetenciesSkill(JTable tab) throws SQLException {
+        ResultSet rst = op.executeQuery("select name_competence from ewo_competence where id=" + currentID);
         DefaultTableModel tabskills2 = (DefaultTableModel) tab.getModel();
         tabskills2.setRowCount(0);
         tabskills2.setColumnIdentifiers(new String[]{""});
         String[] competencies = new String[100];
-        int x=0;
-        int i=0;
-        while (rst.next()){
-           competencies[i] = rst.getString("name_competence");
-           i++;
+        int x = 0;
+        int i = 0;
+        while (rst.next()) {
+            competencies[i] = rst.getString("name_competence");
+            i++;
         }
-        while (x != i){
+        while (x != i) {
             tabskills2.addRow(new Object[]{competencies[x]});
             x++;
-            }
+        }
     }
-    
-    
-    private void setEWOAvailabilityTable(int day, Activity a) throws SQLException{
+
+    private void setEWOAvailabilityTable(int day, Activity a) throws SQLException {
         maintainertab.setRowCount(0);
-        Statement st = conn.createStatement();
-        
-        ResultSet rst = Planner.getAllMaintainer();
-        while (rst.next()){
+        ResultSet rst = op.executeQuery("select username from users where role= 'maintainer'");
+        while (rst.next()) {
             String name = rst.getString("username");
-            ResultSet rst2= st.executeQuery("select mc,ec from table_ewo("+a.getId()+",'"+ name+"')");
+            ResultSet rst2 = op.executeQuery("select mc,ec from table_ewo(" + a.getId() + ",'" + name + "')");
             int vec[] = Planner.getArray(name, a, day);
             Object[] row = new Object[9];
             row[0] = name;
-            while(rst2.next())
-                row[1]=rst2.getBigDecimal("mc") + "/" + rst2.getBigDecimal("ec");       
+            while (rst2.next()) {
+                row[1] = rst2.getBigDecimal("mc") + "/" + rst2.getBigDecimal("ec");
+            }
             row[2] = vec[0];
             row[3] = vec[1];
             row[4] = vec[2];
@@ -2310,49 +2285,57 @@ private void setFirstTable(){
             row[8] = vec[6];
             maintainertab.addRow(row);
         }
-        firstTable=false;
-        
+        firstTable = false;
+
     }
-    
 
-    
-
-    
-    private void setMaterialsList(JTable materialsTable) throws SQLException{
-        Statement o = conn.createStatement();
-        ResultSet rst = o.executeQuery("select * from material");
+    private void setMaterialsList(JTable materialsTable) throws SQLException {
+        ResultSet rst = op.executeQuery("select * from material");
         LinkedList<String> materials = new LinkedList<>();
-        while(rst.next()){
-        materials.add(rst.getString("name_material"));
+        while (rst.next()) {
+            materials.add(rst.getString("name_material"));
         }
-        DefaultTableModel tabmaterials= new DefaultTableModel(new Object[]{"",""}, 0) {
-        @Override
-        public Class<?> getColumnClass(int column) {
-         if (column == 1) {
-         materialsTable.getColumnModel().getColumn(column).setMaxWidth(5);
-         return Boolean.class;
-         } else {
-         return String.class;
-                    }
+        DefaultTableModel tabmaterials = new DefaultTableModel(new Object[]{"", ""}, 0) {
+            @Override
+            public Class<?> getColumnClass(int column) {
+                if (column == 1) {
+                    materialsTable.getColumnModel().getColumn(column).setMaxWidth(5);
+                    return Boolean.class;
+                } else {
+                    return String.class;
                 }
-            };
-         materialsTable.setModel(tabmaterials);
-         for (String material : materials) {
-             tabmaterials.addRow(new Object[]{material});
-         }
+            }
+        };
+        materialsTable.setModel(tabmaterials);
+        for (String material : materials) {
+            tabmaterials.addRow(new Object[]{material});
+        }
 
     }
-    
-    
-    
-    
-    
-    
-    
+
+    private boolean Activityexists(int id) throws SQLException {
+        ResultSet rst = op.executeQuery("select id from assigned where id=" + id);
+        while (rst.next()) {
+            if (rst.getString("id") != null) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String getTotalEstime(int id) throws SQLException {
+        ResultSet rst = op.executeQuery("select sum(minuti) from assigned where id=" + id);
+        String esti = "";
+        while (rst.next()) {
+            esti = rst.getString("sum");
+        }
+        return esti;
+    }
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]){
+    public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -2377,7 +2360,6 @@ private void setFirstTable(){
         //</editor-fold>
 
         /* Create and display the form */
-               
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
@@ -2388,8 +2370,7 @@ private void setFirstTable(){
             }
         });
     }
-    
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup ActionType;
