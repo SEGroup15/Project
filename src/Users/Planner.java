@@ -65,10 +65,9 @@ public class Planner implements User {
                 return new PlannedActivity(id, factorySite, area, typology, description, estimatedTime, interruptible, materials, week, workspaceNotes).upload(conn);
             case "EWO":
                 return new EWOActivity(id, factorySite, area, typology, interruptible, materials, week, workspaceNotes).upload(conn);
-            case "Extra":
-                return new ExtraActivity(id, factorySite, area, typology, interruptible, materials, week, workspaceNotes).upload(conn);
             default:
-                throw new UnsupportedOperationException("Not supported.");
+                return new ExtraActivity(id, factorySite, area, typology, interruptible, materials, week, workspaceNotes).upload(conn);
+
         }
     }
 
@@ -93,10 +92,8 @@ public class Planner implements User {
                     return getPlanned(rst, id, materials);
                 case "ewo":
                     return getEwo(rst, id, materials);
-                case "extra":
-                    return getExtra(rst, id, materials);
                 default:
-                    throw new UnsupportedOperationException("Not supported.");
+                    return getExtra(rst, id, materials);
             }
         } catch (SQLException ex) {
             System.out.println(ex);
@@ -203,7 +200,7 @@ public class Planner implements User {
             if (type.equals("ewo")) {
                 rst = op.executeQuery("select fascia,minuti from assigned ASS, activity A where(A.id=ASS.id and A.interruptibility= 'false' and ASS.username='" + maintainer + "' and A.week= " + act.getWeek() + " and ASS.giorno= '" + days[day - 1] + "')");
             } else {
-                rst = op.executeQuery("select fascia,minuti from assigned ASS,activity A where(ASS.username='" + maintainer + "' and A.week= " + act.getWeek() + " and ASS.giorno= '" + days[day - 1] + "' and A.id=" + act.getId() + ")");
+                rst = op.executeQuery("select fascia,minuti from assigned ASS,activity A where(ASS.username='" + maintainer + "' and A.week= " + act.getWeek() + " and ASS.giorno= '" + days[day - 1] + "' and A.id=ASS.id )");
             }
             while (rst.next()) {
                 vector[rst.getInt("fascia") - 1] -= rst.getInt("minuti");

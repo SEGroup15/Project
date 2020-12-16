@@ -1451,9 +1451,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     private void PDFButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PDFButtonActionPerformed
         try {
             java.awt.Desktop.getDesktop().browse(new URI("https://www.usbr.gov/power/data/fist/fist4_1a/4-1A.pdf"));
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
+        } catch (URISyntaxException | IOException ex) {
             Logger.getLogger(PlannerGUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_PDFButtonActionPerformed
@@ -1532,25 +1530,16 @@ public class PlannerGUI extends javax.swing.JFrame {
 
                 if (ActivityNotExists(currentID)) {
                     EWOActivity ewo = (EWOActivity) a;
-                    String[] strings = new String[ewo.getCompetenciesList().size()];
-                    int i = 0;
-                    for (String str : ewo.getCompetenciesList()) {
-                        strings[i] = str;
-                        i++;
-                    }
-                    querySkill(tableSkills2, strings);
+                    
+                    querySkill(tableSkills2, ewo.getCompetenciesList());
 
                 } else {
-                    String[] lista = null;
+                    LinkedList<String> lista = new LinkedList<>();
                     DefaultTableModel model = (DefaultTableModel) tableSkills.getModel();
                     int i = 0;
-                    int j = 0;
-                    lista = new String[model.getRowCount()];
-
                     while (i < model.getRowCount()) {
                         if (model.getValueAt(i, 1) != null && model.getValueAt(i, 1).equals(true)) {
-                            lista[j] = (String.valueOf(model.getValueAt(i, 0)));
-                            j++;
+                            lista.add(String.valueOf(model.getValueAt(i, 0)));
                         }
                         i++;
                     }
@@ -2003,7 +1992,7 @@ public class PlannerGUI extends javax.swing.JFrame {
         } else {
             try {
                 int activityID = Integer.parseInt(ActivityIDTextField.getText());
-                Planner.modifyActivity(Planner.getActivity(activityID), WorkspaceNotes.getText(), ActivityDescriptionTextField.getText(), Integer.valueOf(EstimatedTimeTextField.getText()), null);
+                Planner.modifyActivity(Planner.getActivity(activityID), WorkspaceNotes.getText(), "", 0, null);
                 JOptionPane.showMessageDialog(null, "The workspace notes have been modified", "Modify", 1);
                 clear();
             } catch (java.sql.SQLException e) {
@@ -2226,7 +2215,7 @@ public class PlannerGUI extends javax.swing.JFrame {
     For the EWO and extra activity: initialized the competencies selection table and show them in the skills table in the MaintainerSelectionGUI;
     For the planned activity: shows the competencies for the selected activity.
     */
-    private void querySkill(JTable tab, String[] st) throws SQLException {
+    private void querySkill(JTable tab, LinkedList<String> st) throws SQLException {
         ResultSet rst = null;
         if (a.getType().equals("EWO") || a.getType().equals("Extra")) {
             rst = op.executeQuery("select * from competence ");
@@ -2245,11 +2234,8 @@ public class PlannerGUI extends javax.swing.JFrame {
                 DefaultTableModel tabskills2 = (DefaultTableModel) tab.getModel();
                 tabskills2.setRowCount(0);
                 tabskills2.setColumnIdentifiers(new String[]{""});
-                int num = 0;
-                while (num != st.length) {
-                    tabskills2.addRow(new String[]{st[num]});
-                    num++;
-                }
+                for(String stringa : st)
+                    tabskills2.addRow(new String[]{stringa});
             } else {
                 tab.setModel(tabskills);
                 while (rst.next()) {

@@ -116,9 +116,6 @@ public class ExtraActivity extends Activity {
             this.setCompetenciesList(competencies);
             st.executeUpdate("update activity set estimated_time = " + estimatedTime + ", description = '" + description + "' where id=" + id);
             for (String competence : competencies) {
-                if (competence == null) {
-                    break;
-                }
                 st.executeUpdate("insert into extra_competence values ('" + competence + "'," + id + ")");
             }
         } catch (SQLException ex) {

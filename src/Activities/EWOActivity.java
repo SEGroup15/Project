@@ -121,9 +121,6 @@ public class EWOActivity extends Activity {
             st.executeQuery("select * from updatewo(" + this.id + ")");
             if (competencies != null) {
                 for (String competence : competencies) {
-                    if (competence == null) {
-                        break;
-                    }
                     st.executeUpdate("insert into ewo_competence values ('" + competence + "'," + id + ")");
                 }
             }

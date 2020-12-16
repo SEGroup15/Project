@@ -99,10 +99,6 @@ public class PlannerTest {
         op.executeUpdate("delete from activity where id = (select max(id) from activity)");
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void testCreateActivityWrongType() throws UnsupportedOperationException, SQLException {
-        boolean bool = planner.createActivity("PlAnNeD", "factTest", "areaTest", "typologyTest", "description2", 0, true, materials, 10, "wsNotes"); }
-
     /**
      * Tests of getActivity method, of class Planner.
      */
@@ -201,7 +197,7 @@ public class PlannerTest {
     public void testGetActivitiesWrongWeek() throws SQLException {
         ResultSet rst = planner.getActivities("100");
         rst.next();
-        System.out.print(rst.getInt("id"));
+        rst.getInt("id");
 
     }
 
@@ -248,7 +244,6 @@ public class PlannerTest {
         array = planner.getArray("usTest", b, 5);
         planner.manageAvailability(array, "usTest", 5, 2, b);
         array = planner.getArray("usTest", ewo, 5);
-        System.out.println(array[0]);
         assertArrayEquals(testarray, array);
         op.executeUpdate("delete from activity where (id= ( select max(id) from activity))");
         op.executeUpdate("delete from activity where (id= ( select max(id) from activity))");
