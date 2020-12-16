@@ -3,16 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package MaintenanceManagement;
+package Users;
 
 /**
  *
- * @author saby_
+ * @author giuse
  */
-public class InsertException extends Exception {
+public interface User {
 
-    public InsertException() {
-        System.out.println("Errore nell'inserimento");
-    }
+    public String getUsername();
 
+    public String getPassword();
+    
+    public String getRole();
+    
 }
